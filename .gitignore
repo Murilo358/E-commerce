@@ -1,0 +1,7 @@
+
+CommerceGateway/target
+CommerceCatalog/target
+CommerceServiceDiscovery/target
+CommerceGateway/src/main/resources/application.properties
+CommerceCatalog/src/main/resources/application.properties
+CommerceServiceDiscovery/src/main/resources/application.properties
