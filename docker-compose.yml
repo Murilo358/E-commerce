@@ -1,0 +1,54 @@
+services:
+
+  service-discovery:
+    build:
+      context: ./CommerceServiceDiscovery
+    image: ecommerceservicediscovery:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    environment:
+      - spring.profiles.active=default
+      - eureka.client.register-with-eureka=false
+      - eureka.client.fetch-registry=false
+      - eureka.instance.hostname=localhost
+
+  commerce-gateway:
+    build:
+      context: ./CommerceGateway
+    image: ecommercegateway:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-discovery
+    networks:
+      - backend
+    environment:
+      - eureka.client.register-with-eureka=true
+      - eureka.client.fetch-registry=true
+      - spring.cloud.gateway.discovery.loca1tor.enabled=true
+      - spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
+      - eureka.instance.hostname=localhost
+
+  commerce-catalog:
+    build:
+      context: ./CommerceCatalog
+    image: commercecatalog:latest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - service-discovery
+      - commerce-gateway
+    networks:
+      - backend
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
+      - eureka.client.register-with-eureka=true
+      - eureka.client.fetch-registry=true
+      - eureka.instance.hostname=localhost
+
+networks:
+  backend:
+    driver: bridge
