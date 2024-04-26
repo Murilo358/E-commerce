@@ -5,7 +5,8 @@ CREATE TABLE gateway.users(
     birth_date DATE NOT NULL,
     email TEXT NULL,
     password TEXT NOT NULL,
-    role INTEGER NOT NULL
+    role INTEGER NOT NULL,
+    profile_id BIGINT NOT NULL
 );
 ALTER TABLE
     gateway.users ADD PRIMARY KEY(id);
