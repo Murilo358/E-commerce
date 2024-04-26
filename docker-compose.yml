@@ -29,6 +29,8 @@ services:
       - spring.cloud.gateway.discovery.locator.enabled=true
       - spring.cloud.gateway.discovery.locator.lower-case-service-id=true
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
+      - flyway.schemas=gateway
+      - flyway.defaultSchema=gateway
 
   commerce-catalog:
     build:
@@ -38,6 +40,25 @@ services:
       - "8081:8081"
     depends_on:
       - service-discovery
+      - commerce-gateway
+    networks:
+      - backend
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
+      - eureka.client.register-with-eureka=true
+      - eureka.client.fetch-registry=true
+      - flyway.schemas=catalog
+      - flyway.defaultSchema=catalog
+
+  commerce-orders:
+    build:
+      context: ./CommerceOrder
+    image: commerceorder:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - service-discovery
+      - commerce-catalog
       - commerce-gateway
     networks:
       - backend
