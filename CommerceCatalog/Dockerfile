@@ -12,6 +12,6 @@ FROM eclipse-temurin:21-jdk-jammy
 VOLUME /tmp
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar ecommerceGateway.jar
+COPY --from=build /app/target/*.jar ecommerceCatalog.jar
 
-ENTRYPOINT ["java","-jar","/app/ecommerceGateway.jar"]
+ENTRYPOINT ["java","-jar","/app/ecommerceCatalog.jar"]
