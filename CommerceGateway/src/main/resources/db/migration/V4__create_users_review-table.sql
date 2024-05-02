@@ -1,5 +1,5 @@
 CREATE TABLE gateway.users_reviews(
-    id BIGINT NOT NULL,
+    id BIGSERIAL NOT NULL,
     user_id BIGINT NOT NULL,
     date DATE NOT NULL,
     rate BIGINT NOT NULL,

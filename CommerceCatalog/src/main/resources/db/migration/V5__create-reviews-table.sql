@@ -1,10 +1,10 @@
 CREATE TABLE catalog.produts_reviews(
-    id BIGINT NOT NULL,
+    id BIGSERIAL  NOT NULL,
     product_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     rating SMALLINT NOT NULL,
     comment TEXT NOT NULL,
-    created_at DATE NOT NULL
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE
     catalog.produts_reviews ADD PRIMARY KEY(id);

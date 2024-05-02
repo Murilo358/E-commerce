@@ -1,5 +1,5 @@
 CREATE TABLE catalog.promotions(
-    id BIGINT NOT NULL,
+    id BIGSERIAL  NOT NULL,
     product_id BIGINT NOT NULL,
     description TEXT NOT NULL,
     start_date DATE NOT NULL,

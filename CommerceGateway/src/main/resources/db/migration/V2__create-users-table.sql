@@ -1,5 +1,5 @@
 CREATE TABLE gateway.users(
-    id BIGINT NOT NULL,
+    id BIGSERIAL  NOT NULL,
     name TEXT NOT NULL,
     cpf TEXT NOT NULL,
     birth_date DATE NOT NULL,

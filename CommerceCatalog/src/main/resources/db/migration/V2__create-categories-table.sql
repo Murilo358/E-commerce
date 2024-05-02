@@ -1,5 +1,5 @@
 CREATE TABLE catalog.categories (
-    id BIGINT NOT NULL,
+    id BIGSERIAL  NOT NULL,
     name TEXT NOT NULL,
     description TEXT NOT NULL
 );
