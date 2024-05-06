@@ -1,5 +1,22 @@
 services:
 
+  config-server:
+    build:
+      context: ./configServer
+    image: configserver:latest
+    ports:
+      - "8888:8888"
+    networks:
+      - backend
+    environment:
+      - spring.application.name=configServer
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
   service-discovery:
     build:
       context: ./CommerceServiceDiscovery
@@ -8,10 +25,19 @@ services:
       - "8761:8761"
     networks:
       - backend
+    depends_on:
+      config-server:
+        condition: service_healthy
     environment:
       - spring.profiles.active=default
       - eureka.client.register-with-eureka=false
       - eureka.client.fetch-registry=false
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 7s
 
   commerce-gateway:
     build:
@@ -20,7 +46,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - service-discovery
+      service-discovery:
+        condition: service_healthy
     networks:
       - backend
     environment:
@@ -31,6 +58,12 @@ services:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
       - flyway.schemas=gateway
       - flyway.defaultSchema=gateway
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 8s
 
   commerce-catalog:
     build:
@@ -39,16 +72,14 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - service-discovery
-      - commerce-gateway
+      commerce-gateway:
+        condition: service_healthy
     networks:
       - backend
+    restart: on-failure
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
-      - eureka.client.register-with-eureka=true
-      - eureka.client.fetch-registry=true
-      - flyway.schemas=catalog
-      - flyway.defaultSchema=catalog
+      - spring.config.import=optional:configserver:http://config-server:8888
 
   commerce-orders:
     build:
@@ -57,9 +88,8 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - service-discovery
-      - commerce-catalog
-      - commerce-gateway
+      commerce-gateway:
+        condition: service_healthy
     networks:
       - backend
     environment:
