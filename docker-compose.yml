@@ -65,10 +65,10 @@ services:
       retries: 10
       start_period: 8s
 
-  commerce-catalog:
+  product-service:
     build:
-      context: ./CommerceCatalog
-    image: commercecatalog:latest
+      context: ./ProductService
+    image: productservice:latest
     ports:
       - "8081:8081"
     depends_on:
