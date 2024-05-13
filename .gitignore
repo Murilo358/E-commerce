@@ -3,3 +3,7 @@
 *.properties
 *.jar
 *.idea
+.idea
+*/.mvn
+*/mvnw
+*/mvnw.cmd
