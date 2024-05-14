@@ -19,8 +19,8 @@ services:
 
   service-discovery:
     build:
-      context: ./CommerceServiceDiscovery
-    image: ecommerceservicediscovery:latest
+      context: ./ServiceDiscovery
+    image: servicediscovery:latest
     ports:
       - "8761:8761"
     networks:
@@ -41,8 +41,8 @@ services:
 
   commerce-gateway:
     build:
-      context: ./CommerceGateway
-    image: ecommercegateway:latest
+      context: ./Gateway
+    image: gateway:latest
     ports:
       - "8080:8080"
     depends_on:
@@ -84,8 +84,8 @@ services:
 
   commerce-orders:
     build:
-      context: ./CommerceOrder
-    image: commerceorder:latest
+      context: ./OrderService
+    image: orderservice:latest
     ports:
       - "8082:8082"
     depends_on:
