@@ -1,13 +1,18 @@
 package com.commerceOrderService.CommerceOrderService;
 
+import com.commerceOrderService.CommerceOrderService.eventModels.OrderEvent;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class KafkaListeners {
 
-    @KafkaListener(topics = "orders", groupId = "groupId" )
-    void listener(OrderEvent data) {
-        System.out.println("ProductName: " + data.getProductName() + " buyedQuantity: " + data.getBuyedQuantity());
+
+    @KafkaListener(topics = "orders",groupId = "groupId")
+    public void consumeEvents(OrderEvent order) {
+
+        System.out.println("consumer consume the events: " + order.toString());
+
     }
+
 }

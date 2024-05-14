@@ -2,17 +2,13 @@ package com.product.service.eventModels;
 
 import lombok.*;
 
-
-@Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Getter
-@Setter
+@Data
 public class OrderEvent   {
-
 
     private String eventId;
     private String productName;
     private Integer buyedQuantity;
+
+
 }
