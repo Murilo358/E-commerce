@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class KafkaListeners {
 
 
-    @KafkaListener(topics = "orders", groupId = "groupId")
+    @KafkaListener(topics = "orders", groupId = "groupId", autoStartup = "false")
     public void consumeEvents(OrderEvent order) {
 
         System.out.println("consumer consume the events: " + order.toString());

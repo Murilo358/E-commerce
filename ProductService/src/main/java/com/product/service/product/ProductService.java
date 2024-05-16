@@ -3,6 +3,8 @@ package com.product.service.product;
 
 import com.product.service.category.CategoryService;
 import com.product.service.product.dto.CreateProductDTO;
+import com.product.service.query.ProductRepository;
+import com.product.service.query.ProductView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +21,24 @@ public class ProductService {
     ProductRepository productRepository;
 
 
-    public Product createProduct(CreateProductDTO createProductDTO){
+    public ProductView createProduct(CreateProductDTO createProductDTO){
 
         categoryService.findById(createProductDTO.categoryId());
 
-        Product product = new Product();
-        product.setCategoryId(createProductDTO.categoryId());
-        product.setName(createProductDTO.name());
-        product.setCreatedAt(LocalDateTime.now());
-        product.setSellerId(createProductDTO.sellerId());
-        product.setDescription(createProductDTO.description());
-        product.setPrice(createProductDTO.price());
-        product.setInventoryCount(createProductDTO.inventoryCount());
+        ProductView productView = new ProductView();
+        productView.setCategoryId(createProductDTO.categoryId());
+        productView.setName(createProductDTO.name());
+        productView.setCreatedAt(LocalDateTime.now());
+        productView.setSellerId(createProductDTO.sellerId());
+        productView.setDescription(createProductDTO.description());
+        productView.setPrice(createProductDTO.price());
+        productView.setInventoryCount(createProductDTO.inventoryCount());
 
-        return productRepository.save(product);
+        return productRepository.save(productView);
 
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductView> getAllProducts() {
         return productRepository.findAll();
     }
 }

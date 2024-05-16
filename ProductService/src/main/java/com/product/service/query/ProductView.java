@@ -1,10 +1,7 @@
-package com.product.service.product;
+package com.product.service.query;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,12 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name="products", schema="catalog")
 @SecondaryTable(name = "gateway.user", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
-public class Product {
+public class ProductView {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    private String id;
     @Column
     private String name;
     @Column

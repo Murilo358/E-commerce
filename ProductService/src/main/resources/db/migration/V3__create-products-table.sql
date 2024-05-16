@@ -1,5 +1,5 @@
 CREATE TABLE catalog.products(
-    id BIGSERIAL NOT NULL,
+    id TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     price DOUBLE PRECISION NOT NULL,

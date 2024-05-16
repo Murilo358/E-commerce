@@ -1,6 +1,6 @@
 CREATE TABLE catalog.produts_reviews(
     id BIGSERIAL  NOT NULL,
-    product_id BIGINT NOT NULL,
+    product_id TEXT NOT NULL,
     user_id BIGINT NOT NULL,
     rating SMALLINT NOT NULL,
     comment TEXT NOT NULL,
