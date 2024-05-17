@@ -1,4 +1,4 @@
-package com.product.service.coreapi.commands;
+package com.product.service.coreapi.commands.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

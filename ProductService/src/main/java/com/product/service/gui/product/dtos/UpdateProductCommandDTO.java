@@ -1,8 +1,10 @@
-package com.product.service.gui;
+package com.product.service.gui.product.dtos;
+
+import java.util.UUID;
 
 public record UpdateProductCommandDTO(
-        String productId,
         String name,
         String description,
+        UUID categoryId,
         Double price) {
 }

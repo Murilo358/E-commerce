@@ -1,10 +1,9 @@
-package com.product.service.coreapi.commands;
+package com.product.service.coreapi.events.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,8 +12,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteProductCommand {
-    @TargetAggregateIdentifier
+public class ProductInventoryUpdatedEvent {
     UUID productId;
-    private LocalDateTime deletedAt;
+    private Integer inventoryCount;
+    private LocalDateTime updatedAt;
 }

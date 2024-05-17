@@ -1,9 +1,14 @@
-package com.product.service.gui;
+package com.product.service.gui.product;
 
-import com.product.service.coreapi.commands.CreateProductCommand;
-import com.product.service.coreapi.commands.DeleteProductCommand;
-import com.product.service.coreapi.commands.UpdateProductCommand;
+import com.product.service.coreapi.commands.product.CreateProductCommand;
+import com.product.service.coreapi.commands.product.DeleteProductCommand;
+import com.product.service.coreapi.commands.product.UpdateProductCommand;
+import com.product.service.coreapi.queries.FindProductQuery;
+import com.product.service.gui.product.dtos.CreateProductCommandDTO;
+import com.product.service.gui.product.dtos.UpdateProductCommandDTO;
+import com.product.service.query.ProductView;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +32,7 @@ public class ProductController {
         return commandGateway.send(
                 CreateProductCommand
                         .builder()
+                        .productId(UUID.randomUUID())
                         .name(createProductCommandDTO.name())
                         .description(createProductCommandDTO.description())
                         .price(createProductCommandDTO.price())
@@ -38,36 +44,41 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/update")
-    public CompletableFuture<UUID> updateProduct(@RequestBody UpdateProductCommandDTO updateProductCommand) {
+    @PostMapping("/update/{productId}")
+    public CompletableFuture<UUID> updateProduct(@PathVariable("productId") UUID productId, @RequestBody UpdateProductCommandDTO updateProductCommand) {
 
 
         return commandGateway.send(
                 UpdateProductCommand
                         .builder()
-                        .productId(UUID.fromString(updateProductCommand.productId()))
+                        .productId(productId)
                         .name(updateProductCommand.name())
                         .description(updateProductCommand.description())
+                        .categoryId(updateProductCommand.categoryId())
                         .price(updateProductCommand.price())
-                        .updatedAt(LocalDateTime.now()).build()
+                        .updatedAt(LocalDateTime.now())
+                        .build()
         );
     }
 
     @DeleteMapping("/delete/{productId}")
-    public CompletableFuture<UUID> DeleteProductCommand(@PathVariable("productId") String productId) {
+    public CompletableFuture<UUID> DeleteProductCommand(@PathVariable("productId") UUID productId) {
 
 
         return commandGateway.send(
                 DeleteProductCommand
                         .builder()
-                        .productId(UUID.fromString(productId))
+                        .productId(productId)
                         .deletedAt(LocalDateTime.now()).build()
         );
     }
 
     @GetMapping("/get/{productId}")
-    public void findProduct(@PathVariable("productId") String productId) {
-        //TODO IMPLEMENT QUERY
+    public CompletableFuture<ProductView> findProduct(@PathVariable("productId") UUID productId) {
+        return queryGateway.query(
+                new FindProductQuery(productId),
+                ResponseTypes.instanceOf(ProductView.class)
+        );
     }
 
 }

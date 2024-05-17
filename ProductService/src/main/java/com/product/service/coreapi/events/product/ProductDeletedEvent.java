@@ -1,4 +1,4 @@
-package com.product.service.coreapi.events;
+package com.product.service.coreapi.events.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

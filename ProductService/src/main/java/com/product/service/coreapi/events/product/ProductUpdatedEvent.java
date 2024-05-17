@@ -1,4 +1,4 @@
-package com.product.service.coreapi.events;
+package com.product.service.coreapi.events.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,13 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductInventoryUpdatedEvent {
+public class ProductUpdatedEvent {
     UUID productId;
-    private Integer inventoryCount;
+    private String name;
+    private String description;
+    private UUID categoryId;
+    private Double price;
     private LocalDateTime updatedAt;
 }
+
+
