@@ -20,7 +20,6 @@ public class CreateCategoryCommand {
     private UUID id;
     private String name;
     private String description;
-    private Boolean systemDefault;
     private LocalDateTime createdAt;
 
 }

@@ -1,5 +1,4 @@
-package com.product.service.coreapi.queries;
-
+package com.product.service.coreapi.queries.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindProductQuery {
+public class FindCategoryQuery {
 
-    private UUID productId;
+    private UUID categoryId;
 }
