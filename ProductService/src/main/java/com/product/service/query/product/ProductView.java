@@ -1,4 +1,4 @@
-package com.product.service.query;
+package com.product.service.query.product;
 
 import jakarta.persistence.*;
 import lombok.*;

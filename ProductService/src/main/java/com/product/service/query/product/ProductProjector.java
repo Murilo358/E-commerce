@@ -1,11 +1,11 @@
-package com.product.service.query;
+package com.product.service.query.product;
 
 
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
-import com.product.service.coreapi.queries.FindProductQuery;
+import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;

@@ -1,4 +1,4 @@
-package com.product.service.gui.product.dtos;
+package com.product.service.gui.product.dto;
 
 import java.util.UUID;
 

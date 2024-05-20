@@ -1,4 +1,4 @@
-package com.product.service.coreapi.queries;
+package com.product.service.coreapi.queries.product;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
