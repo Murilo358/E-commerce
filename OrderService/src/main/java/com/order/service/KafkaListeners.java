@@ -1,7 +1,6 @@
 package com.order.service;
 
 
-import com.sharedModels.shared.OrderEvent;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

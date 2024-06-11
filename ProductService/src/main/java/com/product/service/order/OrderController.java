@@ -1,8 +1,7 @@
 package com.product.service.order;
 
 
-
-import com.sharedModels.shared.OrderEvent;
+import com.product.service.events.OrderEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
