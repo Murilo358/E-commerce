@@ -1,4 +1,4 @@
-CREATE TABLE gateway.users(
+CREATE TABLE IF NOT EXISTS gateway.users(
     id BIGSERIAL  NOT NULL,
     name TEXT NOT NULL,
     cpf TEXT NOT NULL,
