@@ -1,37 +1,30 @@
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
-    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    networks:
+      - backend
 
   kafka:
-    image: confluentinc/cp-kafka:7.4.0
-    container_name: kafka
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"
-      - "29092:29092"
+      - 29092:29092
     environment:
+      # Kafka configurations
       KAFKA_BROKER_ID: 1
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
-      CONFLUENT_METRICS_ENABLE: 'true'
-    extra_hosts:
-      - "host.docker.internal:172.17.0.1"
+    networks:
+      - backend
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.4.0
@@ -44,8 +37,10 @@ services:
       - kafka
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka:9092'
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8090
+    networks:
+      - backend
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:6.0.1
@@ -57,7 +52,7 @@ services:
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:9092
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
@@ -81,6 +76,21 @@ services:
         /etc/confluent/docker/run
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+    networks:
+      - backend
+
+  axonserver:
+    image: axoniq/axonserver:latest
+    hostname: axonserver
+    volumes:
+      - axonserver-data:/data
+      - axonserver-events:/eventdata
+      - axonserver-config:/config:ro
+    ports:
+      - '8024:8024'
+      - '8124:8124'
+      - '8224:8224'
+
   config-server:
     build:
       context: ./configServer
@@ -92,7 +102,7 @@ services:
     environment:
       - spring.application.name=configServer
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 3s
       timeout: 3s
       retries: 10
@@ -182,5 +192,11 @@ services:
       - spring.config.import=configserver:http://config-server:8888
 
 networks:
+  axon-net:
   backend:
     driver: bridge
+volumes:
+  axonserver-data:
+  axonserver-events:
+  axonserver-config:
+
