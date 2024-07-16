@@ -11,6 +11,7 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -60,7 +61,9 @@ public class CategoryProjector {
     @QueryHandler
     public List<CategoryView> getBy(FindAllCategoriesQuery query){
 
-        return categoryRepository.findAll(query.getPageable()).toList();
+        PageRequest pageRequest = PageRequest.of(query.getMin(), Math.min(query.getMax(), 100));
+
+        return categoryRepository.findAll(pageRequest).getContent();
 
     }
 

@@ -14,7 +14,6 @@ import java.util.UUID;
 @Entity
 @Builder
 @Table(name="products", schema="catalog")
-//@SecondaryTable(name = "gateway.user", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id")) TODO SEARCH ABOUT
 public class ProductView {
 
     @Id

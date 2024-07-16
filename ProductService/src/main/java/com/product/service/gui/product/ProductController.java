@@ -3,6 +3,7 @@ package com.product.service.gui.product;
 import com.product.service.coreapi.commands.product.CreateProductCommand;
 import com.product.service.coreapi.commands.product.DeleteProductCommand;
 import com.product.service.coreapi.commands.product.UpdateProductCommand;
+import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.gui.product.dto.CreateProductCommandDTO;
 import com.product.service.gui.product.dto.UpdateProductCommandDTO;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -80,5 +82,18 @@ public class ProductController {
                 ResponseTypes.instanceOf(ProductView.class)
         );
     }
+
+    @GetMapping("/getAll")
+    public CompletableFuture<List<ProductView>> getAllProducts(
+            @RequestParam(name = "startPage", defaultValue = "0") Integer startPage,
+            @RequestParam(name = "endPage", defaultValue = "50") Integer endPage){
+
+        return queryGateway.query(
+                new FindAllProductsQuery(startPage, endPage),
+                ResponseTypes.multipleInstancesOf(ProductView.class)
+        );
+
+    }
+
 
 }

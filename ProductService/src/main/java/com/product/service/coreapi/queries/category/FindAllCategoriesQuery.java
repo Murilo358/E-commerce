@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class FindAllCategoriesQuery {
 
-    public Pageable pageable;
+    Integer min;
+    Integer max;
 }

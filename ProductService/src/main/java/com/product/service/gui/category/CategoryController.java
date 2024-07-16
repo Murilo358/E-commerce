@@ -1,6 +1,5 @@
 package com.product.service.gui.category;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.product.service.coreapi.commands.category.CreateCategoryCommand;
 import com.product.service.coreapi.commands.category.DeleteCategoryCommand;
 import com.product.service.coreapi.commands.category.UpdateCategoryCommand;
@@ -14,7 +13,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -84,14 +82,12 @@ public class CategoryController {
     }
 
     @GetMapping("/getAll")
-    public CompletableFuture<List<CategoryView>> getById(
+    public CompletableFuture<List<CategoryView>> getAll(
             @RequestParam(name = "startPage",defaultValue = "0") Integer startPage,
             @RequestParam(name = "endPage",defaultValue = "50") Integer endPage){
 
-        Pageable pageable = PageRequest.of(startPage, endPage);
-
         return queryGateway.query(
-                FindAllCategoriesQuery.builder().pageable(pageable),
+                new FindAllCategoriesQuery(startPage, endPage),
                 ResponseTypes.multipleInstancesOf(CategoryView.class)
         );
     }

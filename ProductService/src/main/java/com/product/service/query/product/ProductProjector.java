@@ -5,12 +5,16 @@ import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
+import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Component
@@ -76,5 +80,15 @@ public class ProductProjector {
     @QueryHandler
     public ProductView handle(FindProductQuery query){
         return productRepository.findById(query.getProductId()).orElseThrow(() -> new NotFoundException("Product", query.getProductId()));
+    }
+
+    //To share exceptional information with the recipient it is recommended to wrap the exception in a QueryExecutionException with provided details.
+    //TODO CHANGE OFFSET PAGINATION TO SEEK PAGINATION
+    @QueryHandler
+    public List<ProductView> handle(FindAllProductsQuery query){
+
+        PageRequest pageRequest = PageRequest.of(query.getMin(), Math.min(query.getMax(), 100));
+
+        return productRepository.findAll(pageRequest).getContent();
     }
 }
