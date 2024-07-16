@@ -25,6 +25,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - backend
+    restart: on-failure
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.4.0
@@ -41,7 +42,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8090
     networks:
       - backend
-
+    restart: on-failure
   control-center:
     image: confluentinc/cp-enterprise-control-center:6.0.1
     hostname: control-center
@@ -52,9 +53,10 @@ services:
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:22181'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: http://schema-registry:8090
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 1
@@ -66,6 +68,7 @@ services:
       CONTROL_CENTER_CONSUMERS_VIEW_ENABLE: 'true'
       CONTROL_CENTER_STREAMS_CACHE_MAX_BYTES_BUFFERING: 104857600
       PORT: 9021
+    restart: on-failure
     command:
       - bash
       - -c
@@ -90,6 +93,10 @@ services:
       - '8024:8024'
       - '8124:8124'
       - '8224:8224'
+    restart: on-failure
+    networks:
+      - axon-net
+      - backend
 
   config-server:
     build:
@@ -171,6 +178,8 @@ services:
       - server.port=8081
       - spring.application.name=productService
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
+      - spring.kafka.bootstrap-servers=http://kafka:9092
+      - axon.axonserver.servers=axonserver
       - spring.config.import=configserver:http://config-server:8888
 
   commerce-orders:
