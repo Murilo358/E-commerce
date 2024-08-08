@@ -1,13 +1,21 @@
 package com.product.service.order;
 
 
-import com.product.service.avro.Order;
-import com.product.service.events.OrderEvent;
+import com.product.service.avro.OrderCreated;
+import com.product.service.avro.Product;
+import com.product.service.coreapi.queries.product.FindProductQuery;
+import com.product.service.dto.CreateOrderDto;
+import com.product.service.query.product.ProductView;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("order")
@@ -16,27 +24,43 @@ public class OrderController {
     @Autowired
     KafkaTemplate<String, Object> kafkaTemplate;
 
-    @GetMapping("/test")
-    public void testOrder(){
-        kafkaTemplate.send("orders", new Order("1", "2", "3",
-                "4", "5", 10, 50.0F, 10.0F, true));
+    @Autowired
+    private QueryGateway queryGateway;
+
+    @PostMapping("/create")
+    public void createOrder(@RequestBody CreateOrderDto createOrderDto){
+
+        List<ProductView> list = createOrderDto.productsId().stream().map(i -> {
+            try {
+                return queryGateway.query(
+                        new FindProductQuery(i),
+                        ResponseTypes.instanceOf(ProductView.class)
+                ).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }).toList();
+
+
+        List<Product> products = list.stream().map(i -> {
+            return Product
+                    .newBuilder()
+                    .setCreatedAt(Instant.from(i.getCreatedAt()))
+                    .setCategoryId(i.getCategoryId())
+                    .setDescription(i.getDescription())
+                    .setName(i.getName())
+                    .setPrice(i.getPrice())
+                    .setCreatedAt(Instant.from(i.getCreatedAt()))
+                    .setInventoryCount(i.getInventoryCount())
+                    .setUpdatedAt(Instant.from(i.getUpdatedAt()))
+                    .setSellerId(i.getSellerId())
+                    .setProductId(i.getId()).build();
+        }).toList();
+
+
+        new OrderCreated(products, 1L, LocalDate.now());
+//        kafkaTemplate.send("orders", new OrderCreated("", 1L, LocalDate.now()));
     }
 
-
-    //@Component
-    //class PeoplePublisherImpl(
-    //    private val kafkaTemplate: KafkaTemplate<String, Any>,
-    //    private val avro: Avro
-    //) : PeoplePublisher {
-    //    private val logger = LoggerFactory.getLogger(javaClass)
-    //
-    //    override fun send(people: People) {
-    //        this.kafkaTemplate.send("pessoa", this.avro.toRecord(People.serializer(), people))
-    //            .handle { event, error ->
-    //                if (error != null) logger.error("error at send message to topic Kafka")
-    //                else logger.info("message sent with success, partition {}", event.recordMetadata.partition())
-    //            }
-    //    }
-    //}
 
 }

@@ -53,7 +53,7 @@ services:
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
       CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:22181'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: http://schema-registry:8090
