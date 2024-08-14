@@ -25,6 +25,9 @@ public class ProductProjector {
 
     @EventHandler
     public void on(ProductCreatedEvent event) {
+
+        //TODO send to order service to update his database too
+
         ProductView productView = ProductView
                 .builder()
                 .id(event.getProductId())

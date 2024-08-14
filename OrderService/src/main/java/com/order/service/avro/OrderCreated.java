@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.product.service.avro;
+package com.order.service.avro;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -7937865026499393722L;
+  private static final long serialVersionUID = -6654397322982686563L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreated\",\"namespace\":\"com.product.service.avro\",\"fields\":[{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Product\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\"},{\"name\":\"created_at\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreated\",\"namespace\":\"com.order.service.avro\",\"fields\":[{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Product\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\"},{\"name\":\"created_at\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -77,7 +77,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
     return DECODER.decode(b);
   }
 
-  private java.util.List<com.product.service.avro.Product> products;
+  private java.util.List<com.order.service.avro.Product> products;
   private long payment_method;
   private java.time.LocalDate created_at;
 
@@ -94,7 +94,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * @param payment_method The new value for payment_method
    * @param created_at The new value for created_at
    */
-  public OrderCreated(java.util.List<com.product.service.avro.Product> products, java.lang.Long payment_method, java.time.LocalDate created_at) {
+  public OrderCreated(java.util.List<com.order.service.avro.Product> products, java.lang.Long payment_method, java.time.LocalDate created_at) {
     this.products = products;
     this.payment_method = payment_method;
     this.created_at = created_at;
@@ -135,7 +135,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: products = (java.util.List<com.product.service.avro.Product>)value$; break;
+    case 0: products = (java.util.List<com.order.service.avro.Product>)value$; break;
     case 1: payment_method = (java.lang.Long)value$; break;
     case 2: created_at = (java.time.LocalDate)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
@@ -146,7 +146,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * Gets the value of the 'products' field.
    * @return The value of the 'products' field.
    */
-  public java.util.List<com.product.service.avro.Product> getProducts() {
+  public java.util.List<com.order.service.avro.Product> getProducts() {
     return products;
   }
 
@@ -155,7 +155,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'products' field.
    * @param value the value to set.
    */
-  public void setProducts(java.util.List<com.product.service.avro.Product> value) {
+  public void setProducts(java.util.List<com.order.service.avro.Product> value) {
     this.products = value;
   }
 
@@ -197,8 +197,8 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * Creates a new OrderCreated RecordBuilder.
    * @return A new OrderCreated RecordBuilder
    */
-  public static com.product.service.avro.OrderCreated.Builder newBuilder() {
-    return new com.product.service.avro.OrderCreated.Builder();
+  public static com.order.service.avro.OrderCreated.Builder newBuilder() {
+    return new com.order.service.avro.OrderCreated.Builder();
   }
 
   /**
@@ -206,11 +206,11 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * @param other The existing builder to copy.
    * @return A new OrderCreated RecordBuilder
    */
-  public static com.product.service.avro.OrderCreated.Builder newBuilder(com.product.service.avro.OrderCreated.Builder other) {
+  public static com.order.service.avro.OrderCreated.Builder newBuilder(com.order.service.avro.OrderCreated.Builder other) {
     if (other == null) {
-      return new com.product.service.avro.OrderCreated.Builder();
+      return new com.order.service.avro.OrderCreated.Builder();
     } else {
-      return new com.product.service.avro.OrderCreated.Builder(other);
+      return new com.order.service.avro.OrderCreated.Builder(other);
     }
   }
 
@@ -219,11 +219,11 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
    * @param other The existing instance to copy.
    * @return A new OrderCreated RecordBuilder
    */
-  public static com.product.service.avro.OrderCreated.Builder newBuilder(com.product.service.avro.OrderCreated other) {
+  public static com.order.service.avro.OrderCreated.Builder newBuilder(com.order.service.avro.OrderCreated other) {
     if (other == null) {
-      return new com.product.service.avro.OrderCreated.Builder();
+      return new com.order.service.avro.OrderCreated.Builder();
     } else {
-      return new com.product.service.avro.OrderCreated.Builder(other);
+      return new com.order.service.avro.OrderCreated.Builder(other);
     }
   }
 
@@ -234,7 +234,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<OrderCreated>
     implements org.apache.avro.data.RecordBuilder<OrderCreated> {
 
-    private java.util.List<com.product.service.avro.Product> products;
+    private java.util.List<com.order.service.avro.Product> products;
     private long payment_method;
     private java.time.LocalDate created_at;
 
@@ -247,7 +247,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.product.service.avro.OrderCreated.Builder other) {
+    private Builder(com.order.service.avro.OrderCreated.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.products)) {
         this.products = data().deepCopy(fields()[0].schema(), other.products);
@@ -267,7 +267,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing OrderCreated instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.product.service.avro.OrderCreated other) {
+    private Builder(com.order.service.avro.OrderCreated other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.products)) {
         this.products = data().deepCopy(fields()[0].schema(), other.products);
@@ -287,7 +287,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * Gets the value of the 'products' field.
       * @return The value.
       */
-    public java.util.List<com.product.service.avro.Product> getProducts() {
+    public java.util.List<com.order.service.avro.Product> getProducts() {
       return products;
     }
 
@@ -297,7 +297,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'products'.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder setProducts(java.util.List<com.product.service.avro.Product> value) {
+    public com.order.service.avro.OrderCreated.Builder setProducts(java.util.List<com.order.service.avro.Product> value) {
       validate(fields()[0], value);
       this.products = value;
       fieldSetFlags()[0] = true;
@@ -317,7 +317,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'products' field.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder clearProducts() {
+    public com.order.service.avro.OrderCreated.Builder clearProducts() {
       products = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -337,7 +337,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'payment_method'.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder setPaymentMethod(long value) {
+    public com.order.service.avro.OrderCreated.Builder setPaymentMethod(long value) {
       validate(fields()[1], value);
       this.payment_method = value;
       fieldSetFlags()[1] = true;
@@ -357,7 +357,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'payment_method' field.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder clearPaymentMethod() {
+    public com.order.service.avro.OrderCreated.Builder clearPaymentMethod() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -376,7 +376,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'created_at'.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder setCreatedAt(java.time.LocalDate value) {
+    public com.order.service.avro.OrderCreated.Builder setCreatedAt(java.time.LocalDate value) {
       validate(fields()[2], value);
       this.created_at = value;
       fieldSetFlags()[2] = true;
@@ -396,7 +396,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'created_at' field.
       * @return This builder.
       */
-    public com.product.service.avro.OrderCreated.Builder clearCreatedAt() {
+    public com.order.service.avro.OrderCreated.Builder clearCreatedAt() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -406,7 +406,7 @@ public class OrderCreated extends org.apache.avro.specific.SpecificRecordBase im
     public OrderCreated build() {
       try {
         OrderCreated record = new OrderCreated();
-        record.products = fieldSetFlags()[0] ? this.products : (java.util.List<com.product.service.avro.Product>) defaultValue(fields()[0]);
+        record.products = fieldSetFlags()[0] ? this.products : (java.util.List<com.order.service.avro.Product>) defaultValue(fields()[0]);
         record.payment_method = fieldSetFlags()[1] ? this.payment_method : (java.lang.Long) defaultValue(fields()[1]);
         record.created_at = fieldSetFlags()[2] ? this.created_at : (java.time.LocalDate) defaultValue(fields()[2]);
         return record;

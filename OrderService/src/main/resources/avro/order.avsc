@@ -92,7 +92,7 @@
     }
   ],
   "name": "OrderCreated",
-  "namespace": "com.product.service.avro",
+  "namespace": "com.order.service.avro",
   "type": "record",
   "version": "1"
 }

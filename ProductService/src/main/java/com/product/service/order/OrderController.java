@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -45,21 +46,21 @@ public class OrderController {
         List<Product> products = list.stream().map(i -> {
             return Product
                     .newBuilder()
-                    .setCreatedAt(Instant.from(i.getCreatedAt()))
+                    .setCreatedAt(i.getCreatedAt() != null ? i.getCreatedAt().toLocalDate() : null)
                     .setCategoryId(i.getCategoryId())
                     .setDescription(i.getDescription())
                     .setName(i.getName())
                     .setPrice(i.getPrice())
-                    .setCreatedAt(Instant.from(i.getCreatedAt()))
+                    .setCreatedAt(i.getCreatedAt() != null ? i.getCreatedAt().toLocalDate() : null)
                     .setInventoryCount(i.getInventoryCount())
-                    .setUpdatedAt(Instant.from(i.getUpdatedAt()))
+                    .setUpdatedAt(i.getUpdatedAt() != null ? i.getUpdatedAt().toLocalDate() : null)
                     .setSellerId(i.getSellerId())
                     .setProductId(i.getId()).build();
         }).toList();
 
 
         new OrderCreated(products, 1L, LocalDate.now());
-//        kafkaTemplate.send("orders", new OrderCreated("", 1L, LocalDate.now()));
+        kafkaTemplate.send("orders", new OrderCreated(products, 1L, LocalDate.now()));
     }
 
 
