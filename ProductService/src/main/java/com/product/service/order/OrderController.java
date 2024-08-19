@@ -10,11 +10,12 @@ import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -59,7 +60,6 @@ public class OrderController {
         }).toList();
 
 
-        new OrderCreated(products, 1L, LocalDate.now());
         kafkaTemplate.send("orders", new OrderCreated(products, 1L, LocalDate.now()));
     }
 
