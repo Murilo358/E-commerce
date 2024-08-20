@@ -14,4 +14,4 @@ ALTER TABLE
 
 
 ALTER TABLE
-    catalog.produts_reviews ADD CONSTRAINT produts_reviews_user_id_foreign FOREIGN KEY(user_id) REFERENCES gateway.users(id);
+    catalog.produts_reviews ADD CONSTRAINT produts_reviews_user_id_foreign FOREIGN KEY(user_id) REFERENCES users_control.users(id);

@@ -23,4 +23,4 @@ ALTER TABLE
 
 
 ALTER TABLE
-    catalog.products ADD CONSTRAINT products_seller_id_foreign FOREIGN KEY(seller_id) REFERENCES gateway.users(id);
+    catalog.products ADD CONSTRAINT products_seller_id_foreign FOREIGN KEY(seller_id) REFERENCES users_management.users(id);
