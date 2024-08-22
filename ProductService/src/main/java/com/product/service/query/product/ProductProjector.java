@@ -1,32 +1,44 @@
 package com.product.service.query.product;
 
 
+import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
-import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
+import com.product.service.kafka.KafkaPublisher;
+import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Component
 public class ProductProjector {
 
-    @Autowired
     ProductRepository productRepository;
+
+    final
+    KafkaTemplate<String, Object> kafkaTemplate;
+
+    final
+    KafkaPublisher kafkaPublisher;
+
+    public ProductProjector(ProductRepository productRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher) {
+        this.productRepository = productRepository;
+        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaPublisher = kafkaPublisher;
+    }
 
     @EventHandler
     public void on(ProductCreatedEvent event) {
-
-        //TODO send to order service to update his database too
 
         ProductView productView = ProductView
                 .builder()
@@ -37,15 +49,21 @@ public class ProductProjector {
                 .sellerId(event.getSellerId())
                 .categoryId(event.getCategoryId())
                 .inventoryCount(event.getInventoryCount())
-                .updatedAt(event.getUpdatedAt())
-                .createdAt(event.getCreatedAt()).build();
+                .updatedAt(event.getUpdatedAt() != null ? DateTimeConversion.fromEpochMillis(event.getUpdatedAt().toEpochMilli()): null)
+                .createdAt(event.getCreatedAt() != null ? DateTimeConversion.fromEpochMillis(event.getCreatedAt().toEpochMilli()): null)
+                .build();
+
 
         productRepository.save(productView);
+
+        kafkaPublisher.send(String.valueOf(event.getProductId()), event);
+
     }
 
     @EventHandler
     public void on(ProductDeletedEvent event) {
         productRepository.deleteById(event.getProductId());
+        kafkaPublisher.send(String.valueOf(event.getProductId()), event);
     }
 
     @EventHandler
@@ -53,7 +71,10 @@ public class ProductProjector {
         productRepository.findById(event.getProductId())
                 .ifPresentOrElse(
                         (product) ->
-                                productRepository.updateInventoryCountById(event.getInventoryCount(), product.getId()),
+                        {
+                            productRepository.updateInventoryCountById(event.getInventoryCount(), product.getId());
+                            kafkaPublisher.send(String.valueOf(event.getProductId()), event);
+                        },
                         () -> {
                             throw new NotFoundException("Product", event.getProductId());
                         }
@@ -62,16 +83,21 @@ public class ProductProjector {
 
     @EventHandler
     public void on(ProductUpdatedEvent event) {
+        LocalDateTime localDateTime = DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ? event.getUpdatedAt().toEpochMilli() : null);
+
         productRepository.findById(event.getProductId()).ifPresentOrElse(
                 (product) ->
-                        productRepository.updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(
-                                event.getName(),
-                                event.getDescription(),
-                                event.getCategoryId(),
-                                event.getPrice(),
-                                event.getUpdatedAt(),
-                                product.getId()
-                        )
+                {
+                    productRepository.updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(
+                            event.getName(),
+                            event.getDescription(),
+                            event.getCategoryId(),
+                            event.getPrice(),
+                            localDateTime != null ? localDateTime : LocalDateTime.now(),
+                            product.getId()
+                    );
+                    kafkaPublisher.send(String.valueOf(event.getProductId()), event);
+                }
                 , () -> {
                     throw new NotFoundException("Product", event.getProductId());
                 }

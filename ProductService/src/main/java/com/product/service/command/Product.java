@@ -1,5 +1,6 @@
 package com.product.service.command;
 
+import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.commands.product.CreateProductCommand;
 import com.product.service.coreapi.commands.product.DeleteProductCommand;
 import com.product.service.coreapi.commands.product.UpdateProductCommand;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,49 +45,53 @@ public class Product {
 
     @CommandHandler
     public Product(CreateProductCommand command) {
-        AggregateLifecycle.apply(new ProductCreatedEvent(
-                command.getProductId(),
-                command.getName(),
-                command.getDescription(),
-                command.getPrice(),
-                command.getSellerId(),
-                command.getCategoryId(),
-                command.getInventoryCount(),
-                command.getCreatedAt(),
-                command.getUpdatedAt())
-        );
+
+
+        AggregateLifecycle.apply(ProductCreatedEvent
+                .newBuilder()
+                .setProductId(command.getProductId())
+                .setName(command.getName())
+                .setDescription(command.getDescription())
+                .setPrice(command.getPrice())
+                .setSellerId(command.getSellerId())
+                .setCategoryId(command.getCategoryId())
+                .setInventoryCount(command.getInventoryCount())
+                .setCreatedAt(command.getCreatedAt() != null ? command.getCreatedAt().toInstant(ZoneOffset.UTC) : null)
+                .setUpdatedAt(command.getUpdatedAt() != null ? command.getUpdatedAt().toInstant(ZoneOffset.UTC) : null).build()
+                );
+
     }
 
     @CommandHandler
     public void handle(UpdateProductCommand command) {
 
         AggregateLifecycle.apply(
-                ProductUpdatedEvent.builder()
-                        .productId(productId)
-                        .name(Optional.ofNullable(command.getName()).orElse(this.name))
-                        .description(Optional.ofNullable(command.getDescription()).orElse(this.description))
-                        .price(Optional.ofNullable(command.getPrice()).orElse(this.price))
-                        .categoryId(Optional.ofNullable(command.getCategoryId()).orElse(this.categoryId))
-                        .updatedAt(command.getUpdatedAt()).build()
+                ProductUpdatedEvent.newBuilder()
+                        .setProductId(productId)
+                        .setName(Optional.ofNullable(command.getName()).orElse(this.name))
+                        .setDescription(Optional.ofNullable(command.getDescription()).orElse(this.description))
+                        .setPrice(Optional.ofNullable(command.getPrice()).orElse(this.price))
+                        .setCategoryId(Optional.ofNullable(command.getCategoryId()).orElse(this.categoryId))
+                        .setUpdatedAt(command.getUpdatedAt().toInstant(ZoneOffset.UTC)).build()
         );
     }
 
     @CommandHandler
     public void handle(DeleteProductCommand command) {
         AggregateLifecycle.apply(
-                ProductDeletedEvent.builder()
-                        .productId(productId)
-                        .deletedAt(command.getDeletedAt())
+                ProductDeletedEvent.newBuilder()
+                        .setProductId(productId)
+                        .setDeletedAt(command.getDeletedAt().toInstant(ZoneOffset.UTC)).build()
         );
     }
 
     @CommandHandler
     public void handle(UpdateProductInventoryCommand command) {
         AggregateLifecycle.apply(
-                ProductInventoryUpdatedEvent.builder()
-                        .productId(productId)
-                        .inventoryCount(command.getInventoryCount())
-                        .updatedAt(command.getUpdatedAt())
+                ProductInventoryUpdatedEvent.newBuilder()
+                        .setProductId(productId)
+                        .setInventoryCount(command.getInventoryCount())
+                        .setUpdatedAt(command.getUpdatedAt().toInstant(ZoneOffset.UTC))
                         .build());
     }
 
@@ -99,9 +105,11 @@ public class Product {
         this.sellerId = event.getSellerId();
         this.categoryId = event.getCategoryId();
         this.inventoryCount = event.getInventoryCount();
-        this.createdAt = event.getCreatedAt();
-        this.updatedAt = event.getUpdatedAt();
+        this.createdAt = DateTimeConversion.fromEpochMillis(event.getCreatedAt() != null ?event.getCreatedAt().toEpochMilli() : null);
+        this.updatedAt = DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ?event.getUpdatedAt().toEpochMilli() : null);
+
     }
+
 
     @EventSourcingHandler
     public void on(ProductUpdatedEvent event) {
@@ -109,12 +117,12 @@ public class Product {
         this.description = event.getDescription();
         this.categoryId = event.getCategoryId();
         this.price = event.getPrice();
-        this.updatedAt = event.getUpdatedAt();
+        this.updatedAt =  DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ?event.getUpdatedAt().toEpochMilli() : null);
     }
 
     @EventSourcingHandler
     public void on(ProductDeletedEvent event) {
-        this.deletedAt = event.getDeletedAt();
+        this.deletedAt = DateTimeConversion.fromEpochMillis(event.getDeletedAt() != null ?event.getDeletedAt().toEpochMilli() : null);
         AggregateLifecycle.markDeleted();
     }
 
