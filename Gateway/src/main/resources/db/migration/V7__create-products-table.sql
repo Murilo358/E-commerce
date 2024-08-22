@@ -1,5 +1,5 @@
 CREATE TABLE catalog.products(
-    id UUID DEFAULT gen_random_uuid() NOT NULL,
+    id UUID,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     price DOUBLE PRECISION NOT NULL,
@@ -23,4 +23,4 @@ ALTER TABLE
 
 
 ALTER TABLE
-    catalog.products ADD CONSTRAINT products_seller_id_foreign FOREIGN KEY(seller_id) REFERENCES users_control.users(id);
+    catalog.products ADD CONSTRAINT products_seller_id_foreign FOREIGN KEY(seller_id) REFERENCES users_management.users(id);

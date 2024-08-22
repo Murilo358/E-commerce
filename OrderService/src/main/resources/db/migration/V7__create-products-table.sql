@@ -1,5 +1,5 @@
 CREATE TABLE catalog.products(
-    id UUID DEFAULT gen_random_uuid() NOT NULL,
+    id UUID,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     price DOUBLE PRECISION NOT NULL,

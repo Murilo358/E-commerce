@@ -1,5 +1,5 @@
 CREATE TABLE catalog.categories (
-    id UUID DEFAULT gen_random_uuid() NOT NULL,
+    id UUID,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     systemDefault BOOLEAN DEFAULT FALSE,
