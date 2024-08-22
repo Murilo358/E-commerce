@@ -103,6 +103,13 @@
 			<artifactId>avro</artifactId>
 			<version>1.11.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-spring-boot2</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>kafka-avro-serializer</artifactId>
@@ -127,17 +134,17 @@
 				<groupId>org.apache.avro</groupId>
 				<artifactId>avro-maven-plugin</artifactId>
 				<version>1.11.3</version>
+				<configuration>
+					<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
+					<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+					<stringType>String</stringType>
+					<fieldVisibility>PRIVATE</fieldVisibility>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>schema</goal>
 						</goals>
-						<configuration>
-							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
-							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-							<stringType>String</stringType>
-							<fieldVisibility>PRIVATE</fieldVisibility>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
