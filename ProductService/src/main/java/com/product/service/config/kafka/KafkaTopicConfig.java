@@ -60,12 +60,6 @@ public class KafkaTopicConfig {
 
     @Bean
     @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
-    public NewTopic createPromotionUpdatedTopic() {
-        return new NewTopic("promotionUpdated", 1, (short) 1);
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
     public NewTopic createPromotionDeletedTopic() {
         return new NewTopic("promotionDeleted", 1, (short) 1);
     }

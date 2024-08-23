@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.order.service.avro;
+package com.order.service.coreapi.events.product;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -13,30 +13,30 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-public class Product extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8566957760853278788L;
+public class ProductCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -6306798093569266001L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Product\",\"namespace\":\"com.order.service.avro\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ProductCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.product\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
   static {
-    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.DateConversion());
     MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.TimestampMillisConversion());
   }
 
-  private static final BinaryMessageEncoder<Product> ENCODER =
+  private static final BinaryMessageEncoder<ProductCreatedEvent> ENCODER =
       new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<Product> DECODER =
+  private static final BinaryMessageDecoder<ProductCreatedEvent> DECODER =
       new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
    * @return the message encoder used by this class
    */
-  public static BinaryMessageEncoder<Product> getEncoder() {
+  public static BinaryMessageEncoder<ProductCreatedEvent> getEncoder() {
     return ENCODER;
   }
 
@@ -44,7 +44,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * Return the BinaryMessageDecoder instance used by this class.
    * @return the message decoder used by this class
    */
-  public static BinaryMessageDecoder<Product> getDecoder() {
+  public static BinaryMessageDecoder<ProductCreatedEvent> getDecoder() {
     return DECODER;
   }
 
@@ -53,12 +53,12 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
-  public static BinaryMessageDecoder<Product> createDecoder(SchemaStore resolver) {
+  public static BinaryMessageDecoder<ProductCreatedEvent> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
-   * Serializes this Product to a ByteBuffer.
+   * Serializes this ProductCreatedEvent to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -67,12 +67,12 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   /**
-   * Deserializes a Product from a ByteBuffer.
+   * Deserializes a ProductCreatedEvent from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a Product instance decoded from the given buffer
+   * @return a ProductCreatedEvent instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
-  public static Product fromByteBuffer(
+  public static ProductCreatedEvent fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -84,16 +84,15 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   private long sellerId;
   private java.util.UUID categoryId;
   private int inventoryCount;
-  private java.time.LocalDate createdAt;
-  private java.time.LocalDate updatedAt;
-  private java.time.LocalDate deletedAt;
+  private java.time.Instant createdAt;
+  private java.time.Instant updatedAt;
 
   /**
    * Default constructor.  Note that this does not initialize fields
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public Product() {}
+  public ProductCreatedEvent() {}
 
   /**
    * All-args constructor.
@@ -106,9 +105,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * @param inventoryCount The new value for inventoryCount
    * @param createdAt The new value for createdAt
    * @param updatedAt The new value for updatedAt
-   * @param deletedAt The new value for deletedAt
    */
-  public Product(java.util.UUID productId, java.lang.String name, java.lang.String description, java.lang.Double price, java.lang.Long sellerId, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.LocalDate createdAt, java.time.LocalDate updatedAt, java.time.LocalDate deletedAt) {
+  public ProductCreatedEvent(java.util.UUID productId, java.lang.String name, java.lang.String description, java.lang.Double price, java.lang.Long sellerId, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.Instant createdAt, java.time.Instant updatedAt) {
     this.productId = productId;
     this.name = name;
     this.description = description;
@@ -118,7 +116,6 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     this.inventoryCount = inventoryCount;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.deletedAt = deletedAt;
   }
 
   @Override
@@ -140,7 +137,6 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     case 6: return inventoryCount;
     case 7: return createdAt;
     case 8: return updatedAt;
-    case 9: return deletedAt;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -153,7 +149,6 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       null,
       null,
       new org.apache.avro.Conversions.UUIDConversion(),
-      null,
       null,
       null,
       null,
@@ -177,9 +172,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     case 4: sellerId = (java.lang.Long)value$; break;
     case 5: categoryId = (java.util.UUID)value$; break;
     case 6: inventoryCount = (java.lang.Integer)value$; break;
-    case 7: createdAt = (java.time.LocalDate)value$; break;
-    case 8: updatedAt = (java.time.LocalDate)value$; break;
-    case 9: deletedAt = (java.time.LocalDate)value$; break;
+    case 7: createdAt = (java.time.Instant)value$; break;
+    case 8: updatedAt = (java.time.Instant)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -307,7 +301,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * Gets the value of the 'createdAt' field.
    * @return The value of the 'createdAt' field.
    */
-  public java.time.LocalDate getCreatedAt() {
+  public java.time.Instant getCreatedAt() {
     return createdAt;
   }
 
@@ -316,7 +310,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * Sets the value of the 'createdAt' field.
    * @param value the value to set.
    */
-  public void setCreatedAt(java.time.LocalDate value) {
+  public void setCreatedAt(java.time.Instant value) {
     this.createdAt = value;
   }
 
@@ -324,7 +318,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * Gets the value of the 'updatedAt' field.
    * @return The value of the 'updatedAt' field.
    */
-  public java.time.LocalDate getUpdatedAt() {
+  public java.time.Instant getUpdatedAt() {
     return updatedAt;
   }
 
@@ -333,67 +327,50 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * Sets the value of the 'updatedAt' field.
    * @param value the value to set.
    */
-  public void setUpdatedAt(java.time.LocalDate value) {
+  public void setUpdatedAt(java.time.Instant value) {
     this.updatedAt = value;
   }
 
   /**
-   * Gets the value of the 'deletedAt' field.
-   * @return The value of the 'deletedAt' field.
+   * Creates a new ProductCreatedEvent RecordBuilder.
+   * @return A new ProductCreatedEvent RecordBuilder
    */
-  public java.time.LocalDate getDeletedAt() {
-    return deletedAt;
-  }
-
-
-  /**
-   * Sets the value of the 'deletedAt' field.
-   * @param value the value to set.
-   */
-  public void setDeletedAt(java.time.LocalDate value) {
-    this.deletedAt = value;
+  public static com.order.service.coreapi.events.product.ProductCreatedEvent.Builder newBuilder() {
+    return new com.order.service.coreapi.events.product.ProductCreatedEvent.Builder();
   }
 
   /**
-   * Creates a new Product RecordBuilder.
-   * @return A new Product RecordBuilder
-   */
-  public static com.order.service.avro.Product.Builder newBuilder() {
-    return new com.order.service.avro.Product.Builder();
-  }
-
-  /**
-   * Creates a new Product RecordBuilder by copying an existing Builder.
+   * Creates a new ProductCreatedEvent RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new Product RecordBuilder
+   * @return A new ProductCreatedEvent RecordBuilder
    */
-  public static com.order.service.avro.Product.Builder newBuilder(com.order.service.avro.Product.Builder other) {
+  public static com.order.service.coreapi.events.product.ProductCreatedEvent.Builder newBuilder(com.order.service.coreapi.events.product.ProductCreatedEvent.Builder other) {
     if (other == null) {
-      return new com.order.service.avro.Product.Builder();
+      return new com.order.service.coreapi.events.product.ProductCreatedEvent.Builder();
     } else {
-      return new com.order.service.avro.Product.Builder(other);
+      return new com.order.service.coreapi.events.product.ProductCreatedEvent.Builder(other);
     }
   }
 
   /**
-   * Creates a new Product RecordBuilder by copying an existing Product instance.
+   * Creates a new ProductCreatedEvent RecordBuilder by copying an existing ProductCreatedEvent instance.
    * @param other The existing instance to copy.
-   * @return A new Product RecordBuilder
+   * @return A new ProductCreatedEvent RecordBuilder
    */
-  public static com.order.service.avro.Product.Builder newBuilder(com.order.service.avro.Product other) {
+  public static com.order.service.coreapi.events.product.ProductCreatedEvent.Builder newBuilder(com.order.service.coreapi.events.product.ProductCreatedEvent other) {
     if (other == null) {
-      return new com.order.service.avro.Product.Builder();
+      return new com.order.service.coreapi.events.product.ProductCreatedEvent.Builder();
     } else {
-      return new com.order.service.avro.Product.Builder(other);
+      return new com.order.service.coreapi.events.product.ProductCreatedEvent.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for Product instances.
+   * RecordBuilder for ProductCreatedEvent instances.
    */
   @org.apache.avro.specific.AvroGenerated
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Product>
-    implements org.apache.avro.data.RecordBuilder<Product> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ProductCreatedEvent>
+    implements org.apache.avro.data.RecordBuilder<ProductCreatedEvent> {
 
     private java.util.UUID productId;
     private java.lang.String name;
@@ -402,9 +379,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     private long sellerId;
     private java.util.UUID categoryId;
     private int inventoryCount;
-    private java.time.LocalDate createdAt;
-    private java.time.LocalDate updatedAt;
-    private java.time.LocalDate deletedAt;
+    private java.time.Instant createdAt;
+    private java.time.Instant updatedAt;
 
     /** Creates a new Builder */
     private Builder() {
@@ -415,7 +391,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.order.service.avro.Product.Builder other) {
+    private Builder(com.order.service.coreapi.events.product.ProductCreatedEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.productId)) {
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
@@ -453,17 +429,13 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
         this.updatedAt = data().deepCopy(fields()[8].schema(), other.updatedAt);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.deletedAt)) {
-        this.deletedAt = data().deepCopy(fields()[9].schema(), other.deletedAt);
-        fieldSetFlags()[9] = other.fieldSetFlags()[9];
-      }
     }
 
     /**
-     * Creates a Builder by copying an existing Product instance
+     * Creates a Builder by copying an existing ProductCreatedEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.order.service.avro.Product other) {
+    private Builder(com.order.service.coreapi.events.product.ProductCreatedEvent other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.productId)) {
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
@@ -501,10 +473,6 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
         this.updatedAt = data().deepCopy(fields()[8].schema(), other.updatedAt);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.deletedAt)) {
-        this.deletedAt = data().deepCopy(fields()[9].schema(), other.deletedAt);
-        fieldSetFlags()[9] = true;
-      }
     }
 
     /**
@@ -521,7 +489,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'productId'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setProductId(java.util.UUID value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setProductId(java.util.UUID value) {
       validate(fields()[0], value);
       this.productId = value;
       fieldSetFlags()[0] = true;
@@ -541,7 +509,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'productId' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearProductId() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearProductId() {
       productId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -561,7 +529,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setName(java.lang.String value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setName(java.lang.String value) {
       validate(fields()[1], value);
       this.name = value;
       fieldSetFlags()[1] = true;
@@ -581,7 +549,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'name' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearName() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearName() {
       name = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -601,7 +569,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'description'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setDescription(java.lang.String value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setDescription(java.lang.String value) {
       validate(fields()[2], value);
       this.description = value;
       fieldSetFlags()[2] = true;
@@ -621,7 +589,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'description' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearDescription() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearDescription() {
       description = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -641,7 +609,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'price'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setPrice(double value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setPrice(double value) {
       validate(fields()[3], value);
       this.price = value;
       fieldSetFlags()[3] = true;
@@ -661,7 +629,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'price' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearPrice() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearPrice() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -680,7 +648,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'sellerId'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setSellerId(long value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setSellerId(long value) {
       validate(fields()[4], value);
       this.sellerId = value;
       fieldSetFlags()[4] = true;
@@ -700,7 +668,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'sellerId' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearSellerId() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearSellerId() {
       fieldSetFlags()[4] = false;
       return this;
     }
@@ -719,7 +687,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'categoryId'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setCategoryId(java.util.UUID value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setCategoryId(java.util.UUID value) {
       validate(fields()[5], value);
       this.categoryId = value;
       fieldSetFlags()[5] = true;
@@ -739,7 +707,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'categoryId' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearCategoryId() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearCategoryId() {
       categoryId = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -759,7 +727,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'inventoryCount'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setInventoryCount(int value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setInventoryCount(int value) {
       validate(fields()[6], value);
       this.inventoryCount = value;
       fieldSetFlags()[6] = true;
@@ -779,7 +747,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'inventoryCount' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearInventoryCount() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearInventoryCount() {
       fieldSetFlags()[6] = false;
       return this;
     }
@@ -788,7 +756,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Gets the value of the 'createdAt' field.
       * @return The value.
       */
-    public java.time.LocalDate getCreatedAt() {
+    public java.time.Instant getCreatedAt() {
       return createdAt;
     }
 
@@ -798,7 +766,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'createdAt'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setCreatedAt(java.time.LocalDate value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setCreatedAt(java.time.Instant value) {
       validate(fields()[7], value);
       this.createdAt = value;
       fieldSetFlags()[7] = true;
@@ -818,7 +786,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'createdAt' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearCreatedAt() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearCreatedAt() {
       createdAt = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -828,7 +796,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Gets the value of the 'updatedAt' field.
       * @return The value.
       */
-    public java.time.LocalDate getUpdatedAt() {
+    public java.time.Instant getUpdatedAt() {
       return updatedAt;
     }
 
@@ -838,7 +806,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'updatedAt'.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder setUpdatedAt(java.time.LocalDate value) {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder setUpdatedAt(java.time.Instant value) {
       validate(fields()[8], value);
       this.updatedAt = value;
       fieldSetFlags()[8] = true;
@@ -858,57 +826,17 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'updatedAt' field.
       * @return This builder.
       */
-    public com.order.service.avro.Product.Builder clearUpdatedAt() {
+    public com.order.service.coreapi.events.product.ProductCreatedEvent.Builder clearUpdatedAt() {
       updatedAt = null;
       fieldSetFlags()[8] = false;
       return this;
     }
 
-    /**
-      * Gets the value of the 'deletedAt' field.
-      * @return The value.
-      */
-    public java.time.LocalDate getDeletedAt() {
-      return deletedAt;
-    }
-
-
-    /**
-      * Sets the value of the 'deletedAt' field.
-      * @param value The value of 'deletedAt'.
-      * @return This builder.
-      */
-    public com.order.service.avro.Product.Builder setDeletedAt(java.time.LocalDate value) {
-      validate(fields()[9], value);
-      this.deletedAt = value;
-      fieldSetFlags()[9] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'deletedAt' field has been set.
-      * @return True if the 'deletedAt' field has been set, false otherwise.
-      */
-    public boolean hasDeletedAt() {
-      return fieldSetFlags()[9];
-    }
-
-
-    /**
-      * Clears the value of the 'deletedAt' field.
-      * @return This builder.
-      */
-    public com.order.service.avro.Product.Builder clearDeletedAt() {
-      deletedAt = null;
-      fieldSetFlags()[9] = false;
-      return this;
-    }
-
     @Override
     @SuppressWarnings("unchecked")
-    public Product build() {
+    public ProductCreatedEvent build() {
       try {
-        Product record = new Product();
+        ProductCreatedEvent record = new ProductCreatedEvent();
         record.productId = fieldSetFlags()[0] ? this.productId : (java.util.UUID) defaultValue(fields()[0]);
         record.name = fieldSetFlags()[1] ? this.name : (java.lang.String) defaultValue(fields()[1]);
         record.description = fieldSetFlags()[2] ? this.description : (java.lang.String) defaultValue(fields()[2]);
@@ -916,9 +844,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
         record.sellerId = fieldSetFlags()[4] ? this.sellerId : (java.lang.Long) defaultValue(fields()[4]);
         record.categoryId = fieldSetFlags()[5] ? this.categoryId : (java.util.UUID) defaultValue(fields()[5]);
         record.inventoryCount = fieldSetFlags()[6] ? this.inventoryCount : (java.lang.Integer) defaultValue(fields()[6]);
-        record.createdAt = fieldSetFlags()[7] ? this.createdAt : (java.time.LocalDate) defaultValue(fields()[7]);
-        record.updatedAt = fieldSetFlags()[8] ? this.updatedAt : (java.time.LocalDate) defaultValue(fields()[8]);
-        record.deletedAt = fieldSetFlags()[9] ? this.deletedAt : (java.time.LocalDate) defaultValue(fields()[9]);
+        record.createdAt = fieldSetFlags()[7] ? this.createdAt : (java.time.Instant) defaultValue(fields()[7]);
+        record.updatedAt = fieldSetFlags()[8] ? this.updatedAt : (java.time.Instant) defaultValue(fields()[8]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -929,8 +856,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<Product>
-    WRITER$ = (org.apache.avro.io.DatumWriter<Product>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<ProductCreatedEvent>
+    WRITER$ = (org.apache.avro.io.DatumWriter<ProductCreatedEvent>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -938,8 +865,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<Product>
-    READER$ = (org.apache.avro.io.DatumReader<Product>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<ProductCreatedEvent>
+    READER$ = (org.apache.avro.io.DatumReader<ProductCreatedEvent>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

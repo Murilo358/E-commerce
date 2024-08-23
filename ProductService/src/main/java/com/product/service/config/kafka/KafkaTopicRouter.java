@@ -1,9 +1,14 @@
 package com.product.service.config.kafka;
 
+import com.product.service.coreapi.events.category.CategoryCreatedEvent;
+import com.product.service.coreapi.events.category.CategoryDeletedEvent;
+import com.product.service.coreapi.events.category.CategoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
+import com.product.service.coreapi.events.promotion.PromotionCreatedEvent;
+import com.product.service.coreapi.events.promotion.PromotionDeleteEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -20,8 +25,12 @@ public class KafkaTopicRouter {
         eventTopicMap.put(ProductDeletedEvent.class, "productDeleted");
         eventTopicMap.put(ProductInventoryUpdatedEvent.class, "productInventoryUpdated");
         eventTopicMap.put(ProductUpdatedEvent.class, "productUpdated");
+        eventTopicMap.put(CategoryCreatedEvent.class, "categoryCreated");
+        eventTopicMap.put(CategoryDeletedEvent.class, "categoryDeleted");
+        eventTopicMap.put(CategoryUpdatedEvent.class, "categoryUpdated");
+        eventTopicMap.put(PromotionCreatedEvent.class, "promotionCreated");
+        eventTopicMap.put(PromotionDeleteEvent.class, "promotionDeleted");
 
-        //TODO DO FOR PROMOTIONS AND CATEGORIES
     }
 
     public String getTopicForEvent(Object event) {

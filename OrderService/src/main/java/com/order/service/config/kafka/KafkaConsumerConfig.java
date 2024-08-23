@@ -1,4 +1,4 @@
-package com.order.service.config;
+package com.order.service.config.kafka;
 
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;

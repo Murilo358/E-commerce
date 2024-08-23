@@ -1,7 +1,7 @@
 {
   "type": "record",
-  "name": "PromotionDeletedEvent",
-  "namespace": "com.product.service.coreapi.events.promotion",
+  "name": "PromotionDeleteEvent",
+  "namespace": "com.order.service.coreapi.events.promotion",
   "version": "1",
   "fields": [
     {
