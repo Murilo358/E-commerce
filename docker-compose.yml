@@ -100,7 +100,7 @@ services:
 
   config-server:
     build:
-      context: ./configServer
+      context: ConfigServer
     image: configserver:latest
     ports:
       - "8888:8888"

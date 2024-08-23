@@ -105,8 +105,8 @@ public class Product {
         this.sellerId = event.getSellerId();
         this.categoryId = event.getCategoryId();
         this.inventoryCount = event.getInventoryCount();
-        this.createdAt = DateTimeConversion.fromEpochMillis(event.getCreatedAt() != null ?event.getCreatedAt().toEpochMilli() : null);
-        this.updatedAt = DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ?event.getUpdatedAt().toEpochMilli() : null);
+        this.createdAt = DateTimeConversion.fromInstant(event.getCreatedAt());
+        this.updatedAt = DateTimeConversion.fromInstant(event.getUpdatedAt());
 
     }
 
@@ -117,12 +117,12 @@ public class Product {
         this.description = event.getDescription();
         this.categoryId = event.getCategoryId();
         this.price = event.getPrice();
-        this.updatedAt =  DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ?event.getUpdatedAt().toEpochMilli() : null);
+        this.updatedAt =  DateTimeConversion.fromInstant(event.getUpdatedAt());
     }
 
     @EventSourcingHandler
     public void on(ProductDeletedEvent event) {
-        this.deletedAt = DateTimeConversion.fromEpochMillis(event.getDeletedAt() != null ?event.getDeletedAt().toEpochMilli() : null);
+        this.deletedAt = DateTimeConversion.fromInstant(event.getDeletedAt());
         AggregateLifecycle.markDeleted();
     }
 

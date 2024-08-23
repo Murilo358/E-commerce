@@ -2,9 +2,9 @@
 FROM jelastic/maven:3.9.5-openjdk-21 AS build
 WORKDIR /app
 
-COPY ./pom.xml .
+COPY pom.xml .
 RUN mvn dependency:go-offline
-COPY . .
+COPY ../ConfigServer .
 
 RUN mvn clean package
 

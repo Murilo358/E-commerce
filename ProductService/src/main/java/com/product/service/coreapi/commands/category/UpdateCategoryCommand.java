@@ -19,5 +19,5 @@ public class UpdateCategoryCommand {
     private UUID id;
     private String name;
     private String description;
-    private LocalDateTime updatedAT;
+    private LocalDateTime updatedAt;
 }

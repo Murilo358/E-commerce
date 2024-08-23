@@ -1,5 +1,6 @@
 package com.product.service.command;
 
+import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.commands.promotion.CreatePromotionCommand;
 import com.product.service.coreapi.commands.promotion.DeletePromotionCommand;
 import com.product.service.coreapi.events.promotion.PromotionCreatedEvent;
@@ -11,6 +12,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Aggregate
@@ -29,12 +31,12 @@ public class Promotion {
     @CommandHandler
     public Promotion(CreatePromotionCommand command){
         AggregateLifecycle.apply(
-                PromotionCreatedEvent.builder()
-                        .id(command.getId())
-                        .productId(command.getProductId())
-                        .description(command.getDescription())
-                        .startDate(command.getStartDate())
-                        .endDate(command.getEndDate())
+                PromotionCreatedEvent.newBuilder()
+                        .setId(command.getId())
+                        .setProductId(command.getProductId())
+                        .setDescription(command.getDescription())
+                        .setStartDate(command.getStartDate() != null ? command.getStartDate().toInstant(ZoneOffset.UTC) : null )
+                        .setEndDate(command.getEndDate() != null ? command.getEndDate().toInstant(ZoneOffset.UTC) : null )
         );
 
     }
@@ -43,8 +45,8 @@ public class Promotion {
     @CommandHandler
     public void handle(DeletePromotionCommand command){
         AggregateLifecycle.apply(
-                PromotionDeleteEvent.builder()
-                        .promotionId(command.getPromotionId())
+                PromotionDeleteEvent.newBuilder()
+                        .setId(command.getPromotionId())
         );
     }
 
@@ -53,8 +55,8 @@ public class Promotion {
         this.id = event.getId();
         this.productId = event.getProductId();
         this.description = event.getDescription();
-        this.startDate = event.getStartDate();
-        this.endDate = event.getEndDate();
+        this.startDate = DateTimeConversion.fromInstant(event.getStartDate());
+        this.endDate = DateTimeConversion.fromInstant(event.getEndDate());
     }
 
     @EventSourcingHandler

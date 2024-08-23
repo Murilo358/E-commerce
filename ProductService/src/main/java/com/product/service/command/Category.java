@@ -1,6 +1,7 @@
 package com.product.service.command;
 
 
+import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.commands.category.CreateCategoryCommand;
 import com.product.service.coreapi.commands.category.DeleteCategoryCommand;
 import com.product.service.coreapi.commands.category.UpdateCategoryCommand;
@@ -14,6 +15,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 
@@ -35,11 +37,11 @@ public class Category {
     @CommandHandler
     public Category(CreateCategoryCommand command) {
         AggregateLifecycle.apply(
-                CategoryCreatedEvent.builder()
-                        .id(command.getId())
-                        .name(command.getName())
-                        .description(command.getDescription())
-                        .createdAt(command.getCreatedAt())
+                CategoryCreatedEvent.newBuilder()
+                        .setId(command.getId())
+                        .setName(command.getName())
+                        .setDescription(command.getDescription())
+                        .setCreatedAt(command.getCreatedAt().toInstant(ZoneOffset.UTC))
                         .build()
         );
     }
@@ -48,11 +50,11 @@ public class Category {
     @CommandHandler
     public void handle(UpdateCategoryCommand command) {
         AggregateLifecycle.apply(
-                CategoryUpdatedEvent.builder()
-                        .id(id)
-                        .name(command.getName())
-                        .description(command.getDescription())
-                        .updatedAT(command.getUpdatedAT())
+                CategoryUpdatedEvent.newBuilder()
+                        .setId(id)
+                        .setName(command.getName())
+                        .setDescription(command.getDescription())
+                        .setUpdatedAt(command.getUpdatedAt().toInstant(ZoneOffset.UTC))
                         .build()
         );
 
@@ -61,9 +63,9 @@ public class Category {
     @CommandHandler
     public void handle(DeleteCategoryCommand command) {
         AggregateLifecycle.apply(
-                CategoryDeletedEvent.builder()
-                        .id(id)
-                        .deletedAt(command.getDeletedAt())
+                CategoryDeletedEvent.newBuilder()
+                        .setId(id)
+                        .setDeletedAt(command.getDeletedAt().toInstant(ZoneOffset.UTC))
         );
     }
 
@@ -73,7 +75,7 @@ public class Category {
         this.id = event.getId();
         this.name = event.getName();
         this.description = event.getDescription();
-        this.createdAt = event.getCreatedAt();
+        this.createdAt = DateTimeConversion.fromInstant(event.getCreatedAt());
     }
 
     @EventSourcingHandler
@@ -81,12 +83,12 @@ public class Category {
         this.id = event.getId();
         this.name = event.getName();
         this.description = event.getDescription();
-        this.updatedAt = event.getUpdatedAT();
+        this.updatedAt = DateTimeConversion.fromInstant(event.getUpdatedAt());
     }
 
     @EventSourcingHandler
     public void on(CategoryDeletedEvent event) {
-        this.deletedAt = event.getDeletedAt();
+        this.deletedAt = DateTimeConversion.fromInstant(event.getDeletedAt());
         AggregateLifecycle.markDeleted();
     }
 

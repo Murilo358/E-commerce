@@ -49,8 +49,8 @@ public class ProductProjector {
                 .sellerId(event.getSellerId())
                 .categoryId(event.getCategoryId())
                 .inventoryCount(event.getInventoryCount())
-                .updatedAt(event.getUpdatedAt() != null ? DateTimeConversion.fromEpochMillis(event.getUpdatedAt().toEpochMilli()): null)
-                .createdAt(event.getCreatedAt() != null ? DateTimeConversion.fromEpochMillis(event.getCreatedAt().toEpochMilli()): null)
+                .updatedAt(DateTimeConversion.fromInstant(event.getUpdatedAt()))
+                .createdAt(DateTimeConversion.fromInstant(event.getCreatedAt()))
                 .build();
 
 
@@ -83,7 +83,7 @@ public class ProductProjector {
 
     @EventHandler
     public void on(ProductUpdatedEvent event) {
-        LocalDateTime localDateTime = DateTimeConversion.fromEpochMillis(event.getUpdatedAt() != null ? event.getUpdatedAt().toEpochMilli() : null);
+        LocalDateTime localDateTime = DateTimeConversion.fromInstant(event.getUpdatedAt());
 
         productRepository.findById(event.getProductId()).ifPresentOrElse(
                 (product) ->

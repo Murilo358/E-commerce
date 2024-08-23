@@ -13,8 +13,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -53,7 +51,7 @@ public class CategoryController {
                         .id(UUID.fromString(categoryId))
                         .name(updateCategoryDTO.name())
                         .description(updateCategoryDTO.description())
-                       .updatedAT(LocalDateTime.now()).build()
+                       .updatedAt(LocalDateTime.now()).build()
         );
     }
 

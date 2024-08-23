@@ -1,0 +1,15 @@
+{category
+  "type": "record",
+  "name": "PromotionDeleteEvent",
+  "namespace": "com.product.service.coreapi.events.promotion",
+  "version": "1",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    }
+  ]
+}

@@ -1,24 +1,21 @@
 package com.product.service.adapters;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class DateTimeConversion {
 
     public static long toEpochMillis(LocalDateTime dateTime) {
-        ZonedDateTime zdt = dateTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime zdt = dateTime.atZone(ZoneId.of(ZoneOffset.UTC.getId()));
         return zdt.toInstant().toEpochMilli();
     }
 
-    public static LocalDateTime fromEpochMillis(Long millis) {
-        if (millis != null) {
+    public static LocalDateTime fromInstant(Instant instant) {
+        if (instant != null) {
 
-            Instant instant = Instant.ofEpochMilli(millis);
-            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+            return LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
 
         }
         return null;
     }
+
 }
