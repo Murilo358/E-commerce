@@ -10,6 +10,7 @@ import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+@ProcessingGroup("events")
 @Component
 public class ProductProjector {
 

@@ -47,7 +47,7 @@ public class Product {
     public Product(CreateProductCommand command) {
 
 
-        AggregateLifecycle.apply(ProductCreatedEvent
+        ProductCreatedEvent build = ProductCreatedEvent
                 .newBuilder()
                 .setProductId(command.getProductId())
                 .setName(command.getName())
@@ -57,8 +57,10 @@ public class Product {
                 .setCategoryId(command.getCategoryId())
                 .setInventoryCount(command.getInventoryCount())
                 .setCreatedAt(command.getCreatedAt() != null ? command.getCreatedAt().toInstant(ZoneOffset.UTC) : null)
-                .setUpdatedAt(command.getUpdatedAt() != null ? command.getUpdatedAt().toInstant(ZoneOffset.UTC) : null).build()
-                );
+                .setUpdatedAt(command.getUpdatedAt() != null ? command.getUpdatedAt().toInstant(ZoneOffset.UTC) : null).build();
+
+        AggregateLifecycle.apply(build);
+
 
     }
 

@@ -1,6 +1,8 @@
 package com.product.service.config.axon;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.product.service.config.jackson.JacksonAvroModule;
 import com.product.service.config.jackson.JacksonIgnoreAvroPropertiesMixIn;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.serialization.json.JacksonSerializer;
@@ -15,7 +17,8 @@ public class AxonConfiguration {
     @Primary
     public Serializer defaultSerializer() {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new JacksonAvroModule());
         objectMapper.addMixIn(Object.class, JacksonIgnoreAvroPropertiesMixIn.class);
 
         return JacksonSerializer.builder().objectMapper(objectMapper).build();
