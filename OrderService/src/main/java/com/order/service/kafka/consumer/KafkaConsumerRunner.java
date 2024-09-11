@@ -1,5 +1,7 @@
-package com.order.service.config.kafka.tests;
+package com.order.service.kafka.consumer;
 
+import com.order.service.kafka.routers.EventProcessorRegistry;
+import com.order.service.kafka.routers.KafkaTopicRouter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

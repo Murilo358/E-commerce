@@ -1,4 +1,4 @@
-package com.order.service.config.kafka.tests;
+package com.order.service.kafka.routers;
 
 import com.order.service.coreapi.events.product.ProductCreatedEvent;
 import com.order.service.coreapi.events.product.ProductDeletedEvent;

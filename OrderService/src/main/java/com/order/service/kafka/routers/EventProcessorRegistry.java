@@ -1,5 +1,7 @@
-package com.order.service.config.kafka.tests;
+package com.order.service.kafka.routers;
 
+import com.order.service.kafka.processors.EventProcessor;
+import com.order.service.kafka.processors.Processors;
 import com.order.service.coreapi.events.product.ProductCreatedEvent;
 import com.order.service.coreapi.events.product.ProductDeletedEvent;
 import org.springframework.stereotype.Component;

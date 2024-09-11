@@ -1,7 +1,11 @@
-package com.order.service.config.kafka.tests;
+package com.order.service.kafka.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.order.service.kafka.processors.EventProcessor;
+import com.order.service.kafka.routers.EventProcessorRegistry;
+import com.order.service.kafka.routers.EventTypeRegistry;
+import com.order.service.kafka.routers.KafkaTopicRouter;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import jakarta.annotation.PostConstruct;

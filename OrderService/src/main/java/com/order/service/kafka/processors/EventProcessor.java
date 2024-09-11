@@ -1,4 +1,4 @@
-package com.order.service.config.kafka.tests;
+package com.order.service.kafka.processors;
 
 public interface EventProcessor<T> {
     void process(T event);
