@@ -1,36 +1,57 @@
 package com.order.service.config.kafka.tests;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.apache.avro.generic.GenericData;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+@Component
 public class CustomKafkaConsumer {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomKafkaConsumer.class);
 
     private final KafkaTopicRouter topicRouter;
     private final EventProcessorRegistry processorRegistry;
-    private final KafkaConsumer<String, Object> consumer;
 
-//    @Value("${spring.kafka.bootstrap-servers}")
-//    private String bootstrapServers;
+    @Autowired
+    private EventTypeRegistry eventTypeRegistry;
 
-//    @Value("${spring.schema.registry}")
-//    private String schemaRegistry;
+    private KafkaConsumer<String, Object> consumer;
+    private ExecutorService executorService;
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
+
+    @Value("${spring.kafka.schema.registry-url}")
+    private String schemaRegistryUrl;
 
     public CustomKafkaConsumer(KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
         this.topicRouter = topicRouter;
-        this.consumer = createKafkaConsumer();
         this.processorRegistry = processorRegistry;
     }
 
@@ -45,40 +66,72 @@ public class CustomKafkaConsumer {
         return new KafkaConsumer<>(props);
     }
 
-    public void subscribeToAllTopics() {
-        Set<String> topics = new HashSet<>(topicRouter.getAllTopics());
-        consumer.subscribe(topics);
+    @PostConstruct
+    public void init() {
+        this.consumer = createKafkaConsumer();
+        subscribeToAllTopics();
+
+        this.executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(this::consumeMessages);
     }
 
-    public void consumeMessages() {
-        while (true) {
-            ConsumerRecords<String, Object> records = consumer.poll(Duration.ofMillis(100));
+    private void subscribeToAllTopics() {
+        Set<String> topics = new HashSet<>(topicRouter.getAllTopics());
+        consumer.subscribe(topics);
+        logger.info("Subscribed to topics: {}", topics);
+    }
 
-            for (ConsumerRecord<String, Object> record : records) {
-                handleRecord(record);
+    private void consumeMessages() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                ConsumerRecords<String, Object> records = consumer.poll(Duration.ofMillis(100));
+                for (ConsumerRecord<String, Object> record : records) {
+                    handleRecord(record);
+                }
             }
+        } catch (Exception e) {
+            logger.error("Error while consuming messages", e);
+        } finally {
+            consumer.close();
         }
     }
 
-
     private void handleRecord(ConsumerRecord<String, Object> record) {
+
         String topic = record.topic();
-
         try {
-            Class<?> eventType = topicRouter.getEventTypeForTopic(topic);
+            String eventClassName = ((GenericData.Record) record.value()).getSchema().getName();
+            Class<?> eventClass = eventTypeRegistry.getEventClass(eventClassName);
+            if (eventClass != null) {
+                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-            KafkaAvroDeserializer kafkaAvroDeserializer = new KafkaAvroDeserializer();
+                Object event = objectMapper.readValue(record.value().toString(), eventClass);
 
-            EventProcessor<Object> processor = processorRegistry.getProcessor(eventType);
+                EventProcessor<Object> processor = processorRegistry.getProcessor(event.getClass());
 
-            if (processor != null) {
-                processor.process(record.value());
-            } else {
-                System.err.println("No processor found for event type: " + eventType);
+                if (processor != null) {
+                    processor.process(event);
+                } else {
+                    logger.warn("No processor found for event type: {}", eventClass);
+                }
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to process record from topic {}: {}", topic, record.value(), e);
+        }
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        if (executorService != null) {
+            executorService.shutdown();
+            try {
+                if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executorService.shutdownNow();
+            }
         }
     }
 }
-

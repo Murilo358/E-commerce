@@ -2,10 +2,15 @@ package com.order.service.config.kafka.tests;
 
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class KafkaConsumerRunner {
 
     private final CustomKafkaConsumer kafkaConsumer;
+
+    private final Map<String, Class<?>> eventTypeMap = new HashMap<>();
 
     public KafkaConsumerRunner(KafkaTopicRouter topicRouter) {
         EventProcessorRegistry processorRegistry = new EventProcessorRegistry();
@@ -14,8 +19,7 @@ public class KafkaConsumerRunner {
     }
 
     private void startConsuming() {
-        kafkaConsumer.subscribeToAllTopics();
-        kafkaConsumer.consumeMessages();
+        kafkaConsumer.init();
     }
 }
 

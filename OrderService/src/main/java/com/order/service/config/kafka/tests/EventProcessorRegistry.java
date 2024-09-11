@@ -2,13 +2,15 @@ package com.order.service.config.kafka.tests;
 
 import com.order.service.coreapi.events.product.ProductCreatedEvent;
 import com.order.service.coreapi.events.product.ProductDeletedEvent;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class EventProcessorRegistry {
 
-    private final Map<Object, EventProcessor<?>> processors = new HashMap<>();
+    private final Map<Class<?>, EventProcessor<?>> processors = new HashMap<>();
 
     public EventProcessorRegistry() {
 
@@ -21,7 +23,7 @@ public class EventProcessorRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> EventProcessor<T> getProcessor(Object eventType) {
+    public <T> EventProcessor<T> getProcessor(Class<?> eventType) {
         return (EventProcessor<T>) processors.get(eventType);
     }
 }
