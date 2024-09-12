@@ -8,17 +8,15 @@ import com.product.service.coreapi.queries.category.FindCategoryByNameQuery;
 import com.product.service.coreapi.queries.category.FindCategoryQuery;
 import com.product.service.exception.NotFoundException;
 import com.product.service.kafka.KafkaPublisher;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
-
+@ProcessingGroup("events")
 @Component
 public class CategoryProjector {
 
