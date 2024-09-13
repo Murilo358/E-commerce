@@ -1,9 +1,9 @@
 package com.order.service.kafka.routers;
 
+import com.order.service.kafka.processors.EventProcessorType;
+import jakarta.annotation.PostConstruct;
+import org.springframework.context.ApplicationContext;
 import com.order.service.kafka.processors.EventProcessor;
-import com.order.service.kafka.processors.Processors;
-import com.order.service.coreapi.events.product.ProductCreatedEvent;
-import com.order.service.coreapi.events.product.ProductDeletedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,17 +11,21 @@ import java.util.Map;
 
 @Component
 public class EventProcessorRegistry {
-
     private final Map<Class<?>, EventProcessor<?>> processors = new HashMap<>();
+    private final ApplicationContext applicationContext;
 
-    public EventProcessorRegistry() {
-
-        registerProcessor(ProductCreatedEvent.class, new Processors.ProductCreatedEventProcessor());
-        registerProcessor(ProductDeletedEvent.class, new Processors.ProductDeletedEventProcessor());
+    public EventProcessorRegistry(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
-    public <T> void registerProcessor(Class<T> eventType, EventProcessor<? super T> processor) {
-        processors.put(eventType, processor);
+    @PostConstruct
+    public void init() {
+
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(EventProcessorType.class);
+        for (Object bean : beansWithAnnotation.values()) {
+            EventProcessorType annotation = bean.getClass().getAnnotation(EventProcessorType.class);
+            processors.put(annotation.value(), (EventProcessor<?>) bean);
+        }
     }
 
     @SuppressWarnings("unchecked")

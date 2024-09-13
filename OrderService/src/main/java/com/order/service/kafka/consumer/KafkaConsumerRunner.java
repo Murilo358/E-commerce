@@ -2,6 +2,7 @@ package com.order.service.kafka.consumer;
 
 import com.order.service.kafka.routers.EventProcessorRegistry;
 import com.order.service.kafka.routers.KafkaTopicRouter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -14,8 +15,8 @@ public class KafkaConsumerRunner {
 
     private final Map<String, Class<?>> eventTypeMap = new HashMap<>();
 
-    public KafkaConsumerRunner(KafkaTopicRouter topicRouter) {
-        EventProcessorRegistry processorRegistry = new EventProcessorRegistry();
+    @Autowired
+    public KafkaConsumerRunner(KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
         this.kafkaConsumer = new CustomKafkaConsumer(topicRouter, processorRegistry);
         startConsuming();
     }
