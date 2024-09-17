@@ -5,7 +5,6 @@
  */
 package com.product.service.coreapi.events.promotion;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;

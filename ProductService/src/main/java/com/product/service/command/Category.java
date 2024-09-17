@@ -39,6 +39,7 @@ public class Category {
         AggregateLifecycle.apply(
                 CategoryCreatedEvent.newBuilder()
                         .setId(command.getId())
+                        .setSystemDefault(command.isSystemDefault())
                         .setName(command.getName())
                         .setDescription(command.getDescription())
                         .setCreatedAt(command.getCreatedAt().toInstant(ZoneOffset.UTC))

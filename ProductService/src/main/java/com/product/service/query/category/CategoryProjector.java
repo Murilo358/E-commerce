@@ -36,6 +36,7 @@ public class CategoryProjector {
 
         categoryRepository.save(
                 CategoryView.builder()
+                        .systemDefault(event.getSystemDefault())
                         .id(event.getId())
                         .name(event.getName())
                         .description(event.getDescription())

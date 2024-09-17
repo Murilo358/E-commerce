@@ -24,4 +24,7 @@ public class CategoryView {
 
     @Column(nullable = false)
     public String description;
+
+    @Column(nullable = false)
+    public boolean systemDefault;
 }

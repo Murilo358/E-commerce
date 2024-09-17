@@ -37,6 +37,7 @@ public class CategoryController {
             CreateCategoryCommand.builder()
                     .id(UUID.randomUUID())
                     .name(createCategoryDTO.name())
+                    .systemDefault(createCategoryDTO.systemDefault())
                     .description(createCategoryDTO.description())
                     .createdAt(LocalDateTime.now())
                     .build()
