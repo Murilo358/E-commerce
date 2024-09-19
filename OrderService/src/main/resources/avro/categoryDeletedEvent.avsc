@@ -1,0 +1,25 @@
+{
+  "type": "record",
+  "name": "CategoryDeletedEvent",
+  "namespace": "com.order.service.coreapi.events.category",
+  "version": "1",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "deletedAt",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
+    }
+  ]
+}

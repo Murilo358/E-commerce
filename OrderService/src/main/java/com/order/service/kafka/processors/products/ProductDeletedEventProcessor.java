@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 @EventProcessorType(ProductDeletedEvent.class)
 public class ProductDeletedEventProcessor implements EventProcessor<ProductDeletedEvent> {
 

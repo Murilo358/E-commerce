@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+
 @EventProcessorType(ProductCreatedEvent.class)
 public class ProductCreatedEventProcessor implements EventProcessor<ProductCreatedEvent> {
 
