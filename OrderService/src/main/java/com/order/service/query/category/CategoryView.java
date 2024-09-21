@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -29,4 +30,8 @@ public class CategoryView {
 
     @Column(nullable = false)
     public boolean systemDefault;
+
+    @Column(nullable = false)
+    public LocalDateTime updatedAt;
+
 }

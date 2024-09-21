@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3568318248997217772L;
+  private static final long serialVersionUID = -977736721769804958L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CategoryCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.category\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"systemDefault\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CategoryCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.category\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"systemDefault\",\"type\":\"boolean\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -80,7 +80,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
   private java.util.UUID id;
   private java.lang.String name;
   private java.lang.String description;
-  private java.lang.String systemDefault;
+  private boolean systemDefault;
   private java.time.Instant createdAt;
 
   /**
@@ -98,7 +98,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
    * @param systemDefault The new value for systemDefault
    * @param createdAt The new value for createdAt
    */
-  public CategoryCreatedEvent(java.util.UUID id, java.lang.String name, java.lang.String description, java.lang.String systemDefault, java.time.Instant createdAt) {
+  public CategoryCreatedEvent(java.util.UUID id, java.lang.String name, java.lang.String description, java.lang.Boolean systemDefault, java.time.Instant createdAt) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -148,7 +148,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     case 0: id = (java.util.UUID)value$; break;
     case 1: name = value$ != null ? value$.toString() : null; break;
     case 2: description = value$ != null ? value$.toString() : null; break;
-    case 3: systemDefault = value$ != null ? value$.toString() : null; break;
+    case 3: systemDefault = (java.lang.Boolean)value$; break;
     case 4: createdAt = (java.time.Instant)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
@@ -209,7 +209,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
    * Gets the value of the 'systemDefault' field.
    * @return The value of the 'systemDefault' field.
    */
-  public java.lang.String getSystemDefault() {
+  public boolean getSystemDefault() {
     return systemDefault;
   }
 
@@ -218,7 +218,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
    * Sets the value of the 'systemDefault' field.
    * @param value the value to set.
    */
-  public void setSystemDefault(java.lang.String value) {
+  public void setSystemDefault(boolean value) {
     this.systemDefault = value;
   }
 
@@ -283,7 +283,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     private java.util.UUID id;
     private java.lang.String name;
     private java.lang.String description;
-    private java.lang.String systemDefault;
+    private boolean systemDefault;
     private java.time.Instant createdAt;
 
     /** Creates a new Builder */
@@ -471,7 +471,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       * Gets the value of the 'systemDefault' field.
       * @return The value.
       */
-    public java.lang.String getSystemDefault() {
+    public boolean getSystemDefault() {
       return systemDefault;
     }
 
@@ -481,7 +481,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'systemDefault'.
       * @return This builder.
       */
-    public com.order.service.coreapi.events.category.CategoryCreatedEvent.Builder setSystemDefault(java.lang.String value) {
+    public com.order.service.coreapi.events.category.CategoryCreatedEvent.Builder setSystemDefault(boolean value) {
       validate(fields()[3], value);
       this.systemDefault = value;
       fieldSetFlags()[3] = true;
@@ -502,7 +502,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.order.service.coreapi.events.category.CategoryCreatedEvent.Builder clearSystemDefault() {
-      systemDefault = null;
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -555,7 +554,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
         record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
         record.name = fieldSetFlags()[1] ? this.name : (java.lang.String) defaultValue(fields()[1]);
         record.description = fieldSetFlags()[2] ? this.description : (java.lang.String) defaultValue(fields()[2]);
-        record.systemDefault = fieldSetFlags()[3] ? this.systemDefault : (java.lang.String) defaultValue(fields()[3]);
+        record.systemDefault = fieldSetFlags()[3] ? this.systemDefault : (java.lang.Boolean) defaultValue(fields()[3]);
         record.createdAt = fieldSetFlags()[4] ? this.createdAt : (java.time.Instant) defaultValue(fields()[4]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
