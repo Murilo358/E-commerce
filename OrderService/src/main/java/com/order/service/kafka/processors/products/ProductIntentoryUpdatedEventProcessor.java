@@ -1,6 +1,5 @@
 package com.order.service.kafka.processors.products;
 
-import com.order.service.coreapi.events.product.ProductDeletedEvent;
 import com.order.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.order.service.kafka.processors.EventProcessor;
 import com.order.service.kafka.processors.EventProcessorType;
@@ -8,7 +7,6 @@ import com.order.service.query.product.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @EventProcessorType(ProductInventoryUpdatedEvent.class)
 public class ProductIntentoryUpdatedEventProcessor implements EventProcessor<ProductInventoryUpdatedEvent> {
