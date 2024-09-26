@@ -1,0 +1,98 @@
+{
+  "type": "record",
+  "name": "OrderCreatedEvent",
+  "namespace": "com.order.service.coreapi.events.order",
+  "version": "1",
+  "fields": [
+    {
+      "name": "products",
+      "type": {
+        "items": {
+          "fields": [
+            {
+              "name": "productId",
+              "type": {
+                "logicalType": "uuid",
+                "type": "string"
+              }
+            },
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "name": "price",
+              "type": "double"
+            },
+            {
+              "name": "sellerId",
+              "type": "long"
+            },
+            {
+              "name": "categoryId",
+              "type": {
+                "logicalType": "uuid",
+                "type": "string"
+              }
+            },
+            {
+              "name": "inventoryCount",
+              "type": "int"
+            },
+            {
+              "name": "createdAt",
+              "default": null,
+              "type": [
+                "null",
+                {
+                  "type": "int",
+                  "logicalType": "date"
+                }
+              ]
+            },
+            {
+              "name": "updatedAt",
+              "default": null,
+              "type": [
+                "null",
+                {
+                  "type": "int",
+                  "logicalType": "date"
+                }
+              ]
+            },
+            {
+              "name": "deletedAt",
+              "default": null,
+              "type": [
+                "null",
+                {
+                  "type": "int",
+                  "logicalType": "date"
+                }
+              ]
+            }
+          ],
+          "name": "OrderProductState",
+          "type": "record"
+        },
+        "type": "array"
+      }
+    },
+    {
+      "name": "payment_method",
+      "type": "long"
+    },
+    {
+      "name": "created_at",
+      "type": {
+        "logicalType": "date",
+        "type": "int"
+      }
+    }
+  ]
+}
