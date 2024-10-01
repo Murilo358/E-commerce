@@ -39,8 +39,7 @@ public class CustomKafkaConsumer {
     private final KafkaTopicRouter topicRouter;
     private final EventProcessorRegistry processorRegistry;
 
-    @Autowired
-    private EventTypeRegistry eventTypeRegistry;
+    private final EventTypeRegistry eventTypeRegistry;
 
     private KafkaConsumer<String, Object> consumer;
     private ExecutorService executorService;
@@ -54,7 +53,8 @@ public class CustomKafkaConsumer {
     @Value("${spring.kafka.schema.registry-url}")
     private String schemaRegistryUrl;
 
-    public CustomKafkaConsumer(KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
+    public CustomKafkaConsumer(EventTypeRegistry eventTypeRegistry, KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
+        this.eventTypeRegistry = eventTypeRegistry;
         this.topicRouter = topicRouter;
         this.processorRegistry = processorRegistry;
     }

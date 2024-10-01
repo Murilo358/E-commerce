@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @EventProcessorType(CategoryUpdatedEvent.class)
 public class CategoryUpdatedEventProcessor implements EventProcessor<CategoryUpdatedEvent> {
@@ -30,6 +31,6 @@ public class CategoryUpdatedEventProcessor implements EventProcessor<CategoryUpd
                .build();
 
         categoryRepository.save(categoryView);
-        log.info("category updated: {}", event);
+        log.debug("category updated: {}", event);
     }
 }

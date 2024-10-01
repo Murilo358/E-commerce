@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 
@@ -28,10 +29,13 @@ public class CategoryView {
     @Column(nullable = false)
     public String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="systemdefault")
     public boolean systemDefault;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="created_at")
+    public LocalDateTime createdAt;
+
+    @Column( name="updated_at")
     public LocalDateTime updatedAt;
 
 }
