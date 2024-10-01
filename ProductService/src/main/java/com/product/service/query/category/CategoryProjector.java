@@ -14,6 +14,8 @@ import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @ProcessingGroup("events")
@@ -40,6 +42,7 @@ public class CategoryProjector {
                         .id(event.getId())
                         .name(event.getName())
                         .description(event.getDescription())
+                        .createdAt(LocalDateTime.now())
                         .build()
         );
 

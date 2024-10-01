@@ -36,15 +36,15 @@ public class Category {
 
     @CommandHandler
     public Category(CreateCategoryCommand command) {
-        AggregateLifecycle.apply(
-                CategoryCreatedEvent.newBuilder()
-                        .setId(command.getId())
-                        .setSystemDefault(command.isSystemDefault())
-                        .setName(command.getName())
-                        .setDescription(command.getDescription())
-                        .setCreatedAt(command.getCreatedAt().toInstant(ZoneOffset.UTC))
-                        .build()
-        );
+        CategoryCreatedEvent categoryCreatedEvent = CategoryCreatedEvent.newBuilder()
+                .setId(command.getId())
+                .setSystemDefault(command.isSystemDefault())
+                .setName(command.getName())
+                .setDescription(command.getDescription())
+                .setCreatedAt(command.getCreatedAt().toInstant(ZoneOffset.UTC))
+                .build();
+
+        AggregateLifecycle.apply(categoryCreatedEvent);
     }
 
 
