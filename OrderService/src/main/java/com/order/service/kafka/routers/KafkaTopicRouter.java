@@ -19,6 +19,7 @@ public class KafkaTopicRouter {
         topicEventList.add("productInventoryUpdated");
         topicEventList.add("productUpdated");
         topicEventList.add("categoryCreated");
+        topicEventList.add("orderCreated");
         topicEventList.add("categoryDeleted");
         topicEventList.add("categoryUpdated");
         topicEventList.add("promotionCreated");

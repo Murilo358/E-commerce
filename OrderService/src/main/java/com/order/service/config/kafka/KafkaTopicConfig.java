@@ -42,6 +42,12 @@ public class KafkaTopicConfig {
 
     @Bean
     @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
+    public NewTopic createOrderCreatedTopic() {
+        return new NewTopic("orderCreated", 1, (short) 1);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
     public NewTopic createCategoryUpdatedTopic() {
         return new NewTopic("categoryUpdated", 1, (short) 1);
     }
