@@ -16,7 +16,7 @@ public class EventTypeRegistry {
     @PostConstruct
     public void init() {
         try (ScanResult scanResult = new ClassGraph()
-                .whitelistPackages("com.order.service.coreapi.events")
+                .acceptPackages("com.order.service.coreapi.events")
                 .scan()) {
 
             scanResult.getAllClasses()
