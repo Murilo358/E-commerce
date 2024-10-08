@@ -178,7 +178,8 @@ services:
       - backend
     environment:
       - server.port=8081
-      - spring.application.name=productService
+      - kafka.enabled=true
+      - spring.application.name=product-service
       - spring.profiles.active=dev
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
       - spring.kafka.bootstrap-servers=http://kafka:29092
@@ -198,7 +199,8 @@ services:
       - backend
     environment:
       - server.port=8082
-      - spring.application.name=orderService
+      - kafka.enabled=true
+      - spring.application.name=order-service
       - spring.kafka.bootstrap-servers:http://localhost:9092
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
       - spring.config.import=configserver:http://config-server:8888
