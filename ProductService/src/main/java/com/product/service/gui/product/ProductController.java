@@ -23,10 +23,13 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("products")
 public class ProductController {
 
-    @Autowired
-    private CommandGateway commandGateway;
-    @Autowired
-    private QueryGateway queryGateway;
+    private final CommandGateway commandGateway;
+    private final QueryGateway queryGateway;
+
+    public ProductController(CommandGateway commandGateway, QueryGateway queryGateway) {
+        this.commandGateway = commandGateway;
+        this.queryGateway = queryGateway;
+    }
 
     @PostMapping("/create")
     public CompletableFuture<UUID> createProduct(@RequestBody CreateProductCommandDTO createProductCommandDTO) {

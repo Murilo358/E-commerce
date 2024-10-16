@@ -1,7 +1,6 @@
 package com.order.service.kafka.processors.products;
 
 import com.order.service.adapters.DateTimeConversion;
-import com.order.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.order.service.coreapi.events.product.ProductUpdatedEvent;
 import com.order.service.kafka.processors.EventProcessor;
 import com.order.service.kafka.processors.EventProcessorType;
@@ -10,7 +9,6 @@ import com.order.service.query.product.ProductView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @EventProcessorType(ProductUpdatedEvent.class)
 public class ProductUpdatedEventProcessor implements EventProcessor<ProductUpdatedEvent> {
