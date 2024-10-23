@@ -14,16 +14,17 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8635470654234471426L;
+  private static final long serialVersionUID = -6289418038132933376L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderProductState\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\"},{\"name\":\"created_at\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"Unique identifier for the order\"},{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderProductState\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\",\"doc\":\"Payment method used for the order\"},{\"name\":\"total_price\",\"type\":\"double\",\"doc\":\"Total price of the order\"},{\"name\":\"created_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was created\"},{\"name\":\"updated_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was last updated\",\"default\":null},{\"name\":\"seller_id\",\"type\":\"long\",\"doc\":\"ID of the seller\"},{\"name\":\"buyer_id\",\"type\":\"long\",\"doc\":\"ID of the buyer\"},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Current status of the order\"},{\"name\":\"weight\",\"type\":\"double\",\"doc\":\"Weight of the order\"}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
   static {
     MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.DateConversion());
     MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.TimestampMillisConversion());
   }
 
   private static final BinaryMessageEncoder<OrderCreatedEvent> ENCODER =
@@ -77,9 +78,25 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
     return DECODER.decode(b);
   }
 
+  /** Unique identifier for the order */
+  private long id;
   private java.util.List<com.order.service.coreapi.events.order.OrderProductState> products;
+  /** Payment method used for the order */
   private long payment_method;
-  private java.time.LocalDate created_at;
+  /** Total price of the order */
+  private double total_price;
+  /** Date the order was created */
+  private java.time.Instant created_at;
+  /** Date the order was last updated */
+  private java.time.Instant updated_at;
+  /** ID of the seller */
+  private long seller_id;
+  /** ID of the buyer */
+  private long buyer_id;
+  /** Current status of the order */
+  private java.lang.String status;
+  /** Weight of the order */
+  private double weight;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -90,14 +107,28 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
   /**
    * All-args constructor.
+   * @param id Unique identifier for the order
    * @param products The new value for products
-   * @param payment_method The new value for payment_method
-   * @param created_at The new value for created_at
+   * @param payment_method Payment method used for the order
+   * @param total_price Total price of the order
+   * @param created_at Date the order was created
+   * @param updated_at Date the order was last updated
+   * @param seller_id ID of the seller
+   * @param buyer_id ID of the buyer
+   * @param status Current status of the order
+   * @param weight Weight of the order
    */
-  public OrderCreatedEvent(java.util.List<com.order.service.coreapi.events.order.OrderProductState> products, java.lang.Long payment_method, java.time.LocalDate created_at) {
+  public OrderCreatedEvent(java.lang.Long id, java.util.List<com.order.service.coreapi.events.order.OrderProductState> products, java.lang.Long payment_method, java.lang.Double total_price, java.time.Instant created_at, java.time.Instant updated_at, java.lang.Long seller_id, java.lang.Long buyer_id, java.lang.String status, java.lang.Double weight) {
+    this.id = id;
     this.products = products;
     this.payment_method = payment_method;
+    this.total_price = total_price;
     this.created_at = created_at;
+    this.updated_at = updated_at;
+    this.seller_id = seller_id;
+    this.buyer_id = buyer_id;
+    this.status = status;
+    this.weight = weight;
   }
 
   @Override
@@ -110,24 +141,18 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
   @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return products;
-    case 1: return payment_method;
-    case 2: return created_at;
+    case 0: return id;
+    case 1: return products;
+    case 2: return payment_method;
+    case 3: return total_price;
+    case 4: return created_at;
+    case 5: return updated_at;
+    case 6: return seller_id;
+    case 7: return buyer_id;
+    case 8: return status;
+    case 9: return weight;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
-  }
-
-  private static final org.apache.avro.Conversion<?>[] conversions =
-      new org.apache.avro.Conversion<?>[] {
-      null,
-      null,
-      new org.apache.avro.data.TimeConversions.DateConversion(),
-      null
-  };
-
-  @Override
-  public org.apache.avro.Conversion<?> getConversion(int field) {
-    return conversions[field];
   }
 
   // Used by DatumReader.  Applications should not call.
@@ -135,11 +160,36 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: products = (java.util.List<com.order.service.coreapi.events.order.OrderProductState>)value$; break;
-    case 1: payment_method = (java.lang.Long)value$; break;
-    case 2: created_at = (java.time.LocalDate)value$; break;
+    case 0: id = (java.lang.Long)value$; break;
+    case 1: products = (java.util.List<com.order.service.coreapi.events.order.OrderProductState>)value$; break;
+    case 2: payment_method = (java.lang.Long)value$; break;
+    case 3: total_price = (java.lang.Double)value$; break;
+    case 4: created_at = (java.time.Instant)value$; break;
+    case 5: updated_at = (java.time.Instant)value$; break;
+    case 6: seller_id = (java.lang.Long)value$; break;
+    case 7: buyer_id = (java.lang.Long)value$; break;
+    case 8: status = value$ != null ? value$.toString() : null; break;
+    case 9: weight = (java.lang.Double)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
+  }
+
+  /**
+   * Gets the value of the 'id' field.
+   * @return Unique identifier for the order
+   */
+  public long getId() {
+    return id;
+  }
+
+
+  /**
+   * Sets the value of the 'id' field.
+   * Unique identifier for the order
+   * @param value the value to set.
+   */
+  public void setId(long value) {
+    this.id = value;
   }
 
   /**
@@ -161,7 +211,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
   /**
    * Gets the value of the 'payment_method' field.
-   * @return The value of the 'payment_method' field.
+   * @return Payment method used for the order
    */
   public long getPaymentMethod() {
     return payment_method;
@@ -170,6 +220,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
   /**
    * Sets the value of the 'payment_method' field.
+   * Payment method used for the order
    * @param value the value to set.
    */
   public void setPaymentMethod(long value) {
@@ -177,20 +228,129 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
   }
 
   /**
-   * Gets the value of the 'created_at' field.
-   * @return The value of the 'created_at' field.
+   * Gets the value of the 'total_price' field.
+   * @return Total price of the order
    */
-  public java.time.LocalDate getCreatedAt() {
+  public double getTotalPrice() {
+    return total_price;
+  }
+
+
+  /**
+   * Sets the value of the 'total_price' field.
+   * Total price of the order
+   * @param value the value to set.
+   */
+  public void setTotalPrice(double value) {
+    this.total_price = value;
+  }
+
+  /**
+   * Gets the value of the 'created_at' field.
+   * @return Date the order was created
+   */
+  public java.time.Instant getCreatedAt() {
     return created_at;
   }
 
 
   /**
    * Sets the value of the 'created_at' field.
+   * Date the order was created
    * @param value the value to set.
    */
-  public void setCreatedAt(java.time.LocalDate value) {
+  public void setCreatedAt(java.time.Instant value) {
     this.created_at = value;
+  }
+
+  /**
+   * Gets the value of the 'updated_at' field.
+   * @return Date the order was last updated
+   */
+  public java.time.Instant getUpdatedAt() {
+    return updated_at;
+  }
+
+
+  /**
+   * Sets the value of the 'updated_at' field.
+   * Date the order was last updated
+   * @param value the value to set.
+   */
+  public void setUpdatedAt(java.time.Instant value) {
+    this.updated_at = value;
+  }
+
+  /**
+   * Gets the value of the 'seller_id' field.
+   * @return ID of the seller
+   */
+  public long getSellerId() {
+    return seller_id;
+  }
+
+
+  /**
+   * Sets the value of the 'seller_id' field.
+   * ID of the seller
+   * @param value the value to set.
+   */
+  public void setSellerId(long value) {
+    this.seller_id = value;
+  }
+
+  /**
+   * Gets the value of the 'buyer_id' field.
+   * @return ID of the buyer
+   */
+  public long getBuyerId() {
+    return buyer_id;
+  }
+
+
+  /**
+   * Sets the value of the 'buyer_id' field.
+   * ID of the buyer
+   * @param value the value to set.
+   */
+  public void setBuyerId(long value) {
+    this.buyer_id = value;
+  }
+
+  /**
+   * Gets the value of the 'status' field.
+   * @return Current status of the order
+   */
+  public java.lang.String getStatus() {
+    return status;
+  }
+
+
+  /**
+   * Sets the value of the 'status' field.
+   * Current status of the order
+   * @param value the value to set.
+   */
+  public void setStatus(java.lang.String value) {
+    this.status = value;
+  }
+
+  /**
+   * Gets the value of the 'weight' field.
+   * @return Weight of the order
+   */
+  public double getWeight() {
+    return weight;
+  }
+
+
+  /**
+   * Sets the value of the 'weight' field.
+   * Weight of the order
+   * @param value the value to set.
+   */
+  public void setWeight(double value) {
+    this.weight = value;
   }
 
   /**
@@ -234,9 +394,25 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<OrderCreatedEvent>
     implements org.apache.avro.data.RecordBuilder<OrderCreatedEvent> {
 
+    /** Unique identifier for the order */
+    private long id;
     private java.util.List<com.order.service.coreapi.events.order.OrderProductState> products;
+    /** Payment method used for the order */
     private long payment_method;
-    private java.time.LocalDate created_at;
+    /** Total price of the order */
+    private double total_price;
+    /** Date the order was created */
+    private java.time.Instant created_at;
+    /** Date the order was last updated */
+    private java.time.Instant updated_at;
+    /** ID of the seller */
+    private long seller_id;
+    /** ID of the buyer */
+    private long buyer_id;
+    /** Current status of the order */
+    private java.lang.String status;
+    /** Weight of the order */
+    private double weight;
 
     /** Creates a new Builder */
     private Builder() {
@@ -249,17 +425,45 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
      */
     private Builder(com.order.service.coreapi.events.order.OrderCreatedEvent.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.products)) {
-        this.products = data().deepCopy(fields()[0].schema(), other.products);
+      if (isValidValue(fields()[0], other.id)) {
+        this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.payment_method)) {
-        this.payment_method = data().deepCopy(fields()[1].schema(), other.payment_method);
+      if (isValidValue(fields()[1], other.products)) {
+        this.products = data().deepCopy(fields()[1].schema(), other.products);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.created_at)) {
-        this.created_at = data().deepCopy(fields()[2].schema(), other.created_at);
+      if (isValidValue(fields()[2], other.payment_method)) {
+        this.payment_method = data().deepCopy(fields()[2].schema(), other.payment_method);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.total_price)) {
+        this.total_price = data().deepCopy(fields()[3].schema(), other.total_price);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+      }
+      if (isValidValue(fields()[4], other.created_at)) {
+        this.created_at = data().deepCopy(fields()[4].schema(), other.created_at);
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      }
+      if (isValidValue(fields()[5], other.updated_at)) {
+        this.updated_at = data().deepCopy(fields()[5].schema(), other.updated_at);
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      }
+      if (isValidValue(fields()[6], other.seller_id)) {
+        this.seller_id = data().deepCopy(fields()[6].schema(), other.seller_id);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
+      }
+      if (isValidValue(fields()[7], other.buyer_id)) {
+        this.buyer_id = data().deepCopy(fields()[7].schema(), other.buyer_id);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
+      }
+      if (isValidValue(fields()[8], other.status)) {
+        this.status = data().deepCopy(fields()[8].schema(), other.status);
+        fieldSetFlags()[8] = other.fieldSetFlags()[8];
+      }
+      if (isValidValue(fields()[9], other.weight)) {
+        this.weight = data().deepCopy(fields()[9].schema(), other.weight);
+        fieldSetFlags()[9] = other.fieldSetFlags()[9];
       }
     }
 
@@ -269,18 +473,89 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
      */
     private Builder(com.order.service.coreapi.events.order.OrderCreatedEvent other) {
       super(SCHEMA$, MODEL$);
-      if (isValidValue(fields()[0], other.products)) {
-        this.products = data().deepCopy(fields()[0].schema(), other.products);
+      if (isValidValue(fields()[0], other.id)) {
+        this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.payment_method)) {
-        this.payment_method = data().deepCopy(fields()[1].schema(), other.payment_method);
+      if (isValidValue(fields()[1], other.products)) {
+        this.products = data().deepCopy(fields()[1].schema(), other.products);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.created_at)) {
-        this.created_at = data().deepCopy(fields()[2].schema(), other.created_at);
+      if (isValidValue(fields()[2], other.payment_method)) {
+        this.payment_method = data().deepCopy(fields()[2].schema(), other.payment_method);
         fieldSetFlags()[2] = true;
       }
+      if (isValidValue(fields()[3], other.total_price)) {
+        this.total_price = data().deepCopy(fields()[3].schema(), other.total_price);
+        fieldSetFlags()[3] = true;
+      }
+      if (isValidValue(fields()[4], other.created_at)) {
+        this.created_at = data().deepCopy(fields()[4].schema(), other.created_at);
+        fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.updated_at)) {
+        this.updated_at = data().deepCopy(fields()[5].schema(), other.updated_at);
+        fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.seller_id)) {
+        this.seller_id = data().deepCopy(fields()[6].schema(), other.seller_id);
+        fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.buyer_id)) {
+        this.buyer_id = data().deepCopy(fields()[7].schema(), other.buyer_id);
+        fieldSetFlags()[7] = true;
+      }
+      if (isValidValue(fields()[8], other.status)) {
+        this.status = data().deepCopy(fields()[8].schema(), other.status);
+        fieldSetFlags()[8] = true;
+      }
+      if (isValidValue(fields()[9], other.weight)) {
+        this.weight = data().deepCopy(fields()[9].schema(), other.weight);
+        fieldSetFlags()[9] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'id' field.
+      * Unique identifier for the order
+      * @return The value.
+      */
+    public long getId() {
+      return id;
+    }
+
+
+    /**
+      * Sets the value of the 'id' field.
+      * Unique identifier for the order
+      * @param value The value of 'id'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setId(long value) {
+      validate(fields()[0], value);
+      this.id = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'id' field has been set.
+      * Unique identifier for the order
+      * @return True if the 'id' field has been set, false otherwise.
+      */
+    public boolean hasId() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'id' field.
+      * Unique identifier for the order
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearId() {
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /**
@@ -298,9 +573,9 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setProducts(java.util.List<com.order.service.coreapi.events.order.OrderProductState> value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.products = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -309,7 +584,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'products' field has been set, false otherwise.
       */
     public boolean hasProducts() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
 
 
@@ -319,12 +594,13 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearProducts() {
       products = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
     /**
       * Gets the value of the 'payment_method' field.
+      * Payment method used for the order
       * @return The value.
       */
     public long getPaymentMethod() {
@@ -334,70 +610,338 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
     /**
       * Sets the value of the 'payment_method' field.
+      * Payment method used for the order
       * @param value The value of 'payment_method'.
       * @return This builder.
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setPaymentMethod(long value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.payment_method = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
     /**
       * Checks whether the 'payment_method' field has been set.
+      * Payment method used for the order
       * @return True if the 'payment_method' field has been set, false otherwise.
       */
     public boolean hasPaymentMethod() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
     /**
       * Clears the value of the 'payment_method' field.
+      * Payment method used for the order
       * @return This builder.
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearPaymentMethod() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'total_price' field.
+      * Total price of the order
+      * @return The value.
+      */
+    public double getTotalPrice() {
+      return total_price;
+    }
+
+
+    /**
+      * Sets the value of the 'total_price' field.
+      * Total price of the order
+      * @param value The value of 'total_price'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setTotalPrice(double value) {
+      validate(fields()[3], value);
+      this.total_price = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'total_price' field has been set.
+      * Total price of the order
+      * @return True if the 'total_price' field has been set, false otherwise.
+      */
+    public boolean hasTotalPrice() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'total_price' field.
+      * Total price of the order
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearTotalPrice() {
+      fieldSetFlags()[3] = false;
       return this;
     }
 
     /**
       * Gets the value of the 'created_at' field.
+      * Date the order was created
       * @return The value.
       */
-    public java.time.LocalDate getCreatedAt() {
+    public java.time.Instant getCreatedAt() {
       return created_at;
     }
 
 
     /**
       * Sets the value of the 'created_at' field.
+      * Date the order was created
       * @param value The value of 'created_at'.
       * @return This builder.
       */
-    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setCreatedAt(java.time.LocalDate value) {
-      validate(fields()[2], value);
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setCreatedAt(java.time.Instant value) {
+      validate(fields()[4], value);
       this.created_at = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
     /**
       * Checks whether the 'created_at' field has been set.
+      * Date the order was created
       * @return True if the 'created_at' field has been set, false otherwise.
       */
     public boolean hasCreatedAt() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[4];
     }
 
 
     /**
       * Clears the value of the 'created_at' field.
+      * Date the order was created
       * @return This builder.
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearCreatedAt() {
-      fieldSetFlags()[2] = false;
+      created_at = null;
+      fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'updated_at' field.
+      * Date the order was last updated
+      * @return The value.
+      */
+    public java.time.Instant getUpdatedAt() {
+      return updated_at;
+    }
+
+
+    /**
+      * Sets the value of the 'updated_at' field.
+      * Date the order was last updated
+      * @param value The value of 'updated_at'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setUpdatedAt(java.time.Instant value) {
+      validate(fields()[5], value);
+      this.updated_at = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'updated_at' field has been set.
+      * Date the order was last updated
+      * @return True if the 'updated_at' field has been set, false otherwise.
+      */
+    public boolean hasUpdatedAt() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'updated_at' field.
+      * Date the order was last updated
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearUpdatedAt() {
+      updated_at = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'seller_id' field.
+      * ID of the seller
+      * @return The value.
+      */
+    public long getSellerId() {
+      return seller_id;
+    }
+
+
+    /**
+      * Sets the value of the 'seller_id' field.
+      * ID of the seller
+      * @param value The value of 'seller_id'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setSellerId(long value) {
+      validate(fields()[6], value);
+      this.seller_id = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'seller_id' field has been set.
+      * ID of the seller
+      * @return True if the 'seller_id' field has been set, false otherwise.
+      */
+    public boolean hasSellerId() {
+      return fieldSetFlags()[6];
+    }
+
+
+    /**
+      * Clears the value of the 'seller_id' field.
+      * ID of the seller
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearSellerId() {
+      fieldSetFlags()[6] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'buyer_id' field.
+      * ID of the buyer
+      * @return The value.
+      */
+    public long getBuyerId() {
+      return buyer_id;
+    }
+
+
+    /**
+      * Sets the value of the 'buyer_id' field.
+      * ID of the buyer
+      * @param value The value of 'buyer_id'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setBuyerId(long value) {
+      validate(fields()[7], value);
+      this.buyer_id = value;
+      fieldSetFlags()[7] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'buyer_id' field has been set.
+      * ID of the buyer
+      * @return True if the 'buyer_id' field has been set, false otherwise.
+      */
+    public boolean hasBuyerId() {
+      return fieldSetFlags()[7];
+    }
+
+
+    /**
+      * Clears the value of the 'buyer_id' field.
+      * ID of the buyer
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearBuyerId() {
+      fieldSetFlags()[7] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'status' field.
+      * Current status of the order
+      * @return The value.
+      */
+    public java.lang.String getStatus() {
+      return status;
+    }
+
+
+    /**
+      * Sets the value of the 'status' field.
+      * Current status of the order
+      * @param value The value of 'status'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setStatus(java.lang.String value) {
+      validate(fields()[8], value);
+      this.status = value;
+      fieldSetFlags()[8] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'status' field has been set.
+      * Current status of the order
+      * @return True if the 'status' field has been set, false otherwise.
+      */
+    public boolean hasStatus() {
+      return fieldSetFlags()[8];
+    }
+
+
+    /**
+      * Clears the value of the 'status' field.
+      * Current status of the order
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearStatus() {
+      status = null;
+      fieldSetFlags()[8] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'weight' field.
+      * Weight of the order
+      * @return The value.
+      */
+    public double getWeight() {
+      return weight;
+    }
+
+
+    /**
+      * Sets the value of the 'weight' field.
+      * Weight of the order
+      * @param value The value of 'weight'.
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setWeight(double value) {
+      validate(fields()[9], value);
+      this.weight = value;
+      fieldSetFlags()[9] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'weight' field has been set.
+      * Weight of the order
+      * @return True if the 'weight' field has been set, false otherwise.
+      */
+    public boolean hasWeight() {
+      return fieldSetFlags()[9];
+    }
+
+
+    /**
+      * Clears the value of the 'weight' field.
+      * Weight of the order
+      * @return This builder.
+      */
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearWeight() {
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -406,9 +950,16 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
     public OrderCreatedEvent build() {
       try {
         OrderCreatedEvent record = new OrderCreatedEvent();
-        record.products = fieldSetFlags()[0] ? this.products : (java.util.List<com.order.service.coreapi.events.order.OrderProductState>) defaultValue(fields()[0]);
-        record.payment_method = fieldSetFlags()[1] ? this.payment_method : (java.lang.Long) defaultValue(fields()[1]);
-        record.created_at = fieldSetFlags()[2] ? this.created_at : (java.time.LocalDate) defaultValue(fields()[2]);
+        record.id = fieldSetFlags()[0] ? this.id : (java.lang.Long) defaultValue(fields()[0]);
+        record.products = fieldSetFlags()[1] ? this.products : (java.util.List<com.order.service.coreapi.events.order.OrderProductState>) defaultValue(fields()[1]);
+        record.payment_method = fieldSetFlags()[2] ? this.payment_method : (java.lang.Long) defaultValue(fields()[2]);
+        record.total_price = fieldSetFlags()[3] ? this.total_price : (java.lang.Double) defaultValue(fields()[3]);
+        record.created_at = fieldSetFlags()[4] ? this.created_at : (java.time.Instant) defaultValue(fields()[4]);
+        record.updated_at = fieldSetFlags()[5] ? this.updated_at : (java.time.Instant) defaultValue(fields()[5]);
+        record.seller_id = fieldSetFlags()[6] ? this.seller_id : (java.lang.Long) defaultValue(fields()[6]);
+        record.buyer_id = fieldSetFlags()[7] ? this.buyer_id : (java.lang.Long) defaultValue(fields()[7]);
+        record.status = fieldSetFlags()[8] ? this.status : (java.lang.String) defaultValue(fields()[8]);
+        record.weight = fieldSetFlags()[9] ? this.weight : (java.lang.Double) defaultValue(fields()[9]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

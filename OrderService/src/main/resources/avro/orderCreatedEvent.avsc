@@ -5,6 +5,11 @@
   "version": "1",
   "fields": [
     {
+      "name": "id",
+      "type": "long",
+      "doc": "Unique identifier for the order"
+    },
+    {
       "name": "products",
       "type": {
         "items": {
@@ -85,14 +90,56 @@
     },
     {
       "name": "payment_method",
-      "type": "long"
+      "type": "long",
+      "doc": "Payment method used for the order"
+    },
+    {
+      "name": "total_price",
+      "type": "double",
+      "doc": "Total price of the order"
     },
     {
       "name": "created_at",
-      "type": {
-        "logicalType": "date",
-        "type": "int"
-      }
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "doc": "Date the order was created"
+    },
+    {
+      "name": "updated_at",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null,
+      "doc": "Date the order was last updated"
+    },
+    {
+      "name": "seller_id",
+      "type": "long",
+      "doc": "ID of the seller"
+    },
+    {
+      "name": "buyer_id",
+      "type": "long",
+      "doc": "ID of the buyer"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "doc": "Current status of the order"
+    },
+    {
+      "name": "weight",
+      "type": "double",
+      "doc": "Weight of the order"
     }
   ]
 }
