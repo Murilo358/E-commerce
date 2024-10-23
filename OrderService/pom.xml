@@ -11,7 +11,7 @@
 	<groupId>com.commerceOrderService</groupId>
 	<artifactId>OrderService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CommerceOrderService</name>
+	<name>OrderService</name>
 	<description>An service to manage orders</description>
 	<properties>
 		<confluent.version>5.0.0</confluent.version>
