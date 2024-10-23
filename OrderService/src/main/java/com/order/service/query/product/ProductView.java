@@ -24,10 +24,10 @@ public class ProductView {
     @Column
     private Double price;
 
-    @JoinColumn(name = "seller_id", table = "gateway.user")  //TODO SEARCH ABOUT IT TOO
+    @JoinColumn(name = "seller_id", table = "gateway.user")
     private Long sellerId;
 
-    @JoinColumn(name = "category_id", table = "categories", referencedColumnName ="id") //TODO SEARCH ABOUT IT TOO
+    @JoinColumn(name = "category_id", table = "categories", referencedColumnName ="id")
     private UUID categoryId;
 
     @Column
@@ -36,6 +36,9 @@ public class ProductView {
     private LocalDateTime createdAt;
     @Column
     private LocalDateTime updatedAt;
+
+    @Column
+    private Double weight;
 
 
 }
