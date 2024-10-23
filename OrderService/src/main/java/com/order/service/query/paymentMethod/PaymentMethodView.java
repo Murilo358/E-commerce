@@ -20,6 +20,13 @@ import java.util.UUID;
 public class PaymentMethodView {
     @Id
     private UUID id;
+
     @Column
-    private String name;
+    private Long paymentTypeId;
+
+    @Column
+    private Long userId;
+
+    @Column
+    private boolean isDefault;
 }

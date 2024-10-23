@@ -16,10 +16,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="payment_methods", schema="users_management")
+@Table(name = "payment_methods", schema = "users_management")
 public class PaymentMethodView {
     @Id
     private UUID id;
+
     @Column
-    private String name;
+    private Long paymentTypeId;
+
+    @Column
+    private Long userId;
+
+    @Column
+    private boolean isDefault;
 }
