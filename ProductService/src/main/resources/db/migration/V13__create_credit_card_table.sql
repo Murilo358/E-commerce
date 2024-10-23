@@ -1,4 +1,4 @@
-CREATE TABLE "credit_cards"
+CREATE TABLE credit_cards
 (
     id                BIGINT NOT NULL,
     payment_method_id BIGINT NOT NULL,
