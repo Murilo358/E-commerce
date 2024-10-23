@@ -1,0 +1,1 @@
+ALTER TABLE catalog.products ADD COLUMN IF NOT EXISTS weight DECIMAL(10, 2)
