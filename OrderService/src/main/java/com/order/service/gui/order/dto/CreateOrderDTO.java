@@ -1,7 +1,6 @@
 package com.order.service.gui.order.dto;
 
-import com.order.service.query.product.ProductView;
-
 import java.util.List;
+import java.util.UUID;
 
-public record CreateOrderDTO(List<ProductView> products, Long paymentMethod, Long buyerid) { }
+public record CreateOrderDTO(List<UUID> products, Long paymentMethod, Long buyerid) { }

@@ -17,10 +17,9 @@ import java.util.UUID;
 public class CreateOrderCommand {
     @RoutingKey
     UUID orderId;
-    List<ProductView> products;
+    List<UUID> products;
     Long paymentMethod;
     Long buyerid;
-//    LocalDateTime createdAt;
 
 
 }
