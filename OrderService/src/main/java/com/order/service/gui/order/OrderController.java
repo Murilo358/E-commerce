@@ -24,7 +24,7 @@ public class OrderController {
     }
 
 
-    public CompletableFuture<UUID> createOrder(@RequestBody CreateOrderDTO createOrderDTO){
+    public CompletableFuture<UUID> createOrder(@RequestBody CreateOrderDTO createOrderDTO) {
 
         return commandGateway.send(
                 CreateOrderCommand
