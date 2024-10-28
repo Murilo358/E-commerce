@@ -57,7 +57,7 @@ public class Product {
                 .setCategoryId(command.getCategoryId())
                 .setInventoryCount(command.getInventoryCount())
                 .setCreatedAt(command.getCreatedAt() != null ? command.getCreatedAt().toInstant(ZoneOffset.UTC) : null)
-                .setUpdatedAt(command.getUpdatedAt() != null ? command.getUpdatedAt().toInstant(ZoneOffset.UTC) : null).build();
+                .build();
 
         AggregateLifecycle.apply(build);
 
