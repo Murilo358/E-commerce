@@ -6,7 +6,10 @@
   "fields": [
     {
       "name": "id",
-      "type": "long",
+      "type": {
+        "logicalType": "uuid",
+        "type": "string"
+      },
       "doc": "Unique identifier for the order"
     },
     {
@@ -120,11 +123,6 @@
       ],
       "default": null,
       "doc": "Date the order was last updated"
-    },
-    {
-      "name": "seller_id",
-      "type": "long",
-      "doc": "ID of the seller"
     },
     {
       "name": "buyer_id",
