@@ -131,8 +131,17 @@
     },
     {
       "name": "status",
-      "type": "string",
-      "doc": "Current status of the order"
+      "type": {
+        "type": "enum",
+        "name": "OrderStatus",
+        "symbols": [
+          "PENDING",
+          "APPROVED",
+          "CANCELED",
+          "SHIPPED",
+          "DELIVERED"
+        ]
+      }
     },
     {
       "name": "weight",

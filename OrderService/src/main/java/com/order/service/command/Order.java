@@ -1,8 +1,11 @@
 package com.order.service.command;
 
 import com.order.service.coreapi.commands.CreateOrderCommand;
+import com.order.service.coreapi.commands.UpdateOrderStateCommand;
 import com.order.service.coreapi.events.order.OrderCreatedEvent;
 import com.order.service.coreapi.events.order.OrderProductState;
+import com.order.service.coreapi.events.order.OrderStateUpdated;
+import com.order.service.coreapi.events.order.OrderStatus;
 import com.order.service.coreapi.queries.product.FindProductsQuery;
 import com.order.service.query.product.ProductView;
 import org.axonframework.commandhandling.CommandHandler;
@@ -30,7 +33,7 @@ public class Order {
     private long buyerId;
     private double totalPrice;
     private double totalWeight;
-    private String status;
+    private OrderStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -81,6 +84,20 @@ public class Order {
             throw new RuntimeException(e);
         }
 
+    }
+    @CommandHandler
+    public void updateOrderState(UpdateOrderStateCommand updateOrderStateCommand){
+        OrderStateUpdated build = OrderStateUpdated.newBuilder()
+                .setId(updateOrderStateCommand.getOrderId())
+                .setStatus(updateOrderStateCommand.getOrderStatus())
+                .build();
+
+        AggregateLifecycle.apply(build);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderStateUpdated event) {
+        this.status = event.getStatus();
     }
 
     @EventSourcingHandler

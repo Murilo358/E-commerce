@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1188598512489231621L;
+  private static final long serialVersionUID = 2114460131432508758L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"},\"doc\":\"Unique identifier for the order\"},{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderProductState\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\",\"doc\":\"Payment method used for the order\"},{\"name\":\"total_price\",\"type\":\"double\",\"doc\":\"Total price of the order\"},{\"name\":\"created_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was created\"},{\"name\":\"updated_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was last updated\",\"default\":null},{\"name\":\"buyer_id\",\"type\":\"long\",\"doc\":\"ID of the buyer\"},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Current status of the order\"},{\"name\":\"weight\",\"type\":\"double\",\"doc\":\"Weight of the order\"}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderCreatedEvent\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"},\"doc\":\"Unique identifier for the order\"},{\"name\":\"products\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderProductState\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}}},{\"name\":\"payment_method\",\"type\":\"long\",\"doc\":\"Payment method used for the order\"},{\"name\":\"total_price\",\"type\":\"double\",\"doc\":\"Total price of the order\"},{\"name\":\"created_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was created\"},{\"name\":\"updated_at\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"doc\":\"Date the order was last updated\",\"default\":null},{\"name\":\"buyer_id\",\"type\":\"long\",\"doc\":\"ID of the buyer\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"OrderStatus\",\"symbols\":[\"PENDING\",\"APPROVED\",\"CANCELED\",\"SHIPPED\",\"DELIVERED\"]}},{\"name\":\"weight\",\"type\":\"double\",\"doc\":\"Weight of the order\"}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -91,8 +91,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
   private java.time.Instant updated_at;
   /** ID of the buyer */
   private long buyer_id;
-  /** Current status of the order */
-  private java.lang.String status;
+  private com.order.service.coreapi.events.order.OrderStatus status;
   /** Weight of the order */
   private double weight;
 
@@ -112,10 +111,10 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
    * @param created_at Date the order was created
    * @param updated_at Date the order was last updated
    * @param buyer_id ID of the buyer
-   * @param status Current status of the order
+   * @param status The new value for status
    * @param weight Weight of the order
    */
-  public OrderCreatedEvent(java.util.UUID id, java.util.List<com.order.service.coreapi.events.order.OrderProductState> products, java.lang.Long payment_method, java.lang.Double total_price, java.time.Instant created_at, java.time.Instant updated_at, java.lang.Long buyer_id, java.lang.String status, java.lang.Double weight) {
+  public OrderCreatedEvent(java.util.UUID id, java.util.List<com.order.service.coreapi.events.order.OrderProductState> products, java.lang.Long payment_method, java.lang.Double total_price, java.time.Instant created_at, java.time.Instant updated_at, java.lang.Long buyer_id, com.order.service.coreapi.events.order.OrderStatus status, java.lang.Double weight) {
     this.id = id;
     this.products = products;
     this.payment_method = payment_method;
@@ -181,7 +180,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
     case 4: created_at = (java.time.Instant)value$; break;
     case 5: updated_at = (java.time.Instant)value$; break;
     case 6: buyer_id = (java.lang.Long)value$; break;
-    case 7: status = value$ != null ? value$.toString() : null; break;
+    case 7: status = (com.order.service.coreapi.events.order.OrderStatus)value$; break;
     case 8: weight = (java.lang.Double)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
@@ -314,19 +313,18 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
   /**
    * Gets the value of the 'status' field.
-   * @return Current status of the order
+   * @return The value of the 'status' field.
    */
-  public java.lang.String getStatus() {
+  public com.order.service.coreapi.events.order.OrderStatus getStatus() {
     return status;
   }
 
 
   /**
    * Sets the value of the 'status' field.
-   * Current status of the order
    * @param value the value to set.
    */
-  public void setStatus(java.lang.String value) {
+  public void setStatus(com.order.service.coreapi.events.order.OrderStatus value) {
     this.status = value;
   }
 
@@ -402,8 +400,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
     private java.time.Instant updated_at;
     /** ID of the buyer */
     private long buyer_id;
-    /** Current status of the order */
-    private java.lang.String status;
+    private com.order.service.coreapi.events.order.OrderStatus status;
     /** Weight of the order */
     private double weight;
 
@@ -803,21 +800,19 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
     /**
       * Gets the value of the 'status' field.
-      * Current status of the order
       * @return The value.
       */
-    public java.lang.String getStatus() {
+    public com.order.service.coreapi.events.order.OrderStatus getStatus() {
       return status;
     }
 
 
     /**
       * Sets the value of the 'status' field.
-      * Current status of the order
       * @param value The value of 'status'.
       * @return This builder.
       */
-    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setStatus(java.lang.String value) {
+    public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder setStatus(com.order.service.coreapi.events.order.OrderStatus value) {
       validate(fields()[7], value);
       this.status = value;
       fieldSetFlags()[7] = true;
@@ -826,7 +821,6 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
     /**
       * Checks whether the 'status' field has been set.
-      * Current status of the order
       * @return True if the 'status' field has been set, false otherwise.
       */
     public boolean hasStatus() {
@@ -836,7 +830,6 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
 
     /**
       * Clears the value of the 'status' field.
-      * Current status of the order
       * @return This builder.
       */
     public com.order.service.coreapi.events.order.OrderCreatedEvent.Builder clearStatus() {
@@ -900,7 +893,7 @@ public class OrderCreatedEvent extends org.apache.avro.specific.SpecificRecordBa
         record.created_at = fieldSetFlags()[4] ? this.created_at : (java.time.Instant) defaultValue(fields()[4]);
         record.updated_at = fieldSetFlags()[5] ? this.updated_at : (java.time.Instant) defaultValue(fields()[5]);
         record.buyer_id = fieldSetFlags()[6] ? this.buyer_id : (java.lang.Long) defaultValue(fields()[6]);
-        record.status = fieldSetFlags()[7] ? this.status : (java.lang.String) defaultValue(fields()[7]);
+        record.status = fieldSetFlags()[7] ? this.status : (com.order.service.coreapi.events.order.OrderStatus) defaultValue(fields()[7]);
         record.weight = fieldSetFlags()[8] ? this.weight : (java.lang.Double) defaultValue(fields()[8]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {

@@ -1,5 +1,6 @@
 package com.order.service.query.order;
 
+import com.order.service.coreapi.events.order.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +45,7 @@ public class OrderView {
     private Long buyerId;
 
     @Column(nullable = false, length = 50)
-    private String status = "pending";
+    private OrderStatus status = OrderStatus.PENDING;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private Double weight;

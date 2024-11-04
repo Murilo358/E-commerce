@@ -1,12 +1,14 @@
 package com.order.service.query.order;
 
 import com.order.service.coreapi.events.order.OrderCreatedEvent;
+import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.kafka.publisher.KafkaPublisher;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @ProcessingGroup("events")
 @Component
@@ -39,5 +41,14 @@ public class OrderProjector {
 
         kafkaPublisher.send(String.valueOf(event.getId()), event);
 
+    }
+
+    @EventHandler
+    public void on (OrderStateUpdated event){
+
+        orderRepository.findById(event.getId()).ifPresent(order -> {
+            order.setStatus(event.getStatus());
+            orderRepository.save(order);
+        });
     }
 }
