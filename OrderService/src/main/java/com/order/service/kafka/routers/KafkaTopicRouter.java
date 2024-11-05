@@ -4,6 +4,7 @@ import com.order.service.coreapi.events.category.CategoryCreatedEvent;
 import com.order.service.coreapi.events.category.CategoryDeletedEvent;
 import com.order.service.coreapi.events.category.CategoryUpdatedEvent;
 import com.order.service.coreapi.events.order.OrderCreatedEvent;
+import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.coreapi.events.product.ProductCreatedEvent;
 import com.order.service.coreapi.events.product.ProductDeletedEvent;
 import com.order.service.coreapi.events.product.ProductInventoryUpdatedEvent;
@@ -32,6 +33,7 @@ public class KafkaTopicRouter {
         eventTopicMap.put(PromotionCreatedEvent.class, "promotionCreated");
         eventTopicMap.put(PromotionDeleteEvent.class, "promotionDeleted");
         eventTopicMap.put(OrderCreatedEvent.class, "orderCreated");
+        eventTopicMap.put(OrderStateUpdated.class, "orderStateUpdated");
 
     }
 

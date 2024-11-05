@@ -50,5 +50,7 @@ public class OrderProjector {
             order.setStatus(event.getStatus());
             orderRepository.save(order);
         });
+
+        kafkaPublisher.send(String.valueOf(event.getId()), event);
     }
 }
