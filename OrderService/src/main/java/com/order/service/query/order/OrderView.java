@@ -1,5 +1,6 @@
 package com.order.service.query.order;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.order.service.coreapi.events.order.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.hibernate.type.SqlTypes;
 
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -27,7 +27,7 @@ public class OrderView {
 
     @Column(name = "products", nullable = false, columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> products;
+    private JsonNode products;
 
     @Column(name = "payment_method", nullable = false)
     private Long paymentMethod;

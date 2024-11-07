@@ -3,7 +3,7 @@ package com.order.service.gui.order;
 import com.order.service.coreapi.commands.CreateOrderCommand;
 import com.order.service.coreapi.commands.UpdateOrderStateCommand;
 import com.order.service.gui.order.dto.CreateOrderDTO;
-import com.order.service.gui.order.dto.UpdateOrderStateDTO;
+import com.order.service.gui.order.dto.UpdateOrderStatusDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,13 +41,13 @@ public class OrderController {
 
     }
 
-    @PostMapping("/updateOrder")
-    public CompletableFuture<Boolean> updateOrderState(@RequestBody UpdateOrderStateDTO updateOrderStateDTO){
+    @PostMapping("/updateStatus")
+    public CompletableFuture<Boolean> updateOrderStatus(@RequestBody UpdateOrderStatusDTO UpdateOrderStatusDTO){
         return commandGateway.send(
                 UpdateOrderStateCommand
                         .builder()
-                        .orderId(updateOrderStateDTO.orderId())
-                        .orderStatus(updateOrderStateDTO.status())
+                        .orderId(UpdateOrderStatusDTO.orderId())
+                        .orderStatus(UpdateOrderStatusDTO.status())
         );
     }
 

@@ -5,5 +5,5 @@ import com.order.service.coreapi.events.order.OrderStatus;
 
 import java.util.UUID;
 
-public record UpdateOrderStateDTO(UUID orderId, OrderStatus status) {
+public record UpdateOrderStatusDTO(UUID orderId, OrderStatus status) {
 }
