@@ -1,4 +1,4 @@
-CREATE TABLE credit_cards
+CREATE TABLE users_management.credit_cards
 (
     id                BIGINT NOT NULL,
     payment_method_id BIGINT NOT NULL,
@@ -8,5 +8,5 @@ CREATE TABLE credit_cards
     card_type         TEXT   NOT NULL
 );
 ALTER TABLE
-    credit_cards
+    users_management.credit_cards
     ADD PRIMARY KEY (id);

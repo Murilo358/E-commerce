@@ -6,8 +6,8 @@ CREATE TABLE users_management.payment_methods
     is_default      BIGINT NOT NULL
 );
 ALTER TABLE
-    payment_methods
+    users_management.payment_methods
     ADD PRIMARY KEY (id);
 
 ALTER TABLE
-    users_management.payment_methods ADD CONSTRAINT payment_methods_payment_type_foreign FOREIGN KEY(payment_type) REFERENCES users_management.payment_types(id);
+    users_management.payment_methods ADD CONSTRAINT payment_methods_payment_type_foreign FOREIGN KEY(payment_type_id) REFERENCES users_management.payment_types(id);
