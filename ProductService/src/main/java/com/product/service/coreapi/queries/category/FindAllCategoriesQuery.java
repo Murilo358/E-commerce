@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class FindAllCategoriesQuery {
 
     Integer min;
