@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
+@Getter
+@Setter
 @Table(name="products", schema="catalog")
 public class ProductView {
 

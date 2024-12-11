@@ -13,11 +13,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "categories", schema = "catalog")
 public class CategoryView {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
     @Column(nullable = false)
