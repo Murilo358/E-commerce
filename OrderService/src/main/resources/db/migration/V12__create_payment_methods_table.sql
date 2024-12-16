@@ -3,7 +3,7 @@ CREATE TABLE users_management.payment_methods
     id              BIGINT NOT NULL,
     payment_type_id BIGINT NOT NULL,
     user_id         BIGINT NOT NULL,
-    is_default      BIGINT NOT NULL
+    is_default     BOOLEAN NOT NULL
 );
 ALTER TABLE
     users_management.payment_methods
