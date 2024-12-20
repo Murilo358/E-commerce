@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY pom.xml .
 RUN mvn dependency:go-offline
-COPY ../ConfigServer .
+COPY . .
 
 RUN mvn clean package
 
