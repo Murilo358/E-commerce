@@ -56,7 +56,8 @@
           "type": "long",
           "logicalType": "timestamp-millis"
         }
-      ]
+      ],
+      "default": null
     }
   ]
 }
