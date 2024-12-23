@@ -1,5 +1,6 @@
 package com.product.service.gui.product;
 
+import com.product.service.wrappers.PageableWrapper;
 import com.product.service.coreapi.commands.product.CreateProductCommand;
 import com.product.service.coreapi.commands.product.DeleteProductCommand;
 import com.product.service.coreapi.commands.product.UpdateProductCommand;
@@ -11,7 +12,9 @@ import com.product.service.query.product.ProductView;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -87,12 +90,10 @@ public class ProductController {
     }
 
     @GetMapping("/getAll")
-    public CompletableFuture<List<ProductView>> getAllProducts(
-            @RequestParam(name = "startPage", defaultValue = "0") Integer startPage,
-            @RequestParam(name = "endPage", defaultValue = "50") Integer endPage){
+    public CompletableFuture<List<ProductView>> getAllProducts(@PageableDefault(page = 0,  size = 20, direction = Sort.Direction.DESC) Pageable pageable){
 
         return queryGateway.query(
-                new FindAllProductsQuery(startPage, endPage),
+                new FindAllProductsQuery(PageableWrapper.fromPageable(pageable)),
                 ResponseTypes.multipleInstancesOf(ProductView.class)
         );
 

@@ -13,7 +13,6 @@ import com.product.service.exception.NotFoundException;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +54,10 @@ public class ProductProjector {
                 .createdAt(DateTimeConversion.fromInstant(event.getCreatedAt()))
                 .build();
 
+
+        //Verify if the user exists
+        //verify if the category exists
+        //etc and etc
 
         productRepository.save(productView);
 
@@ -109,17 +112,15 @@ public class ProductProjector {
     }
 
     @QueryHandler
-    public ProductView handle(FindProductQuery query){
+    public ProductView handle(FindProductQuery query) {
         return productRepository.findById(query.getProductId()).orElseThrow(() -> new NotFoundException("Product", query.getProductId()));
     }
 
     //To share exceptional information with the recipient it is recommended to wrap the exception in a QueryExecutionException with provided details.
     //TODO CHANGE OFFSET PAGINATION TO SEEK PAGINATION
     @QueryHandler
-    public List<ProductView> handle(FindAllProductsQuery query){
+    public List<ProductView> handle(FindAllProductsQuery query) {
 
-        PageRequest pageRequest = PageRequest.of(query.getMin(), Math.min(query.getMax(), 100));
-
-        return productRepository.findAll(pageRequest).getContent();
+        return productRepository.findAll(query.getPageable().toPageable()).getContent();
     }
 }
