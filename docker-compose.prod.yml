@@ -94,23 +94,22 @@ services:
       - '8124:8124'
       - '8224:8224'
     restart: on-failure
-    depends_on:
-      - control-center
     networks:
       - axon-net
       - backend
 
   config-server:
     build:
-      context: ./ConfigServer
+      context: ConfigServer
     image: configserver:latest
     ports:
       - "8888:8888"
     networks:
       - backend
     environment:
-      - spring.application.name=config-server
+      - spring.application.name=configServer
       - spring.cloud.config.server.git.refreshRate= 0
+      - management.endpoints.web.exposure.include= "*"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 3s
@@ -169,29 +168,24 @@ services:
   product-service:
     build:
       context: ./ProductService
-      dockerfile: ./Dockerfile.prod
     image: productservice:latest
     ports:
       - "8081:8081"
     depends_on:
-     - axonserver
+      - axonserver
+      - commerce-gateway
     networks:
       - backend
     environment:
-      - axon.serializer.events=jackson
-      - axon.serializer.general=jackson
-      - axon.serializer.messages=jackson
-      - spring.jpa.hibernate.ddl-auto=update
-      - management.endpoints.web.exposure.include=prometheus
-      - management.prometheus.metrics.export.enabled=true
       - server.port=8081
       - kafka.enabled=true
       - spring.application.name=product-service
-      - spring.profiles.active=dev
+      - spring.profiles.active=prod
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
-      - spring.kafka.bootstrap-servers=http://kafka:9092
+      - spring.kafka.bootstrap-servers=http://kafka:29092
       - axon.axonserver.servers=axonserver
       - spring.config.import=configserver:http://config-server:8888
+
   commerce-orders:
     build:
       context: ./OrderService
@@ -200,13 +194,14 @@ services:
       - "8082:8082"
     depends_on:
       - axonserver
+      - commerce-gateway
     networks:
       - backend
     environment:
       - server.port=8082
       - kafka.enabled=true
       - spring.application.name=order-service
-      - spring.profiles.active=dev
+      - spring.profiles.active=prod
       - spring.kafka.bootstrap-servers:http://localhost:9092
       - eureka.client.serviceUrl.defaultZone=http://service-discovery:8761/eureka/
       - spring.config.import=configserver:http://config-server:8888
