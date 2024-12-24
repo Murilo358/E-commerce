@@ -5,11 +5,14 @@ import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
+import com.product.service.coreapi.queries.product.FindForHomePageQuery;
+import com.product.service.enums.DefaultCategories;
 import com.product.service.kafka.KafkaPublisher;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
+import com.product.service.wrappers.SortWrapper;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -17,7 +20,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @ProcessingGroup("events")
@@ -121,6 +128,19 @@ public class ProductProjector {
     @QueryHandler
     public List<ProductView> handle(FindAllProductsQuery query) {
 
+
         return productRepository.findAll(query.getPageable().toPageable()).getContent();
+    }
+
+    @QueryHandler
+    public Map<UUID, List<ProductView>>handle(FindForHomePageQuery query) {
+
+        List<UUID> list = Arrays.stream(DefaultCategories.values()).map(DefaultCategories::getId).toList();
+
+        List<ProductView> byCategoryIdIn = productRepository.findByCategoryIdIn(list, query.getPageable().toPageable());
+
+        return  byCategoryIdIn.stream().collect(Collectors.groupingBy(ProductView::getCategoryId));
+
+
     }
 }

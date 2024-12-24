@@ -32,11 +32,14 @@ public class SortWrapper implements Serializable {
     }
 
     public Sort toSort() {
+        if (sortProperty == null || sortProperty.isEmpty()) {
+            return Sort.unsorted();
+        }
         return ascending ? Sort.by(sortProperty).ascending() : Sort.by(sortProperty).descending();
     }
 
     public static SortWrapper fromSort(Sort sort) {
-        if (sort.isEmpty()) {
+        if (sort == null || sort.isEmpty() ) {
             return new SortWrapper();
         }
         String sortProperty = sort.iterator().next().getProperty();

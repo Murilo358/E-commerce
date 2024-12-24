@@ -1,5 +1,6 @@
 package com.product.service.query.product;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -7,6 +8,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<ProductView, UUID> {
@@ -22,4 +25,5 @@ public interface ProductRepository extends JpaRepository<ProductView, UUID> {
             where p.id = ?6""")
     void updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(@NonNull String name, @NonNull String description, @NonNull UUID categoryId, @NonNull Double price, @NonNull LocalDateTime updatedAt, @NonNull UUID id);
 
+    List<ProductView> findByCategoryIdIn(@NonNull Collection<UUID> categoryIds, Pageable pageable);
 }
