@@ -2,17 +2,18 @@ package com.product.service.query.product;
 
 
 import com.product.service.adapters.DateTimeConversion;
+import com.product.service.command.Product;
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
+import com.product.service.dto.HomePageProductsDto;
 import com.product.service.enums.DefaultCategories;
 import com.product.service.kafka.KafkaPublisher;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
-import com.product.service.wrappers.SortWrapper;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -20,11 +21,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @ProcessingGroup("events")
@@ -133,14 +130,23 @@ public class ProductProjector {
     }
 
     @QueryHandler
-    public Map<UUID, List<ProductView>>handle(FindForHomePageQuery query) {
+    public HomePageProductsDto handle(FindForHomePageQuery query) {
 
-        List<UUID> list = Arrays.stream(DefaultCategories.values()).map(DefaultCategories::getId).toList();
+        List<UUID> list = Arrays.stream(DefaultCategories.values())
+                .map(DefaultCategories::getId)
+                .toList();
 
-        List<ProductView> byCategoryIdIn = productRepository.findByCategoryIdIn(list, query.getPageable().toPageable());
+        Map<String, List<ProductView>> groupedProducts = new HashMap<>();
 
-        return  byCategoryIdIn.stream().collect(Collectors.groupingBy(ProductView::getCategoryId));
+        for (UUID categoryId : list) {
 
+            List<ProductView> products = productRepository.findByCategoryId(categoryId, query.getPageable().toPageable());
+
+            String categoryName = DefaultCategories.getById(categoryId).getName();
+            groupedProducts.put(categoryName, products);
+        }
+
+        return new HomePageProductsDto(groupedProducts);
 
     }
 }

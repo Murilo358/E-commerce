@@ -1,6 +1,8 @@
 package com.product.service.gui.product;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
+import com.product.service.dto.HomePageProductsDto;
 import com.product.service.wrappers.PageableWrapper;
 import com.product.service.coreapi.commands.product.CreateProductCommand;
 import com.product.service.coreapi.commands.product.DeleteProductCommand;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -102,11 +103,11 @@ public class ProductController {
     }
 
     @GetMapping("/homepage")
-    public CompletableFuture<Map> getHomePageProducts(@PageableDefault(page = 0,  size = 20, direction = Sort.Direction.DESC) Pageable pageable){
+    public CompletableFuture<HomePageProductsDto> getHomePageProducts(@PageableDefault(page = 0,  size = 15, direction = Sort.Direction.DESC) Pageable pageable){
 
         return queryGateway.query(
                 new FindForHomePageQuery(PageableWrapper.fromPageable(pageable)),
-                ResponseTypes.instanceOf(Map.class)
+                ResponseTypes.instanceOf(HomePageProductsDto.class)
         );
 
     }

@@ -25,5 +25,5 @@ public interface ProductRepository extends JpaRepository<ProductView, UUID> {
             where p.id = ?6""")
     void updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(@NonNull String name, @NonNull String description, @NonNull UUID categoryId, @NonNull Double price, @NonNull LocalDateTime updatedAt, @NonNull UUID id);
 
-    List<ProductView> findByCategoryIdIn(@NonNull Collection<UUID> categoryIds, Pageable pageable);
+    List<ProductView> findByCategoryId(@NonNull UUID categoryId, Pageable pageable);
 }
