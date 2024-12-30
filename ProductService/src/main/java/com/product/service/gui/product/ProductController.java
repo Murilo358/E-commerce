@@ -3,6 +3,7 @@ package com.product.service.gui.product;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
 import com.product.service.dto.HomePageProductsDto;
+import com.product.service.dto.productDetail.ProductDto;
 import com.product.service.wrappers.PageableWrapper;
 import com.product.service.coreapi.commands.product.CreateProductCommand;
 import com.product.service.coreapi.commands.product.DeleteProductCommand;
@@ -85,10 +86,10 @@ public class ProductController {
     }
 
     @GetMapping("/get/{productId}")
-    public CompletableFuture<ProductView> findProduct(@PathVariable("productId") UUID productId) {
+    public CompletableFuture<ProductDto> findProduct(@PathVariable("productId") UUID productId) {
         return queryGateway.query(
                 new FindProductQuery(productId),
-                ResponseTypes.instanceOf(ProductView.class)
+                ResponseTypes.instanceOf(ProductDto.class)
         );
     }
 

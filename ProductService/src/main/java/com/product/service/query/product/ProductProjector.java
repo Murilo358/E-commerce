@@ -8,12 +8,19 @@ import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
 import com.product.service.dto.HomePageProductsDto;
+import com.product.service.dto.category.CategoryDto;
+import com.product.service.dto.productDetail.ProductDto;
+import com.product.service.dto.seller.SellerDto;
 import com.product.service.enums.DefaultCategories;
 import com.product.service.kafka.KafkaPublisher;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
+import com.product.service.query.category.CategoryRepository;
+import com.product.service.query.category.CategoryView;
+import com.product.service.query.user.UserRepository;
+import com.product.service.query.user.UserView;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -28,18 +35,25 @@ import java.util.*;
 @Component
 public class ProductProjector {
 
-    ProductRepository productRepository;
 
-    final
-    KafkaTemplate<String, Object> kafkaTemplate;
+    private final ProductRepository productRepository;
 
-    final
-    KafkaPublisher kafkaPublisher;
+    private final CategoryRepository categoryRepository;
 
-    public ProductProjector(ProductRepository productRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher) {
+    private final UserRepository userRepository;
+
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    private final KafkaPublisher kafkaPublisher;
+    private final Product product;
+
+    public ProductProjector(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher, Product product) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaPublisher = kafkaPublisher;
+        this.product = product;
     }
 
     @EventHandler
@@ -116,8 +130,11 @@ public class ProductProjector {
     }
 
     @QueryHandler
-    public ProductView handle(FindProductQuery query) {
-        return productRepository.findById(query.getProductId()).orElseThrow(() -> new NotFoundException("Product", query.getProductId()));
+    public ProductDto handle(FindProductQuery query) {
+
+        ProductView product = productRepository.findById(query.getProductId()).orElseThrow(() -> new NotFoundException("Product", query.getProductId()));
+
+        return buildProductDto(Optional.of(product));
     }
 
     //To share exceptional information with the recipient it is recommended to wrap the exception in a QueryExecutionException with provided details.
@@ -149,4 +166,51 @@ public class ProductProjector {
         return new HomePageProductsDto(groupedProducts);
 
     }
+
+    public ProductDto buildProductDto(Optional<ProductView> productView) {
+
+        ProductDto productDto = new ProductDto();
+
+        if (productView.isPresent()) {
+
+            ProductView product = productView.get();
+
+            productDto.setId(product.getId());
+            productDto.setName(product.getName());
+            productDto.setDescription(product.getDescription());
+            productDto.setPrice(product.getPrice());
+            productDto.setInventoryCount(product.getInventoryCount());
+            productDto.setUpdatedAt(product.getUpdatedAt());
+            productDto.setCreatedAt(product.getCreatedAt());
+            //TODO implement it
+            productDto.setSoldLastMonthCount(100);
+
+            Optional<CategoryView> categoryOpt = categoryRepository.findById(product.getCategoryId());
+
+            if (categoryOpt.isPresent()) {
+
+                CategoryView category = categoryOpt.get();
+                CategoryDto categoryDto = new CategoryDto(product.getCategoryId(), category.getName(), category.getDescription());
+                productDto.setCategory(categoryDto);
+
+            }
+
+            Optional<UserView> userOpt = userRepository.findById(product.getSellerId());
+
+            if (userOpt.isPresent()) {
+
+                //todo fazer a query buscando as coisas do usuario
+                UserView user = userOpt.get();
+                SellerDto sellerDto = new SellerDto(user.getName(), 10, 10);
+                productDto.setSeller(sellerDto);
+
+            }
+
+
+        }
+
+        return productDto;
+
+    }
+
 }
