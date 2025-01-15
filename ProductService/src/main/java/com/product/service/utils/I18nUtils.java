@@ -19,6 +19,6 @@ public class I18nUtils {
     }
 
     public static String getI18nValue(String key){
-        return Optional.of(bundle.getString(key)).orElseThrow(IllegalArgumentException::new);
+        return Optional.of(bundle.getString(key)).orElse(key);
     }
 }

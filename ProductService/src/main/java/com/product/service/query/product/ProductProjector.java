@@ -21,9 +21,11 @@ import com.product.service.query.category.CategoryRepository;
 import com.product.service.query.category.CategoryView;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
+import com.product.service.utils.I18nUtils;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -134,7 +136,11 @@ public class ProductProjector {
 
         ProductView product = productRepository.findById(query.getProductId()).orElseThrow(() -> new NotFoundException("Product", query.getProductId()));
 
-        return buildProductDto(Optional.of(product));
+        List<ProductView> relatedProducts = productRepository.findByCategoryId(product.getCategoryId(), Pageable.unpaged());
+
+        ProductDto productDto = buildProductDto(Optional.of(product));
+        productDto.setRelatedProducts(relatedProducts);
+        return productDto;
     }
 
     //To share exceptional information with the recipient it is recommended to wrap the exception in a QueryExecutionException with provided details.
@@ -190,7 +196,7 @@ public class ProductProjector {
             if (categoryOpt.isPresent()) {
 
                 CategoryView category = categoryOpt.get();
-                CategoryDto categoryDto = new CategoryDto(product.getCategoryId(), category.getName(), category.getDescription());
+                CategoryDto categoryDto = new CategoryDto(product.getCategoryId(), I18nUtils.getI18nValue(category.getName()), I18nUtils.getI18nValue(category.getDescription()));
                 productDto.setCategory(categoryDto);
 
             }
