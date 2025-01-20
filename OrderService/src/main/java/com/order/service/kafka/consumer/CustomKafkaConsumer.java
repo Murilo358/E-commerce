@@ -72,7 +72,6 @@ public class CustomKafkaConsumer {
 
     @PostConstruct
     public void init() {
-        this.consumer = createKafkaConsumer();
         subscribeToAllTopics();
 
         this.executorService = Executors.newSingleThreadExecutor();

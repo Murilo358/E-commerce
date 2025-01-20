@@ -13,7 +13,9 @@ import com.order.service.coreapi.events.promotion.PromotionCreatedEvent;
 import com.order.service.coreapi.events.promotion.PromotionDeleteEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -39,5 +41,17 @@ public class KafkaTopicRouter {
 
     public String getTopicForEvent(Object event) {
         return eventTopicMap.getOrDefault(event.getClass(), "DLQ");
+    }
+
+    public List<String> getAllTopics(){
+
+        List<String> topics = new ArrayList<>();
+
+        for (Map.Entry<Class<?>, String> classStringEntry : eventTopicMap.entrySet()) {
+            topics.add(classStringEntry.getValue());
+
+        }
+
+        return topics;
     }
 }
