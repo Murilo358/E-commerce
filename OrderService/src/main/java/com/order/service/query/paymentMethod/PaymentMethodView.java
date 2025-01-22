@@ -17,7 +17,6 @@ import java.util.UUID;
 @Table(name="payment_methods", schema="users_management")
 public class PaymentMethodView {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Column
