@@ -6,8 +6,9 @@ CREATE TABLE transactions.orders
     total_price    DECIMAL(10, 2)      NOT NULL,
     created_at     DATE                NOT NULL,
     updated_at     DATE                DEFAULT CURRENT_DATE,
+    seller_id      BIGINT              NOT NULL,
     buyer_id       BIGINT              NOT NULL,
-    status         VARCHAR(50)         NOT NULL DEFAULT 'pending',
+    status         VARCHAR(50)         NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'canceled', 'shipped', 'delivered')),
     weight         DECIMAL(10, 2)      NOT NULL,
     PRIMARY KEY (id)
 );
