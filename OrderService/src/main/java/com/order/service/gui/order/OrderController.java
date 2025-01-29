@@ -34,7 +34,7 @@ public class OrderController {
                 CreateOrderCommand
                         .builder()
                         .orderId(UUID.randomUUID())
-                        .buyerid(createOrderDTO.buyerid())
+                        .buyerid(createOrderDTO.buyerId())
                         .paymentMethod(createOrderDTO.paymentMethod())
                         .products(createOrderDTO.products()).build()
         );

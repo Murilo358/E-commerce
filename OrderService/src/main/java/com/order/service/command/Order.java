@@ -6,7 +6,8 @@ import com.order.service.coreapi.events.order.OrderCreatedEvent;
 import com.order.service.coreapi.events.order.OrderProductState;
 import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.coreapi.events.order.OrderStatus;
-import com.order.service.coreapi.queries.product.FindProductsQuery;
+import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
+import com.order.service.dto.productDetail.OrderProduct;
 import com.order.service.query.product.ProductView;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -44,24 +45,26 @@ public class Order {
     public Order(CreateOrderCommand command, QueryGateway queryGateway) {
 
         try {
-            List<ProductView> productsView = queryGateway.query(
-                    new FindProductsQuery(command.getProducts()),
-                    ResponseTypes.multipleInstancesOf(ProductView.class)
+
+
+            List<OrderProduct>  productsView = queryGateway.query(
+                    new FindProductsByIdsQuery(command.getProducts()),
+                    ResponseTypes.multipleInstancesOf(OrderProduct.class)
             ).get();
 
-            Double totalPrice = productsView.stream().map(ProductView::getPrice).reduce(0.0, Double::sum);
-            Double totalWeight = productsView.stream().map(ProductView::getWeight).reduce(0.0, Double::sum);
+            Double totalPrice = productsView.stream().map(OrderProduct::getPrice).reduce(0.0, Double::sum);
+            Double totalWeight = productsView.stream().map(OrderProduct::getWeight).reduce(0.0, Double::sum);
 
             List<OrderProductState> products = new ArrayList<>();
 
-            for (ProductView productView : productsView) {
+            for (OrderProduct productView : productsView) {
                 OrderProductState build = OrderProductState.newBuilder()
-                        .setCategoryId(productView.getCategoryId())
+                        .setCategoryId(productView.getCategory().id())
                         .setDescription(productView.getDescription())
                         .setCreatedAt(productView.getCreatedAt().toLocalDate())
                         .setName(productView.getName())
                         .setPrice(productView.getPrice())
-                        .setSellerId(productView.getSellerId())
+                        .setSellerId(productView.getSeller().sellerId())
                         .setInventoryCount(productView.getInventoryCount())
                         .setProductId(productView.getId()).build();
                 products.add(build);
