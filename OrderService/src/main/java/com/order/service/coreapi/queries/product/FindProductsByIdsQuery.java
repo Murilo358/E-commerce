@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindProductsQuery {
+public class FindProductsByIdsQuery {
 
-    private List<UUID> productId;
+    private List<UUID> productIds;
 }
