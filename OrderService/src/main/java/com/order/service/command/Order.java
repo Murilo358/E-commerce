@@ -8,7 +8,6 @@ import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.coreapi.events.order.OrderStatus;
 import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
 import com.order.service.dto.productDetail.OrderProduct;
-import com.order.service.query.product.ProductView;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -19,8 +18,10 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -52,8 +53,8 @@ public class Order {
                     ResponseTypes.multipleInstancesOf(OrderProduct.class)
             ).get();
 
-            Double totalPrice = productsView.stream().map(OrderProduct::getPrice).reduce(0.0, Double::sum);
-            Double totalWeight = productsView.stream().map(OrderProduct::getWeight).reduce(0.0, Double::sum);
+            Double totalPrice = productsView.stream().map(OrderProduct::getPrice).filter(Objects::nonNull).reduce(0.0, Double::sum);
+            Double totalWeight = productsView.stream().map(OrderProduct::getWeight).filter(Objects::nonNull).reduce(0.0, Double::sum);
 
             List<OrderProductState> products = new ArrayList<>();
 
@@ -78,7 +79,9 @@ public class Order {
                     .setPaymentMethod(command.getPaymentMethod())
                     .setTotalPrice(totalPrice)
                     .setWeight(totalWeight)
-                    .setCreatedAt(Instant.now()).build();
+                    .setCreatedAt(Instant.now())
+                    .setStatus(OrderStatus.pending)
+                    .build();
 
             AggregateLifecycle.apply(build);
 
@@ -113,8 +116,8 @@ public class Order {
         this.totalPrice = event.getTotalPrice();
         this.totalWeight = event.getWeight();
         this.buyerId = event.getBuyerId();
-        this.createdAt = LocalDateTime.from(event.getCreatedAt());
-        this.updatedAt = LocalDateTime.from(event.getUpdatedAt());
+        this.createdAt = event.getCreatedAt() != null ? LocalDateTime.ofInstant(event.getCreatedAt(), ZoneId.of("UTC")) : null;
+        this.updatedAt = event.getUpdatedAt() != null ? LocalDateTime.ofInstant(event.getUpdatedAt(), ZoneId.of("UTC")) : null;
 
     }
 
