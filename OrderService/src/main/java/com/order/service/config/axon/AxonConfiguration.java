@@ -21,7 +21,9 @@ public class AxonConfiguration {
         objectMapper.registerModule(new JacksonAvroModule());
         objectMapper.addMixIn(Object.class, JacksonIgnoreAvroPropertiesMixIn.class);
 
-        return JacksonSerializer.builder().objectMapper(objectMapper).build();
+        return JacksonSerializer.builder()
+                .defaultTyping()
+                .objectMapper(objectMapper).build();
     }
 
 
