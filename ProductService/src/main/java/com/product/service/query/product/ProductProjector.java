@@ -22,6 +22,7 @@ import com.product.service.query.category.CategoryView;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
 import com.product.service.utils.I18nUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
+@Slf4j
 @ProcessingGroup("events")
 @Component
 public class ProductProjector {
@@ -60,6 +62,7 @@ public class ProductProjector {
 
     @EventHandler
     public void on(ProductCreatedEvent event) {
+
 
         ProductView productView = ProductView
                 .builder()

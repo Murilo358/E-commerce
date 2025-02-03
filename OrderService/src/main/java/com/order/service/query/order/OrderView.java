@@ -43,8 +43,8 @@ public class OrderView {
     @Column(name = "seller_id", nullable = false)
     private Long sellerId;
 
-    @Column(nullable = false, length = 50)
-    private OrderStatus status = OrderStatus.pending;
+    @Column(name = "status")
+    private OrderStatus status = OrderStatus.PENDING;
 
     private Double weight;
 

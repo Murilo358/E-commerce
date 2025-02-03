@@ -9,6 +9,7 @@ import com.order.service.config.jackson.JacksonAvroModule;
 import com.order.service.coreapi.events.order.*;
 import com.order.service.kafka.publisher.KafkaPublisher;
 import com.order.service.query.product.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @ProcessingGroup("events")
 @Component
 public class OrderProjector {
@@ -40,6 +42,11 @@ public class OrderProjector {
     @EventHandler
     public void on(OrderCreatedEvent event) {
         JsonNode products = null;
+
+        if(event.getProducts() == null || event.getProducts().isEmpty()) {
+            log.error("Received order with empty products");
+            return;
+        }
 
         try {
             products = objectMapper.readTree(objectMapper.writeValueAsString(event.getProducts()));
@@ -72,7 +79,7 @@ public class OrderProjector {
         orderRepository.findById(event.getId()).ifPresent(order -> {
             order.setStatus(event.getStatus());
 
-            if(event.getStatus().equals(OrderStatus.approved)){
+            if(event.getStatus().equals(OrderStatus.APPROVED)){
                 JsonNode eventProducts = order.getProducts();
 
                 List<OrderProductState> orderProductState = null;

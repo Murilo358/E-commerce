@@ -10,6 +10,7 @@ import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
@@ -24,6 +25,7 @@ import java.util.UUID;
 
 
 @Aggregate
+@ProcessingGroup("events")
 public class Product {
 
     @AggregateIdentifier
@@ -47,19 +49,18 @@ public class Product {
     public Product(CreateProductCommand command) {
 
 
-        ProductCreatedEvent build = ProductCreatedEvent
-                .newBuilder()
-                .setProductId(command.getProductId())
-                .setName(command.getName())
-                .setDescription(command.getDescription())
-                .setPrice(command.getPrice())
-                .setSellerId(command.getSellerId())
-                .setCategoryId(command.getCategoryId())
-                .setInventoryCount(command.getInventoryCount())
-                .setCreatedAt(command.getCreatedAt() != null ? command.getCreatedAt().toInstant(ZoneOffset.UTC) : null)
-                .build();
+        ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
 
-        AggregateLifecycle.apply(build);
+        productCreatedEvent.setProductId(command.getProductId());
+        productCreatedEvent.setName(command.getName());
+        productCreatedEvent.setDescription(command.getDescription());
+        productCreatedEvent.setPrice(command.getPrice());
+        productCreatedEvent.setSellerId(command.getSellerId());
+        productCreatedEvent.setCategoryId(command.getCategoryId());
+        productCreatedEvent.setInventoryCount(command.getInventoryCount());
+        productCreatedEvent.setCreatedAt(command.getCreatedAt() != null ? command.getCreatedAt().toInstant(ZoneOffset.UTC) : null);
+
+        AggregateLifecycle.apply(productCreatedEvent);
 
 
     }

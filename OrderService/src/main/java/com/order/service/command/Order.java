@@ -8,6 +8,7 @@ import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.coreapi.events.order.OrderStatus;
 import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
 import com.order.service.dto.productDetail.OrderProduct;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 @Aggregate
 public class Order {
 
@@ -53,6 +55,11 @@ public class Order {
                     ResponseTypes.multipleInstancesOf(OrderProduct.class)
             ).get();
 
+
+            if(productsView == null || productsView.isEmpty()){
+                log.error("Products not found with sent id's");
+            }
+
             Double totalPrice = productsView.stream().map(OrderProduct::getPrice).filter(Objects::nonNull).reduce(0.0, Double::sum);
             Double totalWeight = productsView.stream().map(OrderProduct::getWeight).filter(Objects::nonNull).reduce(0.0, Double::sum);
 
@@ -80,7 +87,7 @@ public class Order {
                     .setTotalPrice(totalPrice)
                     .setWeight(totalWeight)
                     .setCreatedAt(Instant.now())
-                    .setStatus(OrderStatus.pending)
+                    .setStatus(OrderStatus.PENDING)
                     .build();
 
             AggregateLifecycle.apply(build);

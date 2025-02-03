@@ -52,7 +52,7 @@ public class UserView  implements UserDetails {
     private Date createdAt;
 
     @Column(name = "is_enabled")
-    private boolean isEnabled;
+    private boolean isEnabled = false;
 
 
     @Override
