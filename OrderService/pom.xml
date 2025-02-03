@@ -142,6 +142,16 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -164,15 +174,16 @@
 				<executions>
 					<execution>
 						<id>schemas</id>
-						<phase>generate-sources</phase>
+						<phase>none</phase>
 						<goals>
 							<goal>schema</goal>
-							<goal>protocol</goal>
-							<goal>idl-protocol</goal>
 						</goals>
 						<configuration>
+							<createSetters>false</createSetters>
 							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+							<fieldVisibility>PRIVATE</fieldVisibility>
+							<stringType>String</stringType>
 						</configuration>
 					</execution>
 				</executions>
@@ -200,10 +211,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+
 		</plugins>
 	</build>
 
