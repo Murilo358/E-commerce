@@ -1,6 +1,7 @@
 package com.product.service.gui.product;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.product.service.coreapi.queries.product.FindBySellerId;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
 import com.product.service.dto.HomePageProductsDto;
 import com.product.service.dto.productDetail.ProductDto;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -113,5 +115,15 @@ public class ProductController {
 
     }
 
+    @GetMapping("/getBySellerId/{sellerId}")
+    public CompletableFuture<Map> getProductsBySellerId(
+            @PageableDefault(page = 0, size = 50, direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable("sellerId") Long sellerId) {
+        return queryGateway.query(
+                new FindBySellerId(sellerId, PageableWrapper.fromPageable(pageable)),
+                ResponseTypes.instanceOf(Map.class)
+        );
+
+    }
 
 }

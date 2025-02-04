@@ -6,6 +6,7 @@ import com.product.service.command.Product;
 import com.product.service.coreapi.events.product.ProductCreatedEvent;
 import com.product.service.coreapi.events.product.ProductDeletedEvent;
 import com.product.service.coreapi.events.product.ProductUpdatedEvent;
+import com.product.service.coreapi.queries.product.FindBySellerId;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
 import com.product.service.dto.HomePageProductsDto;
 import com.product.service.dto.category.CategoryDto;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -174,6 +176,18 @@ public class ProductProjector {
 
         return new HomePageProductsDto(groupedProducts);
 
+    }
+
+    @QueryHandler
+    public Map handle(FindBySellerId query) {
+
+        List<ProductView> bySellerId = productRepository.findBySellerId(query.getSellerId(), query.getPageable().toPageable());
+        return  bySellerId.stream().map(this::buildProductDto).collect(Collectors.groupingBy(i -> i.getCategory().name()));
+
+    }
+
+    public ProductDto buildProductDto(ProductView productView) {
+        return buildProductDto(Optional.of(productView));
     }
 
     public ProductDto buildProductDto(Optional<ProductView> productView) {
