@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "OrderStateUpdated",
+  "namespace": "com.product.service.coreapi.events.order",
+  "version": "1",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "logicalType": "uuid",
+        "type": "string"
+      },
+      "doc": "Unique identifier for the order"
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "OrderUpdatedStatus",
+        "symbols": [
+          "PENDING",
+          "APPROVED",
+          "CANCELED",
+          "SHIPPED",
+          "DELIVERED"
+        ]
+      }
+    }
+  ]
+}
