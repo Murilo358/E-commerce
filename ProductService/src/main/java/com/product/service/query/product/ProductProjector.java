@@ -13,7 +13,7 @@ import com.product.service.dto.category.CategoryDto;
 import com.product.service.dto.productDetail.ProductDto;
 import com.product.service.dto.seller.SellerDto;
 import com.product.service.enums.DefaultCategories;
-import com.product.service.kafka.KafkaPublisher;
+import com.product.service.kafka.publisher.KafkaPublisher;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
 import com.product.service.coreapi.queries.product.FindAllProductsQuery;
 import com.product.service.coreapi.queries.product.FindProductQuery;
@@ -224,7 +224,7 @@ public class ProductProjector {
 
                 //todo fazer a query buscando as coisas do usuario
                 UserView user = userOpt.get();
-                SellerDto sellerDto = new SellerDto(user.getName(), 10, 10);
+                SellerDto sellerDto = new SellerDto(user.getId(), user.getName(), 10, 10);
                 productDto.setSeller(sellerDto);
 
             }
