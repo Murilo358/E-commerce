@@ -16,7 +16,7 @@
       "name": "status",
       "type": {
         "type": "enum",
-        "name": "OrderStatus",
+        "name": "OrderUpdatedStatus",
         "symbols": [
           "PENDING",
           "APPROVED",

@@ -14,8 +14,6 @@ public class KafkaConsumerRunner {
 
     private final CustomKafkaConsumer kafkaConsumer;
 
-    private final Map<String, Class<?>> eventTypeMap = new HashMap<>();
-
     @Autowired
     public KafkaConsumerRunner(EventTypeRegistry eventTypeRegistry, KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
         this.kafkaConsumer = new CustomKafkaConsumer(eventTypeRegistry, topicRouter, processorRegistry);
