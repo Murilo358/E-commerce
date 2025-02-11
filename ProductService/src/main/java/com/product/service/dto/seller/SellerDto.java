@@ -1,9 +1,12 @@
 package com.product.service.dto.seller;
 
+import com.product.service.query.product.ProductView;
+
+import java.util.List;
+import java.util.Map;
+
 public record SellerDto(
-        Long id,
-        String name,
-        Integer newProductsLastMonth,
-        Integer newSalesLastMonth
+        String sellerName,
+        Map<String, List<ProductView>> sellersProducts
 ) {
 }

@@ -12,6 +12,7 @@ import com.product.service.dto.HomePageProductsDto;
 import com.product.service.dto.category.CategoryDto;
 import com.product.service.dto.productDetail.ProductDto;
 import com.product.service.dto.seller.SellerDto;
+import com.product.service.dto.seller.SellerSimpleDto;
 import com.product.service.enums.DefaultCategories;
 import com.product.service.kafka.publisher.KafkaPublisher;
 import com.product.service.coreapi.events.product.ProductInventoryUpdatedEvent;
@@ -179,10 +180,12 @@ public class ProductProjector {
     }
 
     @QueryHandler
-    public Map handle(FindBySellerId query) {
+    public SellerDto handle(FindBySellerId query) {
 
+        String sellerName = userRepository.findById(query.getSellerId()).map(UserView::getName).orElse(null);
         List<ProductView> bySellerId = productRepository.findBySellerId(query.getSellerId(), query.getPageable().toPageable());
-        return  bySellerId.stream().map(this::buildProductDto).collect(Collectors.groupingBy(i -> i.getCategory().name()));
+        Map<String, List<ProductView>> collect = bySellerId.stream().collect(Collectors.groupingBy(i -> categoryRepository.findById(i.getCategoryId()).map((c) -> I18nUtils.getI18nValue(c.getName())).orElse("")));
+        return new SellerDto(sellerName, collect);
 
     }
 
@@ -224,8 +227,8 @@ public class ProductProjector {
 
                 //todo fazer a query buscando as coisas do usuario
                 UserView user = userOpt.get();
-                SellerDto sellerDto = new SellerDto(user.getId(), user.getName(), 10, 10);
-                productDto.setSeller(sellerDto);
+                SellerSimpleDto sellerSimpleDto = new SellerSimpleDto(user.getId(), user.getName(), 10, 10);
+                productDto.setSeller(sellerSimpleDto);
 
             }
 
