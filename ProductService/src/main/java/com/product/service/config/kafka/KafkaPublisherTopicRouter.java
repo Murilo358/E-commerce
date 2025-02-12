@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class KafkaTopicRouter {
+public class KafkaPublisherTopicRouter {
 
     private final Map<Class<?>, String> eventTopicMap = new HashMap<>();
 
-    public KafkaTopicRouter() {
+    public KafkaPublisherTopicRouter() {
 
         eventTopicMap.put(ProductCreatedEvent.class, "productCreated");
         eventTopicMap.put(ProductDeletedEvent.class, "productDeleted");
