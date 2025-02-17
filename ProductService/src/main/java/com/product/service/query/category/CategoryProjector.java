@@ -7,7 +7,7 @@ import com.product.service.coreapi.queries.category.FindAllCategoriesQuery;
 import com.product.service.coreapi.queries.category.FindCategoryByNameQuery;
 import com.product.service.coreapi.queries.category.FindCategoryQuery;
 import com.product.service.exception.NotFoundException;
-import com.product.service.kafka.KafkaPublisher;
+import com.product.service.kafka.publisher.KafkaPublisher;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @ProcessingGroup("events")
