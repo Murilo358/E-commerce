@@ -21,6 +21,7 @@ import com.product.service.coreapi.queries.product.FindProductQuery;
 import com.product.service.exception.NotFoundException;
 import com.product.service.query.category.CategoryRepository;
 import com.product.service.query.category.CategoryView;
+import com.product.service.query.order.OrderRepository;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
 import com.product.service.utils.I18nUtils;
@@ -32,6 +33,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,13 +56,16 @@ public class ProductProjector {
     private final KafkaPublisher kafkaPublisher;
     private final Product product;
 
-    public ProductProjector(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher, Product product) {
+    private final OrderRepository orderRepository;
+
+    public ProductProjector(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher, Product product, OrderRepository orderRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaPublisher = kafkaPublisher;
         this.product = product;
+        this.orderRepository = orderRepository;
     }
 
     @EventHandler
@@ -227,7 +232,13 @@ public class ProductProjector {
 
                 //todo fazer a query buscando as coisas do usuario
                 UserView user = userOpt.get();
-                SellerSimpleDto sellerSimpleDto = new SellerSimpleDto(user.getId(), user.getName(), 10, 10);
+                long ordersLastMonth = orderRepository
+                        .findCountBySellerIdAndCreatedAtBetween(user.getId(), LocalDate.now().minusMonths(1l), LocalDate.now());
+
+                long productsLastMonth = productRepository.countBySellerIdAndCreatedAtBetween(user.getId(), LocalDateTime.now().minusMonths(1l), LocalDateTime.now());
+
+                SellerSimpleDto sellerSimpleDto = new SellerSimpleDto(user.getId(), user.getName(), productsLastMonth, ordersLastMonth);
+//                orderRepository.1
                 productDto.setSeller(sellerSimpleDto);
 
             }

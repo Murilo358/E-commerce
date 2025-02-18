@@ -28,4 +28,7 @@ public interface ProductRepository extends JpaRepository<ProductView, UUID> {
     List<ProductView> findByCategoryId(@NonNull UUID categoryId, Pageable pageable);
 
     List<ProductView> findBySellerId(@NonNull Long sellerId, Pageable pageable);
+
+    @Query("select count(p) from ProductView p where p.sellerId = ?1 and p.createdAt between ?2 and ?3")
+    long countBySellerIdAndCreatedAtBetween(@NonNull Long sellerId, @NonNull LocalDateTime createdAtStart, @NonNull LocalDateTime createdAtEnd);
 }
