@@ -1,4 +1,4 @@
-package com.product.service.query.paymentMethod;
+package com.product.service.query.paymentmethod;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

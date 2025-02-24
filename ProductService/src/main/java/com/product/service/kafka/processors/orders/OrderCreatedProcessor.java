@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @EventProcessorType(OrderCreatedEvent.class)
@@ -39,14 +40,12 @@ public class OrderCreatedProcessor implements EventProcessor<OrderCreatedEvent> 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        LocalDate updatedAt = Optional.ofNullable(event.getUpdatedAt())
+        OffsetDateTime updatedAt = Optional.ofNullable(event.getUpdatedAt())
                 .map(DateTimeConversion::fromInstant)
-                .map(LocalDateTime::toLocalDate)
                 .orElse(null);
 
-        LocalDate createdAt = Optional.ofNullable(event.getCreatedAt())
+        OffsetDateTime createdAt = Optional.ofNullable(event.getCreatedAt())
                 .map(DateTimeConversion::fromInstant)
-                .map(LocalDateTime::toLocalDate)
                 .orElse(null);
 
 

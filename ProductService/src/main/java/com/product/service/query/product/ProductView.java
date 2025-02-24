@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 
@@ -34,9 +35,9 @@ public class ProductView {
     @Column
     private Integer inventoryCount;
     @Column
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     @Column
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
 
 }

@@ -9,10 +9,11 @@ public class DateTimeConversion {
         return zdt.toInstant().toEpochMilli();
     }
 
-    public static LocalDateTime fromInstant(Instant instant) {
+    public static OffsetDateTime fromInstant(Instant instant) {
         if (instant != null) {
 
-            return LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
+            //todo it should really be
+            return OffsetDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
 
         }
         return null;

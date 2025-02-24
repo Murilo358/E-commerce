@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -119,7 +120,7 @@ public class ProductProjector {
 
     @EventHandler
     public void on(ProductUpdatedEvent event) {
-        LocalDateTime localDateTime = DateTimeConversion.fromInstant(event.getUpdatedAt());
+        OffsetDateTime offSetDateTime = DateTimeConversion.fromInstant(event.getUpdatedAt());
 
         productRepository.findById(event.getProductId()).ifPresentOrElse(
                 (product) ->
@@ -129,7 +130,7 @@ public class ProductProjector {
                             event.getDescription(),
                             event.getCategoryId(),
                             event.getPrice(),
-                            localDateTime != null ? localDateTime : LocalDateTime.now(),
+                            offSetDateTime != null ? offSetDateTime : OffsetDateTime.now(),
                             product.getId()
                     );
                     kafkaPublisher.send(String.valueOf(event.getProductId()), event);
@@ -213,6 +214,7 @@ public class ProductProjector {
             productDto.setInventoryCount(product.getInventoryCount());
             productDto.setUpdatedAt(product.getUpdatedAt());
             productDto.setCreatedAt(product.getCreatedAt());
+//            orderRepository.count
             //TODO implement it
             productDto.setSoldLastMonthCount(100);
 
@@ -230,15 +232,13 @@ public class ProductProjector {
 
             if (userOpt.isPresent()) {
 
-                //todo fazer a query buscando as coisas do usuario
                 UserView user = userOpt.get();
                 long ordersLastMonth = orderRepository
-                        .findCountBySellerIdAndCreatedAtBetween(user.getId(), LocalDate.now().minusMonths(1l), LocalDate.now());
+                        .findCountBySellerIdAndCreatedAtBetween(user.getId(), LocalDate.now().minusMonths(1L), LocalDate.now());
 
-                long productsLastMonth = productRepository.countBySellerIdAndCreatedAtBetween(user.getId(), LocalDateTime.now().minusMonths(1l), LocalDateTime.now());
+                long productsLastMonth = productRepository.countBySellerIdAndCreatedAtBetween(user.getId(), LocalDateTime.now().minusMonths(1L), LocalDateTime.now());
 
                 SellerSimpleDto sellerSimpleDto = new SellerSimpleDto(user.getId(), user.getName(), productsLastMonth, ordersLastMonth);
-//                orderRepository.1
                 productDto.setSeller(sellerSimpleDto);
 
             }

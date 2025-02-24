@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public interface ProductRepository extends JpaRepository<ProductView, UUID> {
     @Query("""
             update ProductView p set p.name = ?1, p.description = ?2, p.categoryId = ?3, p.price = ?4, p.updatedAt = ?5
             where p.id = ?6""")
-    void updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(@NonNull String name, @NonNull String description, @NonNull UUID categoryId, @NonNull Double price, @NonNull LocalDateTime updatedAt, @NonNull UUID id);
+    void updateNameAndDescriptionAndCategoryIdAndPriceAndUpdatedAtById(@NonNull String name, @NonNull String description, @NonNull UUID categoryId, @NonNull Double price, @NonNull OffsetDateTime updatedAt, @NonNull UUID id);
 
     List<ProductView> findByCategoryId(@NonNull UUID categoryId, Pageable pageable);
 

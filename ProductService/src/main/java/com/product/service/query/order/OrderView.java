@@ -11,6 +11,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,10 +36,10 @@ public class OrderView {
     private Double totalPrice;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt = LocalDate.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 
     @Column(name = "buyer_id", nullable = false)
     private Long buyerId;
