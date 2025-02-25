@@ -13,16 +13,16 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderProductState extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6283230203277442954L;
+  private static final long serialVersionUID = 6305218039917463121L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderProductState\",\"namespace\":\"com.product.service.coreapi.events.order\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderProductState\",\"namespace\":\"com.product.service.coreapi.events.order\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
   static {
-    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.DateConversion());
     MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.TimestampMillisConversion());
   }
 
   private static final BinaryMessageEncoder<OrderProductState> ENCODER =
@@ -77,15 +77,15 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
   }
 
   private java.util.UUID productId;
-  private java.lang.CharSequence name;
-  private java.lang.CharSequence description;
+  private java.lang.String name;
+  private java.lang.String description;
   private double price;
   private long sellerId;
   private java.util.UUID categoryId;
   private int inventoryCount;
-  private java.time.LocalDate createdAt;
-  private java.time.LocalDate updatedAt;
-  private java.time.LocalDate deletedAt;
+  private java.time.Instant createdAt;
+  private java.time.Instant updatedAt;
+  private java.time.Instant deletedAt;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -107,7 +107,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * @param updatedAt The new value for updatedAt
    * @param deletedAt The new value for deletedAt
    */
-  public OrderProductState(java.util.UUID productId, java.lang.CharSequence name, java.lang.CharSequence description, java.lang.Double price, java.lang.Long sellerId, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.LocalDate createdAt, java.time.LocalDate updatedAt, java.time.LocalDate deletedAt) {
+  public OrderProductState(java.util.UUID productId, java.lang.String name, java.lang.String description, java.lang.Double price, java.lang.Long sellerId, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.Instant createdAt, java.time.Instant updatedAt, java.time.Instant deletedAt) {
     this.productId = productId;
     this.name = name;
     this.description = description;
@@ -170,15 +170,15 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: productId = (java.util.UUID)value$; break;
-    case 1: name = (java.lang.CharSequence)value$; break;
-    case 2: description = (java.lang.CharSequence)value$; break;
+    case 1: name = value$ != null ? value$.toString() : null; break;
+    case 2: description = value$ != null ? value$.toString() : null; break;
     case 3: price = (java.lang.Double)value$; break;
     case 4: sellerId = (java.lang.Long)value$; break;
     case 5: categoryId = (java.util.UUID)value$; break;
     case 6: inventoryCount = (java.lang.Integer)value$; break;
-    case 7: createdAt = (java.time.LocalDate)value$; break;
-    case 8: updatedAt = (java.time.LocalDate)value$; break;
-    case 9: deletedAt = (java.time.LocalDate)value$; break;
+    case 7: createdAt = (java.time.Instant)value$; break;
+    case 8: updatedAt = (java.time.Instant)value$; break;
+    case 9: deletedAt = (java.time.Instant)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -204,7 +204,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'name' field.
    * @return The value of the 'name' field.
    */
-  public java.lang.CharSequence getName() {
+  public java.lang.String getName() {
     return name;
   }
 
@@ -213,7 +213,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'name' field.
    * @param value the value to set.
    */
-  public void setName(java.lang.CharSequence value) {
+  public void setName(java.lang.String value) {
     this.name = value;
   }
 
@@ -221,7 +221,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'description' field.
    * @return The value of the 'description' field.
    */
-  public java.lang.CharSequence getDescription() {
+  public java.lang.String getDescription() {
     return description;
   }
 
@@ -230,7 +230,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'description' field.
    * @param value the value to set.
    */
-  public void setDescription(java.lang.CharSequence value) {
+  public void setDescription(java.lang.String value) {
     this.description = value;
   }
 
@@ -306,7 +306,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'createdAt' field.
    * @return The value of the 'createdAt' field.
    */
-  public java.time.LocalDate getCreatedAt() {
+  public java.time.Instant getCreatedAt() {
     return createdAt;
   }
 
@@ -315,7 +315,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'createdAt' field.
    * @param value the value to set.
    */
-  public void setCreatedAt(java.time.LocalDate value) {
+  public void setCreatedAt(java.time.Instant value) {
     this.createdAt = value;
   }
 
@@ -323,7 +323,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'updatedAt' field.
    * @return The value of the 'updatedAt' field.
    */
-  public java.time.LocalDate getUpdatedAt() {
+  public java.time.Instant getUpdatedAt() {
     return updatedAt;
   }
 
@@ -332,7 +332,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'updatedAt' field.
    * @param value the value to set.
    */
-  public void setUpdatedAt(java.time.LocalDate value) {
+  public void setUpdatedAt(java.time.Instant value) {
     this.updatedAt = value;
   }
 
@@ -340,7 +340,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'deletedAt' field.
    * @return The value of the 'deletedAt' field.
    */
-  public java.time.LocalDate getDeletedAt() {
+  public java.time.Instant getDeletedAt() {
     return deletedAt;
   }
 
@@ -349,7 +349,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'deletedAt' field.
    * @param value the value to set.
    */
-  public void setDeletedAt(java.time.LocalDate value) {
+  public void setDeletedAt(java.time.Instant value) {
     this.deletedAt = value;
   }
 
@@ -395,15 +395,15 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
     implements org.apache.avro.data.RecordBuilder<OrderProductState> {
 
     private java.util.UUID productId;
-    private java.lang.CharSequence name;
-    private java.lang.CharSequence description;
+    private java.lang.String name;
+    private java.lang.String description;
     private double price;
     private long sellerId;
     private java.util.UUID categoryId;
     private int inventoryCount;
-    private java.time.LocalDate createdAt;
-    private java.time.LocalDate updatedAt;
-    private java.time.LocalDate deletedAt;
+    private java.time.Instant createdAt;
+    private java.time.Instant updatedAt;
+    private java.time.Instant deletedAt;
 
     /** Creates a new Builder */
     private Builder() {
@@ -550,7 +550,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'name' field.
       * @return The value.
       */
-    public java.lang.CharSequence getName() {
+    public java.lang.String getName() {
       return name;
     }
 
@@ -560,7 +560,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public com.product.service.coreapi.events.order.OrderProductState.Builder setName(java.lang.CharSequence value) {
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setName(java.lang.String value) {
       validate(fields()[1], value);
       this.name = value;
       fieldSetFlags()[1] = true;
@@ -590,7 +590,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'description' field.
       * @return The value.
       */
-    public java.lang.CharSequence getDescription() {
+    public java.lang.String getDescription() {
       return description;
     }
 
@@ -600,7 +600,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'description'.
       * @return This builder.
       */
-    public com.product.service.coreapi.events.order.OrderProductState.Builder setDescription(java.lang.CharSequence value) {
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setDescription(java.lang.String value) {
       validate(fields()[2], value);
       this.description = value;
       fieldSetFlags()[2] = true;
@@ -787,7 +787,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'createdAt' field.
       * @return The value.
       */
-    public java.time.LocalDate getCreatedAt() {
+    public java.time.Instant getCreatedAt() {
       return createdAt;
     }
 
@@ -797,7 +797,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'createdAt'.
       * @return This builder.
       */
-    public com.product.service.coreapi.events.order.OrderProductState.Builder setCreatedAt(java.time.LocalDate value) {
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setCreatedAt(java.time.Instant value) {
       validate(fields()[7], value);
       this.createdAt = value;
       fieldSetFlags()[7] = true;
@@ -827,7 +827,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'updatedAt' field.
       * @return The value.
       */
-    public java.time.LocalDate getUpdatedAt() {
+    public java.time.Instant getUpdatedAt() {
       return updatedAt;
     }
 
@@ -837,7 +837,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'updatedAt'.
       * @return This builder.
       */
-    public com.product.service.coreapi.events.order.OrderProductState.Builder setUpdatedAt(java.time.LocalDate value) {
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setUpdatedAt(java.time.Instant value) {
       validate(fields()[8], value);
       this.updatedAt = value;
       fieldSetFlags()[8] = true;
@@ -867,7 +867,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'deletedAt' field.
       * @return The value.
       */
-    public java.time.LocalDate getDeletedAt() {
+    public java.time.Instant getDeletedAt() {
       return deletedAt;
     }
 
@@ -877,7 +877,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'deletedAt'.
       * @return This builder.
       */
-    public com.product.service.coreapi.events.order.OrderProductState.Builder setDeletedAt(java.time.LocalDate value) {
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setDeletedAt(java.time.Instant value) {
       validate(fields()[9], value);
       this.deletedAt = value;
       fieldSetFlags()[9] = true;
@@ -909,15 +909,15 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       try {
         OrderProductState record = new OrderProductState();
         record.productId = fieldSetFlags()[0] ? this.productId : (java.util.UUID) defaultValue(fields()[0]);
-        record.name = fieldSetFlags()[1] ? this.name : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.description = fieldSetFlags()[2] ? this.description : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.name = fieldSetFlags()[1] ? this.name : (java.lang.String) defaultValue(fields()[1]);
+        record.description = fieldSetFlags()[2] ? this.description : (java.lang.String) defaultValue(fields()[2]);
         record.price = fieldSetFlags()[3] ? this.price : (java.lang.Double) defaultValue(fields()[3]);
         record.sellerId = fieldSetFlags()[4] ? this.sellerId : (java.lang.Long) defaultValue(fields()[4]);
         record.categoryId = fieldSetFlags()[5] ? this.categoryId : (java.util.UUID) defaultValue(fields()[5]);
         record.inventoryCount = fieldSetFlags()[6] ? this.inventoryCount : (java.lang.Integer) defaultValue(fields()[6]);
-        record.createdAt = fieldSetFlags()[7] ? this.createdAt : (java.time.LocalDate) defaultValue(fields()[7]);
-        record.updatedAt = fieldSetFlags()[8] ? this.updatedAt : (java.time.LocalDate) defaultValue(fields()[8]);
-        record.deletedAt = fieldSetFlags()[9] ? this.deletedAt : (java.time.LocalDate) defaultValue(fields()[9]);
+        record.createdAt = fieldSetFlags()[7] ? this.createdAt : (java.time.Instant) defaultValue(fields()[7]);
+        record.updatedAt = fieldSetFlags()[8] ? this.updatedAt : (java.time.Instant) defaultValue(fields()[8]);
+        record.deletedAt = fieldSetFlags()[9] ? this.deletedAt : (java.time.Instant) defaultValue(fields()[9]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
