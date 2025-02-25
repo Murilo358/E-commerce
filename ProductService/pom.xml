@@ -175,6 +175,8 @@
 							<goal>idl-protocol</goal>
 						</goals>
 						<configuration>
+							<fieldVisibility>PRIVATE</fieldVisibility>
+							<stringType>String</stringType>
 							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
 						</configuration>
