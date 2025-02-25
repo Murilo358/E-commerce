@@ -2,10 +2,8 @@ package com.product.service.query.order;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.product.service.coreapi.events.order.OrderStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.product.service.query.salesmetrics.SalesMetricsListener;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -21,6 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(SalesMetricsListener.class)
 public class OrderView {
 
     @Id

@@ -2,6 +2,7 @@ package com.product.service.query.salesmetrics;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.events.order.OrderProductState;
 import com.product.service.query.order.OrderView;
 import jakarta.persistence.PostPersist;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class SalesMetricsListener {
@@ -31,8 +33,18 @@ public class SalesMetricsListener {
 
             OffsetDateTime createdAt = orderView.getCreatedAt();
 
-            for (OrderProductState item :orderProductStates) {
-            //todo implemente
+            for (OrderProductState item : orderProductStates) {
+
+                Optional<SalesMetricsView> byId = salesMetricsRepository.findById(item.getProductId());
+                // todo get item quantity instead of 1
+                int totalSold = byId.map(i -> i.getTotalSold() + 1).orElse(1);
+
+                SalesMetricsView salesMetrics = SalesMetricsView.builder()
+                        .productId(item.getProductId())
+                        .totalSold(totalSold)
+                        .lastSold(DateTimeConversion.fromInstant(item.getCreatedAt())).build();
+
+                salesMetricsRepository.save(salesMetrics);
             }
 
         } catch (Exception e) {
