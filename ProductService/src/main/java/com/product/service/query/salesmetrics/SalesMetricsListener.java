@@ -6,12 +6,16 @@ import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.events.order.OrderProductState;
 import com.product.service.query.order.OrderView;
 import jakarta.persistence.PostPersist;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class SalesMetricsListener {
 
@@ -25,29 +29,47 @@ public class SalesMetricsListener {
     }
 
     @PostPersist
+    @Transactional
     public void afterInsert(OrderView orderView) {
         try {
-
-            List<OrderProductState> orderProductStates = objectMapper.readValue(orderView.getProducts().toString(), new TypeReference<List<OrderProductState>>() {
-            });
+            List<OrderProductState> orderProductStates = objectMapper.readValue(
+                    orderView.getProducts().toString(),
+                    new TypeReference<List<OrderProductState>>() {}
+            );
 
             OffsetDateTime createdAt = orderView.getCreatedAt();
 
             for (OrderProductState item : orderProductStates) {
+//                int quantitySold = item.getQuantity();
+                int quantitySold = 1;
 
-                Optional<SalesMetricsView> byId = salesMetricsRepository.findById(item.getProductId());
-                // todo get item quantity instead of 1
-                int totalSold = byId.map(i -> i.getTotalSold() + 1).orElse(1);
+                Optional<SalesMetricsView> existingMetrics = salesMetricsRepository.findById(item.getProductId());
 
-                SalesMetricsView salesMetrics = SalesMetricsView.builder()
-                        .productId(item.getProductId())
-                        .totalSold(totalSold)
-                        .lastSold(DateTimeConversion.fromInstant(item.getCreatedAt())).build();
+                OffsetDateTime oneMonthAgo = createdAt.minusMonths(1);
+
+                SalesMetricsView salesMetrics = existingMetrics
+                        .map(metrics -> {
+                            long soldLastMonth = (metrics.getLastSold().isAfter(oneMonthAgo))
+                                    ? metrics.getSoldLastMonth() + quantitySold
+                                    : quantitySold;
+
+                            return SalesMetricsView.builder()
+                                    .totalSold(metrics.getTotalSold() + quantitySold)
+                                    .soldLastMonth(soldLastMonth)
+                                    .lastSold(createdAt)
+                                    .build();
+                        })
+                        .orElse(SalesMetricsView.builder()
+                                .productId(item.getProductId())
+                                .totalSold(quantitySold)
+                                .soldLastMonth(quantitySold)
+                                .lastSold(createdAt)
+                                .build());
 
                 salesMetricsRepository.save(salesMetrics);
             }
-
         } catch (Exception e) {
+            log.error("Error while creating orders metrics");
         }
     }
 }

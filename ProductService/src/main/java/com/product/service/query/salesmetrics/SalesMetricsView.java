@@ -25,5 +25,7 @@ public class SalesMetricsView {
     private int totalSold;
     @Column(name = "last_sold")
     private OffsetDateTime lastSold;
+    @Column(name = "sold_last_month")
+    private long soldLastMonth;
 
 }

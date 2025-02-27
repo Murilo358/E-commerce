@@ -22,6 +22,8 @@ import com.product.service.exception.NotFoundException;
 import com.product.service.query.category.CategoryRepository;
 import com.product.service.query.category.CategoryView;
 import com.product.service.query.order.OrderRepository;
+import com.product.service.query.salesmetrics.SalesMetricsRepository;
+import com.product.service.query.salesmetrics.SalesMetricsView;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
 import com.product.service.utils.I18nUtils;
@@ -59,7 +61,9 @@ public class ProductProjector {
 
     private final OrderRepository orderRepository;
 
-    public ProductProjector(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher, Product product, OrderRepository orderRepository) {
+    private final SalesMetricsRepository salesMetricsRepository;
+
+    public ProductProjector(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaPublisher kafkaPublisher, Product product, OrderRepository orderRepository, SalesMetricsRepository salesMetricsRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -67,6 +71,7 @@ public class ProductProjector {
         this.kafkaPublisher = kafkaPublisher;
         this.product = product;
         this.orderRepository = orderRepository;
+        this.salesMetricsRepository = salesMetricsRepository;
     }
 
     @EventHandler
@@ -214,9 +219,8 @@ public class ProductProjector {
             productDto.setInventoryCount(product.getInventoryCount());
             productDto.setUpdatedAt(product.getUpdatedAt());
             productDto.setCreatedAt(product.getCreatedAt());
-//            orderRepository.count
-            //TODO implement it
-            productDto.setSoldLastMonthCount(100);
+            Long soldLastMonth = salesMetricsRepository.findById(product.getId()).map(SalesMetricsView::getSoldLastMonth).orElse(0L);
+            productDto.setSoldLastMonthCount(soldLastMonth);
 
             Optional<CategoryView> categoryOpt = categoryRepository.findById(product.getCategoryId());
 

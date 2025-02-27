@@ -1,0 +1,1 @@
+ALTER TABLE catalog.sales_metrics ADD COLUMN sold_last_month BIGINT DEFAULT 0;
