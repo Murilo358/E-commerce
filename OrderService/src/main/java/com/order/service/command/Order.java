@@ -8,6 +8,7 @@ import com.order.service.coreapi.events.order.OrderStateUpdated;
 import com.order.service.coreapi.events.order.OrderStatus;
 import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
 import com.order.service.dto.productDetail.OrderProduct;
+import com.order.service.gui.order.dto.OrderProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -50,16 +51,20 @@ public class Order {
         try {
 
 
+            List<UUID> productsIds = command.getProducts().stream().map(OrderProductDTO::productId).toList();
+
             List<OrderProduct>  productsView = queryGateway.query(
-                    new FindProductsByIdsQuery(command.getProducts()),
+                    new FindProductsByIdsQuery(productsIds),
                     ResponseTypes.multipleInstancesOf(OrderProduct.class)
             ).get();
 
 
             if(productsView == null || productsView.isEmpty()){
-                log.error("Products not found with sent id's");
+                log.error("Products not found with sent id's  {} ", productsIds);
+                return;
             }
 
+            //todo fazer o total corretamente
             Double totalPrice = productsView.stream().map(OrderProduct::getPrice).filter(Objects::nonNull).reduce(0.0, Double::sum);
             Double totalWeight = productsView.stream().map(OrderProduct::getWeight).filter(Objects::nonNull).reduce(0.0, Double::sum);
 

@@ -1,6 +1,5 @@
 package com.product.service.gui.product;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.product.service.coreapi.queries.product.FindBySellerId;
 import com.product.service.coreapi.queries.product.FindForHomePageQuery;
 import com.product.service.dto.HomePageProductsDto;

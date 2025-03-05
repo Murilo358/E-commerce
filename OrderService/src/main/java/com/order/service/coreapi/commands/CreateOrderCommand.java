@@ -1,5 +1,6 @@
 package com.order.service.coreapi.commands;
 
+import com.order.service.gui.order.dto.OrderProductDTO;
 import com.order.service.query.product.ProductView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class CreateOrderCommand {
     @RoutingKey
     UUID orderId;
-    List<UUID> products;
+    List<OrderProductDTO> products;
     Long paymentMethod;
     Long buyerid;
 
