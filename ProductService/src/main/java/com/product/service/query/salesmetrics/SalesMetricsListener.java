@@ -40,8 +40,8 @@ public class SalesMetricsListener {
             OffsetDateTime createdAt = orderView.getCreatedAt();
 
             for (OrderProductState item : orderProductStates) {
-//                int quantitySold = item.getQuantity();
-                int quantitySold = 1;
+
+                long quantitySold = item.getQuantity();
 
                 Optional<SalesMetricsView> existingMetrics = salesMetricsRepository.findById(item.getProductId());
 

@@ -21,11 +21,9 @@ import org.axonframework.spring.stereotype.Aggregate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Aggregate
@@ -53,6 +51,8 @@ public class Order {
 
             List<UUID> productsIds = command.getProducts().stream().map(OrderProductDTO::productId).toList();
 
+            Map<UUID, Long> collect = command.getProducts().stream().collect(Collectors.toMap(OrderProductDTO::productId, OrderProductDTO::quantity));
+
             List<OrderProduct>  productsView = queryGateway.query(
                     new FindProductsByIdsQuery(productsIds),
                     ResponseTypes.multipleInstancesOf(OrderProduct.class)
@@ -64,9 +64,9 @@ public class Order {
                 return;
             }
 
-            //todo fazer o total corretamente
-            Double totalPrice = productsView.stream().map(OrderProduct::getPrice).filter(Objects::nonNull).reduce(0.0, Double::sum);
-            Double totalWeight = productsView.stream().map(OrderProduct::getWeight).filter(Objects::nonNull).reduce(0.0, Double::sum);
+
+            Double totalPrice = productsView.stream().map(i -> i.getPrice() * collect.get(i.getId())).reduce(0.0, Double::sum);
+            Double totalWeight = productsView.stream().map(i -> i.getWeight() * collect.get(i.getId())).reduce(0.0, Double::sum);
 
             List<OrderProductState> products = new ArrayList<>();
 

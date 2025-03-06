@@ -41,6 +41,10 @@
               "type": "long"
             },
             {
+              "name": "quantity",
+              "type": "long"
+            },
+            {
               "name": "categoryId",
               "type": {
                 "logicalType": "uuid",
