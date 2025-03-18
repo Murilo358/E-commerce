@@ -238,9 +238,9 @@ public class ProductProjector {
 
                 UserView user = userOpt.get();
                 long ordersLastMonth = orderRepository
-                        .findCountBySellerIdAndCreatedAtBetween(user.getId(), LocalDate.now().minusMonths(1L), LocalDate.now());
+                        .findCountBySellerIdAndCreatedAtBetween(user.getId(), OffsetDateTime.now().minusMonths(1L), OffsetDateTime.now());
 
-                long productsLastMonth = productRepository.countBySellerIdAndCreatedAtBetween(user.getId(), LocalDateTime.now().minusMonths(1L), LocalDateTime.now());
+                long productsLastMonth = productRepository.countBySellerIdAndCreatedAtBetween(user.getId(), OffsetDateTime.now().minusMonths(1L), OffsetDateTime.now());
 
                 SellerSimpleDto sellerSimpleDto = new SellerSimpleDto(user.getId(), user.getName(), productsLastMonth, ordersLastMonth);
                 productDto.setSeller(sellerSimpleDto);
