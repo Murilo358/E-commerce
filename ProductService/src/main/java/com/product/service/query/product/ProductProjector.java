@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -194,8 +196,22 @@ public class ProductProjector {
     public SellerDto handle(FindBySellerId query) {
 
         String sellerName = userRepository.findById(query.getSellerId()).map(UserView::getName).orElse(null);
-        List<ProductView> bySellerId = productRepository.findBySellerId(query.getSellerId(), query.getPageable().toPageable());
-        Map<String, List<ProductView>> collect = bySellerId.stream().collect(Collectors.groupingBy(i -> categoryRepository.findById(i.getCategoryId()).map((c) -> I18nUtils.getI18nValue(c.getName())).orElse("")));
+        Page<ProductView> productViewBySellerId = productRepository.findProductViewBySellerId(
+                query.getSellerId(), query.getPageable().toPageable()
+        );
+
+        Map<String, Page<ProductView>> collect = productViewBySellerId
+                .getContent()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        i -> categoryRepository.findById(i.getCategoryId()).map(CategoryView::getName).orElse("Desconhecido"),
+                        LinkedHashMap::new,
+                        Collectors.collectingAndThen(Collectors.toList(), list ->
+                                new PageImpl<>(list, productViewBySellerId.getPageable(), productViewBySellerId.getTotalElements())
+                        )
+                ));
+
+
         return new SellerDto(sellerName, collect);
 
     }
