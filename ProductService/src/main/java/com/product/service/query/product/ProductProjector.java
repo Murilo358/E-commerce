@@ -27,6 +27,8 @@ import com.product.service.query.salesmetrics.SalesMetricsView;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
 import com.product.service.utils.I18nUtils;
+import com.product.service.wrapperpageables.SortWrapper;
+import com.product.service.wrappers.PageableWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -193,28 +195,24 @@ public class ProductProjector {
     }
 
     @QueryHandler
-    public SellerDto handle(FindBySellerId query) {
+    public PageableWrapper handle(FindBySellerId query) {
 
         String sellerName = userRepository.findById(query.getSellerId()).map(UserView::getName).orElse(null);
         Page<ProductView> productViewBySellerId = productRepository.findProductViewBySellerId(
                 query.getSellerId(), query.getPageable().toPageable()
         );
 
-        Map<String, Page<ProductView>> collect = productViewBySellerId
-                .getContent()
-                .stream()
-                .collect(Collectors.groupingBy(
-                        i -> categoryRepository.findById(i.getCategoryId()).map(CategoryView::getName).orElse("Desconhecido"),
-                        LinkedHashMap::new,
-                        Collectors.collectingAndThen(Collectors.toList(), list ->
-                                new PageImpl<>(list, productViewBySellerId.getPageable(), productViewBySellerId.getTotalElements())
-                        )
-                ));
+
+        Map<String, List<ProductView>> collect = productViewBySellerId.stream().collect(Collectors.groupingBy(i -> categoryRepository.findById(i.getCategoryId()).map((c) -> I18nUtils.getI18nValue(c.getName())).orElse("Desconhecido")));
+
+        PageableWrapper productViewPageableWrapper = PageableWrapper.fromPage(productViewBySellerId);
+        SellerDto sellerDto = new SellerDto(sellerName, collect);
+        productViewPageableWrapper.setContent(sellerDto);
 
 
-        return new SellerDto(sellerName, collect);
-
+        return productViewPageableWrapper;
     }
+
 
     public ProductDto buildProductDto(ProductView productView) {
         return buildProductDto(Optional.of(productView));

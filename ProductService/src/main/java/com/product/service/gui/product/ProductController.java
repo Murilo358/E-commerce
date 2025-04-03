@@ -116,12 +116,12 @@ public class ProductController {
     }
 
     @GetMapping("/getBySellerId/{sellerId}")
-    public CompletableFuture<SellerDto> getProductsBySellerId(
+    public CompletableFuture<PageableWrapper> getProductsBySellerId(
             @PageableDefault(page = 0, size = 50, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable("sellerId") Long sellerId) {
         return queryGateway.query(
                 new FindBySellerId(sellerId, PageableWrapper.fromPageable(pageable)),
-                ResponseTypes.instanceOf(SellerDto.class)
+                ResponseTypes.instanceOf(PageableWrapper.class)
         );
 
     }
