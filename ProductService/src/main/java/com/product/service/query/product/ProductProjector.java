@@ -27,7 +27,7 @@ import com.product.service.query.salesmetrics.SalesMetricsView;
 import com.product.service.query.user.UserRepository;
 import com.product.service.query.user.UserView;
 import com.product.service.utils.I18nUtils;
-import com.product.service.wrapperpageables.SortWrapper;
+import com.product.service.wrappers.SortWrapper;
 import com.product.service.wrappers.PageableWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;

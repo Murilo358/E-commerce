@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import com.product.service.wrapperpageables.SortWrapper;
+import com.product.service.wrappers.SortWrapper;
 
 import java.io.Serializable;
 import java.util.List;
