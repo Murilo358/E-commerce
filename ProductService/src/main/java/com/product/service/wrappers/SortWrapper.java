@@ -1,4 +1,4 @@
-package com.product.service.wrapperpageables;
+package com.product.service.wrappers;
 
 import org.springframework.data.domain.Sort;
 import java.io.Serializable;
