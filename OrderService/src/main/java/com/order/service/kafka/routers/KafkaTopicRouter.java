@@ -34,8 +34,7 @@ public class KafkaTopicRouter {
         eventTopicMap.put(CategoryUpdatedEvent.class, "categoryUpdated");
         eventTopicMap.put(PromotionCreatedEvent.class, "promotionCreated");
         eventTopicMap.put(PromotionDeleteEvent.class, "promotionDeleted");
-        eventTopicMap.put(OrderCreatedEvent.class, "orderCreated");
-        eventTopicMap.put(OrderStateUpdated.class, "orderStateUpdated");
+
 
     }
 
