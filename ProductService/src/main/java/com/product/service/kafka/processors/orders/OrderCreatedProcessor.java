@@ -3,6 +3,7 @@ package com.product.service.kafka.processors.orders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.product.service.adapters.DateTimeConversion;
 import com.product.service.coreapi.events.order.OrderCreatedEvent;
 import com.product.service.kafka.processors.EventProcessor;
@@ -20,7 +21,7 @@ public class OrderCreatedProcessor implements EventProcessor<OrderCreatedEvent> 
 
     private static final Logger log = LoggerFactory.getLogger(OrderCreatedProcessor.class);
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private final OrderRepository orderRepository;
 
@@ -34,7 +35,7 @@ public class OrderCreatedProcessor implements EventProcessor<OrderCreatedEvent> 
         JsonNode products = null;
 
         try {
-            products = mapper.readTree(mapper.writeValueAsString(event.getProducts()));
+            products = mapper.readTree(event.getProducts().toString( ));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +49,7 @@ public class OrderCreatedProcessor implements EventProcessor<OrderCreatedEvent> 
 
 
         OrderView order = OrderView.builder()
+                .paymentMethod(event.getPaymentMethod())
                 .id(event.getId())
                 .products(products)
                 .totalPrice(event.getTotalPrice())

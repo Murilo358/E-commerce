@@ -92,17 +92,17 @@
       }
     },
     {
-      "name": "payment_method",
+      "name": "paymentMethod",
       "type": "long",
       "doc": "Payment method used for the order"
     },
     {
-      "name": "total_price",
+      "name": "totalPrice",
       "type": "double",
       "doc": "Total price of the order"
     },
     {
-      "name": "created_at",
+      "name": "createdAt",
       "type": [
         "null",
         {
@@ -113,7 +113,7 @@
       "doc": "Date the order was created"
     },
     {
-      "name": "updated_at",
+      "name": "updatedAt",
       "type": [
         "null",
         {
@@ -125,9 +125,14 @@
       "doc": "Date the order was last updated"
     },
     {
-      "name": "buyer_id",
+      "name": "buyerId",
       "type": "long",
       "doc": "ID of the buyer"
+    },
+    {
+      "name": "sellerId",
+      "type": "long",
+      "doc": "ID of the seller"
     },
     {
       "name": "status",
