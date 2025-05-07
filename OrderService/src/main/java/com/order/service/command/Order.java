@@ -66,7 +66,7 @@ public class Order {
 
 
             Double totalPrice = productsView.stream().map(i -> i.getPrice() * collect.get(i.getId())).reduce(0.0, Double::sum);
-            Double totalWeight = productsView.stream().map(i -> i.getWeight() * collect.get(i.getId())).reduce(0.0, Double::sum);
+            Double totalWeight = productsView.stream().filter(i -> i.getWeight() != null).map(i -> i.getWeight() * collect.get(i.getId())).reduce(0.0, Double::sum);
 
             List<OrderProductState> products = new ArrayList<>();
 
