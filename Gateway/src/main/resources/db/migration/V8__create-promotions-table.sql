@@ -4,8 +4,8 @@ CREATE TABLE catalog.promotions
     product_id  UUID      NOT NULL,
     new_price   BIGINT    NOT NULL,
     description TEXT      NOT NULL,
-    start_date  DATE      NOT NULL,
-    end_date    DATE      NOT NULL
+    start_date  TIMESTAMP WITH TIME ZONE       NOT NULL ,
+    end_date    TIMESTAMP WITH TIME ZONE       NOT NULL
 );
 ALTER TABLE
     catalog.promotions
