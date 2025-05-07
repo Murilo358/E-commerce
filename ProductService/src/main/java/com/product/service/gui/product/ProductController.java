@@ -117,7 +117,7 @@ public class ProductController {
 
     @GetMapping("/getBySellerId/{sellerId}")
     public CompletableFuture<PageableWrapper> getProductsBySellerId(
-            @PageableDefault(page = 0, size = 50, direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(page = 0, size = 20, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable("sellerId") Long sellerId) {
         return queryGateway.query(
                 new FindBySellerId(sellerId, PageableWrapper.fromPageable(pageable)),
