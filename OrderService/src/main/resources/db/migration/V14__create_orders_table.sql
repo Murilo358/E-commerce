@@ -1,15 +1,15 @@
 CREATE TABLE transactions.orders
 (
     id             UUID,
-    products       jsonb               NOT NULL,
-    payment_method BIGINT              NOT NULL,
-    total_price    DECIMAL(10, 2)      NOT NULL,
-    created_at     DATE                NOT NULL,
-    updated_at     DATE                DEFAULT CURRENT_DATE,
-    seller_id      BIGINT              NOT NULL,
-    buyer_id       BIGINT              NOT NULL,
-    status         VARCHAR(50)         NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'canceled', 'shipped', 'delivered')),
-    weight         DECIMAL(10, 2)      NOT NULL,
+    products       jsonb                    NOT NULL,
+    payment_method BIGINT                   NOT NULL,
+    total_price    DECIMAL(10, 2)           NOT NULL,
+    created_at     TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    seller_id      BIGINT                   NOT NULL,
+    buyer_id       BIGINT                   NOT NULL,
+    status         VARCHAR(50)              NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'canceled', 'shipped', 'delivered')),
+    weight         DECIMAL(10, 2)           NOT NULL,
     PRIMARY KEY (id)
 );
 
