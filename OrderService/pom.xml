@@ -174,16 +174,17 @@
 				<executions>
 					<execution>
 						<id>schemas</id>
-						<phase>none</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>schema</goal>
+							<goal>protocol</goal>
+							<goal>idl-protocol</goal>
 						</goals>
 						<configuration>
-							<createSetters>false</createSetters>
-							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
-							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
 							<fieldVisibility>PRIVATE</fieldVisibility>
 							<stringType>String</stringType>
+							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
+							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
