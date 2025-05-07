@@ -18,6 +18,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -42,13 +43,12 @@ public class CustomKafkaConsumer {
     private KafkaConsumer<String, Object> consumer;
     private ExecutorService executorService;
 
-    //todo fix on prod
-//    @Value("${spring.kafka.bootstrap-servers}")
-//    private String bootstrapServers;
-//
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
 //    @Value("${spring.kafka.consumer.group-id}")
 //    private String groupId;
-//
+
 //    @Value("${spring.kafka.schema.registry-url}")
 //    private String schemaRegistryUrl;
 

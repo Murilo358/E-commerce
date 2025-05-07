@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class KafkaTopicRouter {
+public class KafkaConsumerTopicRouter {
 
     private final Map<Class<?>, String> eventTopicMap = new HashMap<>();
 
-    public KafkaTopicRouter() {
+    public KafkaConsumerTopicRouter() {
 
         eventTopicMap.put(ProductCreatedEvent.class, "productCreated");
         eventTopicMap.put(ProductDeletedEvent.class, "productDeleted");

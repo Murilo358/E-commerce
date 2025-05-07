@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.order.service.kafka.processors.EventProcessor;
 import com.order.service.kafka.routers.EventProcessorRegistry;
 import com.order.service.kafka.routers.EventTypeRegistry;
-import com.order.service.kafka.routers.KafkaTopicRouter;
+import com.order.service.kafka.routers.KafkaConsumerTopicRouter;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import jakarta.annotation.PostConstruct;
@@ -18,9 +18,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -36,7 +34,7 @@ public class CustomKafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomKafkaConsumer.class);
 
-    private final KafkaTopicRouter topicRouter;
+    private final KafkaConsumerTopicRouter topicRouter;
     private final EventProcessorRegistry processorRegistry;
 
     private final EventTypeRegistry eventTypeRegistry;
@@ -47,19 +45,18 @@ public class CustomKafkaConsumer {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.consumer.group-id}")
-    private String groupId;
+//    @Value("${spring.kafka.consumer.group-id}")
+//    private String groupId;
+//
+//    @Value("${spring.kafka.schema.registry-url}")
+//    private String schemaRegistryUrl;
 
-    @Value("${spring.kafka.schema.registry-url}")
-    private String schemaRegistryUrl;
-
-    public CustomKafkaConsumer(EventTypeRegistry eventTypeRegistry, KafkaTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
+    public CustomKafkaConsumer(EventTypeRegistry eventTypeRegistry, KafkaConsumerTopicRouter topicRouter, EventProcessorRegistry processorRegistry) {
         this.eventTypeRegistry = eventTypeRegistry;
         this.topicRouter = topicRouter;
         this.processorRegistry = processorRegistry;
     }
 
-    @Bean
     public KafkaConsumer<String, Object> createKafkaConsumer() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
@@ -72,6 +69,7 @@ public class CustomKafkaConsumer {
 
     @PostConstruct
     public void init() {
+        this.consumer = createKafkaConsumer();
         subscribeToAllTopics();
 
         this.executorService = Executors.newSingleThreadExecutor();

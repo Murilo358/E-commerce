@@ -1,6 +1,6 @@
 package com.order.service.kafka.publisher;
 
-import com.order.service.kafka.routers.KafkaTopicRouter;
+import com.order.service.kafka.routers.KafkaProducerTopicRouter;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +16,11 @@ public class KafkaPublisher {
     private static final Logger log = LoggerFactory.getLogger(KafkaPublisher.class);
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    private final KafkaTopicRouter kafkaTopicRouter;
+    private final KafkaProducerTopicRouter kafkaProducerTopicRouter;
 
-    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, KafkaTopicRouter kafkaTopicRouter) {
+    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, KafkaProducerTopicRouter kafkaProducerTopicRouter) {
         this.kafkaTemplate = kafkaTemplate;
-        this.kafkaTopicRouter = kafkaTopicRouter;
+        this.kafkaProducerTopicRouter = kafkaProducerTopicRouter;
     }
 
     @Retryable(
@@ -32,7 +32,7 @@ public class KafkaPublisher {
     @CircuitBreaker(name = "kafkaBreaker", fallbackMethod = "fallbackMethod")
     public void send(String key, Object value) {
 
-        String topic = kafkaTopicRouter.getTopicForEvent(value);
+        String topic = kafkaProducerTopicRouter.getTopicForEvent(value);
 
         sendTo(topic, key, value);
     }
