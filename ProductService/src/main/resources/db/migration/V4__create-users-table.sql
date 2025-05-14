@@ -1,4 +1,4 @@
-create table
+create table IF NOT EXISTS
     users_management.users
 (
     id         bigserial,

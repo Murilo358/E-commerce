@@ -1,4 +1,4 @@
-create table
+create table IF NOT EXISTS
     users_management.users
 (
     id         bigserial,
@@ -12,5 +12,6 @@ create table
     constraint users_pkey primary key (id),
     constraint users_cpf_key unique (cpf),
     constraint users_email_key unique (email),
-    profile_id BIGINT NOT NULL
+    profile_id BIGINT NOT NULL,
+    is_enabled BOOLEAN DEFAULT(FALSE)
 ) tablespace pg_default;
