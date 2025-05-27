@@ -52,6 +52,10 @@
               "type": "int"
             },
             {
+              "name": "quantity",
+              "type": "int"
+            },
+            {
               "name": "createdAt",
               "default": null,
               "type": [

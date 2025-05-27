@@ -5,16 +5,21 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.order.service.adapters.DateTimeConversion;
 import com.order.service.config.jackson.JacksonAvroModule;
 import com.order.service.coreapi.events.order.*;
 import com.order.service.kafka.publisher.KafkaPublisher;
 import com.order.service.query.product.ProductRepository;
+import com.order.service.query.salesmetrics.SalesMetricsRepository;
+import com.order.service.query.salesmetrics.SalesMetricsView;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +32,17 @@ public class OrderProjector {
 
     private final OrderRepository orderRepository;
 
+    private final SalesMetricsRepository salesMetricsRepository;
+
     private final ProductRepository productRepository;
 
     private final KafkaPublisher kafkaPublisher;
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).registerModule(new JacksonAvroModule());
 
-    public OrderProjector(OrderRepository orderRepository, ProductRepository productRepository, KafkaPublisher kafkaPublisher) {
+    public OrderProjector(OrderRepository orderRepository, SalesMetricsRepository salesMetricsRepository, ProductRepository productRepository, KafkaPublisher kafkaPublisher) {
         this.orderRepository = orderRepository;
+        this.salesMetricsRepository = salesMetricsRepository;
         this.productRepository = productRepository;
         this.kafkaPublisher = kafkaPublisher;
     }
@@ -52,6 +60,26 @@ public class OrderProjector {
             products = objectMapper.readTree(objectMapper.writeValueAsString(event.getProducts()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+
+        for (OrderProductState product : event.getProducts()) {
+
+            UUID productId = product.getProductId();
+            SalesMetricsView metrics = salesMetricsRepository.findById(productId)
+                    .orElse(SalesMetricsView.builder()
+                            .productId(productId)
+                            .totalSold(0)
+                            .soldLastMonth(0)
+                            .lastSold(null)
+                            .build());
+
+            metrics.setTotalSold(metrics.getTotalSold() + product.getQuantity());
+            OffsetDateTime offsetDateTime = DateTimeConversion.fromInstantToOffset(event.getCreatedAt());
+            metrics.setLastSold(offsetDateTime);
+
+            salesMetricsRepository.save(metrics);
+
+
         }
 
         OrderView orderView = OrderView.builder()

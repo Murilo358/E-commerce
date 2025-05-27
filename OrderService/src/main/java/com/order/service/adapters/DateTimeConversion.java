@@ -18,4 +18,12 @@ public class DateTimeConversion {
         return null;
     }
 
+    public static OffsetDateTime fromInstantToOffset(Instant instant) {
+        if (instant != null) {
+
+            return OffsetDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
+
+        }
+        return null;
+    }
 }
