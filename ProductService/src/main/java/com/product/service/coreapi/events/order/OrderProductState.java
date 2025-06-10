@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderProductState extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6283230203277442954L;
+  private static final long serialVersionUID = -4120549724403208138L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderProductState\",\"namespace\":\"com.product.service.coreapi.events.order\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderProductState\",\"namespace\":\"com.product.service.coreapi.events.order\",\"fields\":[{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"price\",\"type\":\"double\"},{\"name\":\"sellerId\",\"type\":\"long\"},{\"name\":\"quantity\",\"type\":\"long\"},{\"name\":\"categoryId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"inventoryCount\",\"type\":\"int\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null},{\"name\":\"deletedAt\",\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -81,6 +81,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
   private java.lang.String description;
   private double price;
   private long sellerId;
+  private long quantity;
   private java.util.UUID categoryId;
   private int inventoryCount;
   private java.time.LocalDate createdAt;
@@ -101,18 +102,20 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    * @param description The new value for description
    * @param price The new value for price
    * @param sellerId The new value for sellerId
+   * @param quantity The new value for quantity
    * @param categoryId The new value for categoryId
    * @param inventoryCount The new value for inventoryCount
    * @param createdAt The new value for createdAt
    * @param updatedAt The new value for updatedAt
    * @param deletedAt The new value for deletedAt
    */
-  public OrderProductState(java.util.UUID productId, java.lang.String name, java.lang.String description, java.lang.Double price, java.lang.Long sellerId, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.LocalDate createdAt, java.time.LocalDate updatedAt, java.time.LocalDate deletedAt) {
+  public OrderProductState(java.util.UUID productId, java.lang.String name, java.lang.String description, java.lang.Double price, java.lang.Long sellerId, java.lang.Long quantity, java.util.UUID categoryId, java.lang.Integer inventoryCount, java.time.LocalDate createdAt, java.time.LocalDate updatedAt, java.time.LocalDate deletedAt) {
     this.productId = productId;
     this.name = name;
     this.description = description;
     this.price = price;
     this.sellerId = sellerId;
+    this.quantity = quantity;
     this.categoryId = categoryId;
     this.inventoryCount = inventoryCount;
     this.createdAt = createdAt;
@@ -135,11 +138,12 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
     case 2: return description;
     case 3: return price;
     case 4: return sellerId;
-    case 5: return categoryId;
-    case 6: return inventoryCount;
-    case 7: return createdAt;
-    case 8: return updatedAt;
-    case 9: return deletedAt;
+    case 5: return quantity;
+    case 6: return categoryId;
+    case 7: return inventoryCount;
+    case 8: return createdAt;
+    case 9: return updatedAt;
+    case 10: return deletedAt;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -147,6 +151,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
   private static final org.apache.avro.Conversion<?>[] conversions =
       new org.apache.avro.Conversion<?>[] {
       new org.apache.avro.Conversions.UUIDConversion(),
+      null,
       null,
       null,
       null,
@@ -174,11 +179,12 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
     case 2: description = value$ != null ? value$.toString() : null; break;
     case 3: price = (java.lang.Double)value$; break;
     case 4: sellerId = (java.lang.Long)value$; break;
-    case 5: categoryId = (java.util.UUID)value$; break;
-    case 6: inventoryCount = (java.lang.Integer)value$; break;
-    case 7: createdAt = (java.time.LocalDate)value$; break;
-    case 8: updatedAt = (java.time.LocalDate)value$; break;
-    case 9: deletedAt = (java.time.LocalDate)value$; break;
+    case 5: quantity = (java.lang.Long)value$; break;
+    case 6: categoryId = (java.util.UUID)value$; break;
+    case 7: inventoryCount = (java.lang.Integer)value$; break;
+    case 8: createdAt = (java.time.LocalDate)value$; break;
+    case 9: updatedAt = (java.time.LocalDate)value$; break;
+    case 10: deletedAt = (java.time.LocalDate)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -266,6 +272,23 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
    */
   public void setSellerId(long value) {
     this.sellerId = value;
+  }
+
+  /**
+   * Gets the value of the 'quantity' field.
+   * @return The value of the 'quantity' field.
+   */
+  public long getQuantity() {
+    return quantity;
+  }
+
+
+  /**
+   * Sets the value of the 'quantity' field.
+   * @param value the value to set.
+   */
+  public void setQuantity(long value) {
+    this.quantity = value;
   }
 
   /**
@@ -399,6 +422,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
     private java.lang.String description;
     private double price;
     private long sellerId;
+    private long quantity;
     private java.util.UUID categoryId;
     private int inventoryCount;
     private java.time.LocalDate createdAt;
@@ -436,25 +460,29 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
         this.sellerId = data().deepCopy(fields()[4].schema(), other.sellerId);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.categoryId)) {
-        this.categoryId = data().deepCopy(fields()[5].schema(), other.categoryId);
+      if (isValidValue(fields()[5], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[5].schema(), other.quantity);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.inventoryCount)) {
-        this.inventoryCount = data().deepCopy(fields()[6].schema(), other.inventoryCount);
+      if (isValidValue(fields()[6], other.categoryId)) {
+        this.categoryId = data().deepCopy(fields()[6].schema(), other.categoryId);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
-      if (isValidValue(fields()[7], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[7].schema(), other.createdAt);
+      if (isValidValue(fields()[7], other.inventoryCount)) {
+        this.inventoryCount = data().deepCopy(fields()[7].schema(), other.inventoryCount);
         fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
-      if (isValidValue(fields()[8], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[8].schema(), other.updatedAt);
+      if (isValidValue(fields()[8], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[8].schema(), other.createdAt);
         fieldSetFlags()[8] = other.fieldSetFlags()[8];
       }
-      if (isValidValue(fields()[9], other.deletedAt)) {
-        this.deletedAt = data().deepCopy(fields()[9].schema(), other.deletedAt);
+      if (isValidValue(fields()[9], other.updatedAt)) {
+        this.updatedAt = data().deepCopy(fields()[9].schema(), other.updatedAt);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
+      }
+      if (isValidValue(fields()[10], other.deletedAt)) {
+        this.deletedAt = data().deepCopy(fields()[10].schema(), other.deletedAt);
+        fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
     }
 
@@ -484,25 +512,29 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
         this.sellerId = data().deepCopy(fields()[4].schema(), other.sellerId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.categoryId)) {
-        this.categoryId = data().deepCopy(fields()[5].schema(), other.categoryId);
+      if (isValidValue(fields()[5], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[5].schema(), other.quantity);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.inventoryCount)) {
-        this.inventoryCount = data().deepCopy(fields()[6].schema(), other.inventoryCount);
+      if (isValidValue(fields()[6], other.categoryId)) {
+        this.categoryId = data().deepCopy(fields()[6].schema(), other.categoryId);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[7].schema(), other.createdAt);
+      if (isValidValue(fields()[7], other.inventoryCount)) {
+        this.inventoryCount = data().deepCopy(fields()[7].schema(), other.inventoryCount);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[8].schema(), other.updatedAt);
+      if (isValidValue(fields()[8], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[8].schema(), other.createdAt);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.deletedAt)) {
-        this.deletedAt = data().deepCopy(fields()[9].schema(), other.deletedAt);
+      if (isValidValue(fields()[9], other.updatedAt)) {
+        this.updatedAt = data().deepCopy(fields()[9].schema(), other.updatedAt);
         fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.deletedAt)) {
+        this.deletedAt = data().deepCopy(fields()[10].schema(), other.deletedAt);
+        fieldSetFlags()[10] = true;
       }
     }
 
@@ -705,6 +737,45 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
+      * Gets the value of the 'quantity' field.
+      * @return The value.
+      */
+    public long getQuantity() {
+      return quantity;
+    }
+
+
+    /**
+      * Sets the value of the 'quantity' field.
+      * @param value The value of 'quantity'.
+      * @return This builder.
+      */
+    public com.product.service.coreapi.events.order.OrderProductState.Builder setQuantity(long value) {
+      validate(fields()[5], value);
+      this.quantity = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'quantity' field has been set.
+      * @return True if the 'quantity' field has been set, false otherwise.
+      */
+    public boolean hasQuantity() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'quantity' field.
+      * @return This builder.
+      */
+    public com.product.service.coreapi.events.order.OrderProductState.Builder clearQuantity() {
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'categoryId' field.
       * @return The value.
       */
@@ -719,9 +790,9 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder setCategoryId(java.util.UUID value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.categoryId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -730,7 +801,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'categoryId' field has been set, false otherwise.
       */
     public boolean hasCategoryId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -740,7 +811,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder clearCategoryId() {
       categoryId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -759,9 +830,9 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder setInventoryCount(int value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.inventoryCount = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -770,7 +841,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'inventoryCount' field has been set, false otherwise.
       */
     public boolean hasInventoryCount() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -779,7 +850,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder clearInventoryCount() {
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -798,9 +869,9 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder setCreatedAt(java.time.LocalDate value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.createdAt = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -809,7 +880,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'createdAt' field has been set, false otherwise.
       */
     public boolean hasCreatedAt() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -819,7 +890,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder clearCreatedAt() {
       createdAt = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -838,9 +909,9 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder setUpdatedAt(java.time.LocalDate value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.updatedAt = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -849,7 +920,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'updatedAt' field has been set, false otherwise.
       */
     public boolean hasUpdatedAt() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -859,7 +930,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder clearUpdatedAt() {
       updatedAt = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -878,9 +949,9 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return This builder.
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder setDeletedAt(java.time.LocalDate value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.deletedAt = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -889,7 +960,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       * @return True if the 'deletedAt' field has been set, false otherwise.
       */
     public boolean hasDeletedAt() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -899,7 +970,7 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
       */
     public com.product.service.coreapi.events.order.OrderProductState.Builder clearDeletedAt() {
       deletedAt = null;
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -913,11 +984,12 @@ public class OrderProductState extends org.apache.avro.specific.SpecificRecordBa
         record.description = fieldSetFlags()[2] ? this.description : (java.lang.String) defaultValue(fields()[2]);
         record.price = fieldSetFlags()[3] ? this.price : (java.lang.Double) defaultValue(fields()[3]);
         record.sellerId = fieldSetFlags()[4] ? this.sellerId : (java.lang.Long) defaultValue(fields()[4]);
-        record.categoryId = fieldSetFlags()[5] ? this.categoryId : (java.util.UUID) defaultValue(fields()[5]);
-        record.inventoryCount = fieldSetFlags()[6] ? this.inventoryCount : (java.lang.Integer) defaultValue(fields()[6]);
-        record.createdAt = fieldSetFlags()[7] ? this.createdAt : (java.time.LocalDate) defaultValue(fields()[7]);
-        record.updatedAt = fieldSetFlags()[8] ? this.updatedAt : (java.time.LocalDate) defaultValue(fields()[8]);
-        record.deletedAt = fieldSetFlags()[9] ? this.deletedAt : (java.time.LocalDate) defaultValue(fields()[9]);
+        record.quantity = fieldSetFlags()[5] ? this.quantity : (java.lang.Long) defaultValue(fields()[5]);
+        record.categoryId = fieldSetFlags()[6] ? this.categoryId : (java.util.UUID) defaultValue(fields()[6]);
+        record.inventoryCount = fieldSetFlags()[7] ? this.inventoryCount : (java.lang.Integer) defaultValue(fields()[7]);
+        record.createdAt = fieldSetFlags()[8] ? this.createdAt : (java.time.LocalDate) defaultValue(fields()[8]);
+        record.updatedAt = fieldSetFlags()[9] ? this.updatedAt : (java.time.LocalDate) defaultValue(fields()[9]);
+        record.deletedAt = fieldSetFlags()[10] ? this.deletedAt : (java.time.LocalDate) defaultValue(fields()[10]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
