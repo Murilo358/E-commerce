@@ -5,7 +5,6 @@
  */
 package com.order.service.coreapi.events.order;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -14,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3201122124266528292L;
+  private static final long serialVersionUID = 2741588094912646366L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderStateUpdated\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"},\"doc\":\"Unique identifier for the order\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"OrderStatus\",\"symbols\":[\"PENDING\",\"APPROVED\",\"CANCELED\",\"SHIPPED\",\"DELIVERED\"]}}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderStateUpdated\",\"namespace\":\"com.order.service.coreapi.events.order\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"},\"doc\":\"Unique identifier for the order\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"OrderUpdatedStatus\",\"symbols\":[\"PENDING\",\"APPROVED\",\"CANCELED\",\"SHIPPED\",\"DELIVERED\"]}}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -78,7 +77,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
 
   /** Unique identifier for the order */
   private java.util.UUID id;
-  private com.order.service.coreapi.events.order.OrderStatus status;
+  private com.order.service.coreapi.events.order.OrderUpdatedStatus status;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -92,7 +91,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
    * @param id Unique identifier for the order
    * @param status The new value for status
    */
-  public OrderStateUpdated(java.util.UUID id, com.order.service.coreapi.events.order.OrderStatus status) {
+  public OrderStateUpdated(java.util.UUID id, com.order.service.coreapi.events.order.OrderUpdatedStatus status) {
     this.id = id;
     this.status = status;
   }
@@ -131,7 +130,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.util.UUID)value$; break;
-    case 1: status = (com.order.service.coreapi.events.order.OrderStatus)value$; break;
+    case 1: status = (com.order.service.coreapi.events.order.OrderUpdatedStatus)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -158,7 +157,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'status' field.
    * @return The value of the 'status' field.
    */
-  public com.order.service.coreapi.events.order.OrderStatus getStatus() {
+  public com.order.service.coreapi.events.order.OrderUpdatedStatus getStatus() {
     return status;
   }
 
@@ -167,7 +166,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'status' field.
    * @param value the value to set.
    */
-  public void setStatus(com.order.service.coreapi.events.order.OrderStatus value) {
+  public void setStatus(com.order.service.coreapi.events.order.OrderUpdatedStatus value) {
     this.status = value;
   }
 
@@ -214,7 +213,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
 
     /** Unique identifier for the order */
     private java.util.UUID id;
-    private com.order.service.coreapi.events.order.OrderStatus status;
+    private com.order.service.coreapi.events.order.OrderUpdatedStatus status;
 
     /** Creates a new Builder */
     private Builder() {
@@ -301,7 +300,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
       * Gets the value of the 'status' field.
       * @return The value.
       */
-    public com.order.service.coreapi.events.order.OrderStatus getStatus() {
+    public com.order.service.coreapi.events.order.OrderUpdatedStatus getStatus() {
       return status;
     }
 
@@ -311,7 +310,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
       * @param value The value of 'status'.
       * @return This builder.
       */
-    public com.order.service.coreapi.events.order.OrderStateUpdated.Builder setStatus(com.order.service.coreapi.events.order.OrderStatus value) {
+    public com.order.service.coreapi.events.order.OrderStateUpdated.Builder setStatus(com.order.service.coreapi.events.order.OrderUpdatedStatus value) {
       validate(fields()[1], value);
       this.status = value;
       fieldSetFlags()[1] = true;
@@ -343,7 +342,7 @@ public class OrderStateUpdated extends org.apache.avro.specific.SpecificRecordBa
       try {
         OrderStateUpdated record = new OrderStateUpdated();
         record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
-        record.status = fieldSetFlags()[1] ? this.status : (com.order.service.coreapi.events.order.OrderStatus) defaultValue(fields()[1]);
+        record.status = fieldSetFlags()[1] ? this.status : (com.order.service.coreapi.events.order.OrderUpdatedStatus) defaultValue(fields()[1]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

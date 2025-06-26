@@ -2,10 +2,7 @@ package com.order.service.command;
 
 import com.order.service.coreapi.commands.CreateOrderCommand;
 import com.order.service.coreapi.commands.UpdateOrderStateCommand;
-import com.order.service.coreapi.events.order.OrderCreatedEvent;
-import com.order.service.coreapi.events.order.OrderProductState;
-import com.order.service.coreapi.events.order.OrderStateUpdated;
-import com.order.service.coreapi.events.order.OrderStatus;
+import com.order.service.coreapi.events.order.*;
 import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
 import com.order.service.dto.productDetail.OrderProduct;
 import com.order.service.gui.order.dto.OrderProductDTO;
@@ -107,7 +104,7 @@ public class Order {
     public void updateOrderState(UpdateOrderStateCommand updateOrderStateCommand){
         OrderStateUpdated build = OrderStateUpdated.newBuilder()
                 .setId(updateOrderStateCommand.getOrderId())
-                .setStatus(updateOrderStateCommand.getOrderStatus())
+                .setStatus(OrderUpdatedStatus.valueOf(String.valueOf(updateOrderStateCommand.getOrderStatus())))
                 .build();
 
         AggregateLifecycle.apply(build);
@@ -115,7 +112,7 @@ public class Order {
 
     @EventSourcingHandler
     public void on(OrderStateUpdated event) {
-        this.status = event.getStatus();
+        this.status = OrderStatus.valueOf(String.valueOf(event.getStatus()));
     }
 
     @EventSourcingHandler

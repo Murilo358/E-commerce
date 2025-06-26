@@ -2,7 +2,6 @@ package com.product.service.query.order;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.product.service.coreapi.events.order.OrderStatus;
-import com.product.service.query.salesmetrics.SalesMetricsListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(SalesMetricsListener.class)
+//@EntityListeners(SalesMetricsListener.class)
 public class OrderView {
 
     @Id
@@ -47,7 +46,7 @@ public class OrderView {
     private Long sellerId;
 
     @Column(name = "status")
-    private OrderStatus status = OrderStatus.pending;
+    private OrderStatus status = OrderStatus.PENDING;
 
     private Double weight;
 

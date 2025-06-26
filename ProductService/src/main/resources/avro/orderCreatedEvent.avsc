@@ -144,11 +144,11 @@
         "type": "enum",
         "name": "OrderStatus",
         "symbols": [
-          "pending",
-          "approved",
-          "canceled",
-          "shipped",
-          "delivered"
+          "PENDING",
+          "APPROVED",
+          "CANCELED",
+          "SHIPPED",
+          "DELIVERED"
         ]
       }
     },

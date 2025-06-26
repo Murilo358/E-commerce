@@ -6,8 +6,8 @@
 package com.product.service.coreapi.events.order;
 @org.apache.avro.specific.AvroGenerated
 public enum OrderStatus implements org.apache.avro.generic.GenericEnumSymbol<OrderStatus> {
-  pending, approved, canceled, shipped, delivered  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"OrderStatus\",\"namespace\":\"com.product.service.coreapi.events.order\",\"symbols\":[\"pending\",\"approved\",\"canceled\",\"shipped\",\"delivered\"]}");
+  PENDING, APPROVED, CANCELED, SHIPPED, DELIVERED  ;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"OrderStatus\",\"namespace\":\"com.product.service.coreapi.events.order\",\"symbols\":[\"PENDING\",\"APPROVED\",\"CANCELED\",\"SHIPPED\",\"DELIVERED\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   @Override

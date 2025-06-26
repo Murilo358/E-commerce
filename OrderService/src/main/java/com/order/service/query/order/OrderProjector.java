@@ -105,9 +105,12 @@ public class OrderProjector {
     public void on (OrderStateUpdated event){
 
         orderRepository.findById(event.getId()).ifPresent(order -> {
-            order.setStatus(event.getStatus());
 
-            if(event.getStatus().equals(OrderStatus.APPROVED)){
+            OrderUpdatedStatus status = event.getStatus();
+            OrderStatus orderStatus = OrderStatus.valueOf(String.valueOf(status));
+            order.setStatus(orderStatus);
+
+            if(orderStatus.equals(OrderStatus.APPROVED)){
                 JsonNode eventProducts = order.getProducts();
 
                 List<OrderProductState> orderProductState = null;
