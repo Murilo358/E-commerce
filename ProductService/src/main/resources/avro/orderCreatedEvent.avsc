@@ -134,11 +134,6 @@
       "doc": "ID of the buyer"
     },
     {
-      "name": "sellerId",
-      "type": "long",
-      "doc": "ID of the seller"
-    },
-    {
       "name": "status",
       "type": {
         "type": "enum",

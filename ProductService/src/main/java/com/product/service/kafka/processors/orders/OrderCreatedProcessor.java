@@ -56,7 +56,6 @@ public class OrderCreatedProcessor implements EventProcessor<OrderCreatedEvent> 
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .buyerId(event.getBuyerId())
-                .sellerId(event.getSellerId())
                 .status(event.getStatus())
                 .weight(event.getWeight())
                 .build();

@@ -40,7 +40,6 @@
             {
               "name": "sellerId",
               "type": "long",
-              "default": 0
             },
             {
               "name": "categoryId",
@@ -136,11 +135,6 @@
       "name": "buyerId",
       "type": "long",
       "doc": "ID of the buyer"
-    },
-    {
-      "name": "sellerId",
-      "type": "long",
-      "doc": "ID of the seller"
     },
     {
       "name": "status",
