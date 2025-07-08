@@ -44,6 +44,7 @@ public class OrderView {
     private Long sellerId;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
     private Double weight;
