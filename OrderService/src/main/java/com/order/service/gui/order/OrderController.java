@@ -6,10 +6,7 @@ import com.order.service.gui.order.dto.CreateOrderDTO;
 import com.order.service.gui.order.dto.UpdateOrderStatusDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -35,13 +32,13 @@ public class OrderController {
                         .builder()
                         .orderId(UUID.randomUUID())
                         .buyerid(createOrderDTO.buyerId())
-                        .paymentMethod(createOrderDTO.paymentMethod())
+                        .paymentMethod(createOrderDTO.paymentMethodId())
                         .products(createOrderDTO.products()).build()
         );
 
     }
 
-    @PostMapping("/updateStatus")
+    @PatchMapping("/status")
     public CompletableFuture<Boolean> updateOrderStatus(@RequestBody UpdateOrderStatusDTO UpdateOrderStatusDTO){
         return commandGateway.send(
                 UpdateOrderStateCommand
