@@ -45,7 +45,6 @@ public class Order {
 
         try {
 
-
             List<UUID> productsIds = command.getProducts().stream().map(OrderProductDTO::productId).toList();
 
             Map<UUID, Long> collect = command.getProducts().stream().collect(Collectors.toMap(OrderProductDTO::productId, OrderProductDTO::quantity));
@@ -61,23 +60,18 @@ public class Order {
                 return;
             }
 
+            double totalPrice = productsView.stream()
+                    .mapToDouble(i -> i.getPrice() * collect.get(i.getId()))
+                    .sum();
 
-            Double totalPrice = productsView.stream().map(i -> i.getPrice() * collect.get(i.getId())).reduce(0.0, Double::sum);
-            Double totalWeight = productsView.stream().filter(i -> i.getWeight() != null).map(i -> i.getWeight() * collect.get(i.getId())).reduce(0.0, Double::sum);
-
+            double totalWeight = productsView.stream()
+                    .filter(i -> i.getWeight() != null)
+                    .mapToDouble(i -> i.getWeight() * collect.get(i.getId()))
+                    .sum();
             List<OrderProductState> products = new ArrayList<>();
 
             for (OrderProduct productView : productsView) {
-                OrderProductState build = OrderProductState.newBuilder()
-                        .setCategoryId(productView.getCategory().id())
-                        .setDescription(productView.getDescription())
-                        .setCreatedAt(productView.getCreatedAt().toLocalDate())
-                        .setName(productView.getName())
-                        .setPrice(productView.getPrice())
-                        .setSellerId(productView.getSeller().sellerId())
-                        .setInventoryCount(productView.getInventoryCount())
-                        .setProductId(productView.getId()).build();
-                products.add(build);
+                products.add(toState(productView));
             }
 
             OrderCreatedEvent build = OrderCreatedEvent.newBuilder()
@@ -100,6 +94,21 @@ public class Order {
         }
 
     }
+
+    private OrderProductState toState(OrderProduct product) {
+        return OrderProductState.newBuilder()
+                .setCategoryId(product.getCategory().id())
+                .setDescription(product.getDescription())
+                .setCreatedAt(product.getCreatedAt().toLocalDate())
+                .setName(product.getName())
+                .setPrice(product.getPrice())
+                .setSellerId(product.getSeller().sellerId())
+                .setInventoryCount(product.getInventoryCount())
+                .setProductId(product.getId())
+                .build();
+    }
+
+
     @CommandHandler
     public void updateOrderState(UpdateOrderStateCommand updateOrderStateCommand){
         OrderStateUpdated build = OrderStateUpdated.newBuilder()
