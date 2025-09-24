@@ -40,9 +40,6 @@ public class OrderView {
     @Column(name = "buyer_id", nullable = false)
     private Long buyerId;
 
-    @Column(name = "seller_id", nullable = false)
-    private Long sellerId;
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
