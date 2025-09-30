@@ -14,7 +14,6 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -39,7 +38,6 @@ public class Category {
     public Category(CreateCategoryCommand command) {
         CategoryCreatedEvent categoryCreatedEvent = CategoryCreatedEvent.newBuilder()
                 .setId(command.getId())
-                .setSystemDefault(command.isSystemDefault())
                 .setName(command.getName())
                 .setDescription(command.getDescription())
                 .setCreatedAt(command.getCreatedAt().toInstant(ZoneOffset.UTC))

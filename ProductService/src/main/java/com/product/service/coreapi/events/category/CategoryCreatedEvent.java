@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -34094040934980155L;
+  private static final long serialVersionUID = -8983438849367366207L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CategoryCreatedEvent\",\"namespace\":\"com.product.service.coreapi.events.category\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"systemDefault\",\"type\":\"boolean\"},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]}],\"version\":\"1\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CategoryCreatedEvent\",\"namespace\":\"com.product.service.coreapi.events.category\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"description\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"createdAt\",\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}]}],\"version\":\"1\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -79,7 +79,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
   private java.util.UUID id;
   private java.lang.String name;
   private java.lang.String description;
-  private boolean systemDefault;
   private java.time.Instant createdAt;
 
   /**
@@ -94,14 +93,12 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
    * @param id The new value for id
    * @param name The new value for name
    * @param description The new value for description
-   * @param systemDefault The new value for systemDefault
    * @param createdAt The new value for createdAt
    */
-  public CategoryCreatedEvent(java.util.UUID id, java.lang.String name, java.lang.String description, java.lang.Boolean systemDefault, java.time.Instant createdAt) {
+  public CategoryCreatedEvent(java.util.UUID id, java.lang.String name, java.lang.String description, java.time.Instant createdAt) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.systemDefault = systemDefault;
     this.createdAt = createdAt;
   }
 
@@ -118,8 +115,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     case 0: return id;
     case 1: return name;
     case 2: return description;
-    case 3: return systemDefault;
-    case 4: return createdAt;
+    case 3: return createdAt;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -127,7 +123,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
   private static final org.apache.avro.Conversion<?>[] conversions =
       new org.apache.avro.Conversion<?>[] {
       new org.apache.avro.Conversions.UUIDConversion(),
-      null,
       null,
       null,
       null,
@@ -147,8 +142,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     case 0: id = (java.util.UUID)value$; break;
     case 1: name = value$ != null ? value$.toString() : null; break;
     case 2: description = value$ != null ? value$.toString() : null; break;
-    case 3: systemDefault = (java.lang.Boolean)value$; break;
-    case 4: createdAt = (java.time.Instant)value$; break;
+    case 3: createdAt = (java.time.Instant)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -202,23 +196,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
    */
   public void setDescription(java.lang.String value) {
     this.description = value;
-  }
-
-  /**
-   * Gets the value of the 'systemDefault' field.
-   * @return The value of the 'systemDefault' field.
-   */
-  public boolean getSystemDefault() {
-    return systemDefault;
-  }
-
-
-  /**
-   * Sets the value of the 'systemDefault' field.
-   * @param value the value to set.
-   */
-  public void setSystemDefault(boolean value) {
-    this.systemDefault = value;
   }
 
   /**
@@ -282,7 +259,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     private java.util.UUID id;
     private java.lang.String name;
     private java.lang.String description;
-    private boolean systemDefault;
     private java.time.Instant createdAt;
 
     /** Creates a new Builder */
@@ -308,13 +284,9 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
         this.description = data().deepCopy(fields()[2].schema(), other.description);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.systemDefault)) {
-        this.systemDefault = data().deepCopy(fields()[3].schema(), other.systemDefault);
+      if (isValidValue(fields()[3], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[3].schema(), other.createdAt);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
-      }
-      if (isValidValue(fields()[4], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[4].schema(), other.createdAt);
-        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
     }
 
@@ -336,13 +308,9 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
         this.description = data().deepCopy(fields()[2].schema(), other.description);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.systemDefault)) {
-        this.systemDefault = data().deepCopy(fields()[3].schema(), other.systemDefault);
+      if (isValidValue(fields()[3], other.createdAt)) {
+        this.createdAt = data().deepCopy(fields()[3].schema(), other.createdAt);
         fieldSetFlags()[3] = true;
-      }
-      if (isValidValue(fields()[4], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[4].schema(), other.createdAt);
-        fieldSetFlags()[4] = true;
       }
     }
 
@@ -467,45 +435,6 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
     }
 
     /**
-      * Gets the value of the 'systemDefault' field.
-      * @return The value.
-      */
-    public boolean getSystemDefault() {
-      return systemDefault;
-    }
-
-
-    /**
-      * Sets the value of the 'systemDefault' field.
-      * @param value The value of 'systemDefault'.
-      * @return This builder.
-      */
-    public com.product.service.coreapi.events.category.CategoryCreatedEvent.Builder setSystemDefault(boolean value) {
-      validate(fields()[3], value);
-      this.systemDefault = value;
-      fieldSetFlags()[3] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'systemDefault' field has been set.
-      * @return True if the 'systemDefault' field has been set, false otherwise.
-      */
-    public boolean hasSystemDefault() {
-      return fieldSetFlags()[3];
-    }
-
-
-    /**
-      * Clears the value of the 'systemDefault' field.
-      * @return This builder.
-      */
-    public com.product.service.coreapi.events.category.CategoryCreatedEvent.Builder clearSystemDefault() {
-      fieldSetFlags()[3] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'createdAt' field.
       * @return The value.
       */
@@ -520,9 +449,9 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.product.service.coreapi.events.category.CategoryCreatedEvent.Builder setCreatedAt(java.time.Instant value) {
-      validate(fields()[4], value);
+      validate(fields()[3], value);
       this.createdAt = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -531,7 +460,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'createdAt' field has been set, false otherwise.
       */
     public boolean hasCreatedAt() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -541,7 +470,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
       */
     public com.product.service.coreapi.events.category.CategoryCreatedEvent.Builder clearCreatedAt() {
       createdAt = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -553,8 +482,7 @@ public class CategoryCreatedEvent extends org.apache.avro.specific.SpecificRecor
         record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
         record.name = fieldSetFlags()[1] ? this.name : (java.lang.String) defaultValue(fields()[1]);
         record.description = fieldSetFlags()[2] ? this.description : (java.lang.String) defaultValue(fields()[2]);
-        record.systemDefault = fieldSetFlags()[3] ? this.systemDefault : (java.lang.Boolean) defaultValue(fields()[3]);
-        record.createdAt = fieldSetFlags()[4] ? this.createdAt : (java.time.Instant) defaultValue(fields()[4]);
+        record.createdAt = fieldSetFlags()[3] ? this.createdAt : (java.time.Instant) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

@@ -21,6 +21,5 @@ public class CreateCategoryCommand {
     private String name;
     private String description;
     private LocalDateTime createdAt;
-    private boolean systemDefault;
 
 }

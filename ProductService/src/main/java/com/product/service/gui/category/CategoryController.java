@@ -24,20 +24,20 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("category")
 public class CategoryController {
 
+    private final CommandGateway commandGateway;
+    private final QueryGateway queryGateway;
 
-    @Autowired
-    CommandGateway commandGateway;
-
-    @Autowired
-    private QueryGateway queryGateway;
+    public CategoryController(CommandGateway commandGateway, QueryGateway queryGateway) {
+        this.commandGateway = commandGateway;
+        this.queryGateway = queryGateway;
+    }
 
     @PostMapping("/create")
     public CompletableFuture<UUID> createCategory(@RequestBody CreateCategoryDTO createCategoryDTO){
         return commandGateway.send(
             CreateCategoryCommand.builder()
                     .id(UUID.randomUUID())
-                    .name(createCategoryDTO.name())
-                    .systemDefault(createCategoryDTO.systemDefault())
+                    .name(createCategoryDTO.name()) 
                     .description(createCategoryDTO.description())
                     .createdAt(LocalDateTime.now())
                     .build()
@@ -46,7 +46,7 @@ public class CategoryController {
 
 
     @PutMapping("/update/{categoryId}")
-    public CompletableFuture<UUID> updateCategory(@PathVariable  String categoryId, @RequestBody UpdateCategoryDTO updateCategoryDTO){
+    public CompletableFuture<UUID> updateCategory(@PathVariable String categoryId, @RequestBody UpdateCategoryDTO updateCategoryDTO){
         return commandGateway.send(
                 UpdateCategoryCommand.builder()
                         .id(UUID.fromString(categoryId))
