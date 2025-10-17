@@ -44,6 +44,23 @@ public class OrderView {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
+    @Column(name = "shipping_info", nullable = false, columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private JsonNode shippingInfo;
+
+    @Column(name = "canceled_at")
+    private LocalDate canceledAt;
+
+    @Column(name = "shipped_at")
+    private LocalDate shippedAt;
+
+    @Column(name = "delivered_at")
+    private LocalDate deliveredAt;
+
+    @Column(name = "approved_at")
+    private LocalDate approvedAt;
+
+    @Column(name = "weight")
     private Double weight;
 
 }

@@ -1,4 +1,4 @@
-package com.order.service.coreapi.commands;
+package com.order.service.coreapi.commands.order;
 
 import com.order.service.coreapi.events.order.OrderStatus;
 import lombok.AllArgsConstructor;
