@@ -1,7 +1,8 @@
 package com.order.service.saga.order;
 
-import com.order.service.coreapi.events.order.ApproveOrderEvent;
+import com.order.service.coreapi.events.order.ApproveOrderCommand;
 import com.order.service.coreapi.events.order.OrderCreationRequestedEvent;
+import com.order.service.coreapi.events.order.OrderProductState;
 import com.order.service.coreapi.queries.product.FindProductsByIdsQuery;
 import com.order.service.dto.productDetail.OrderProduct;
 import com.order.service.gui.order.dto.OrderProductDTO;
@@ -12,6 +13,8 @@ import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,13 +25,13 @@ import java.util.stream.Collectors;
 @Saga
 public class OrderCreationSaga {
 
-    private final transient CommandGateway commandGateway;
-    private final transient QueryGateway queryGateway;
+    @Autowired
+    private transient CommandGateway commandGateway;
 
-    public OrderCreationSaga(CommandGateway commandGateway, QueryGateway queryGateway) {
-        this.commandGateway = commandGateway;
-        this.queryGateway = queryGateway;
-    }
+    @Autowired
+    private transient QueryGateway queryGateway;
+
+    public OrderCreationSaga() {}
 
     @SagaEventHandler(associationProperty = "orderId")
     @StartSaga
@@ -56,11 +59,14 @@ public class OrderCreationSaga {
                     .mapToDouble(i -> i.getWeight() * quantityByProductId.get(i.getId()))
                     .sum();
 
+            List<OrderProductState> orderProductStates = products.stream().map(p -> createProductOrderState(p, quantityByProductId.get(p.getId()))).toList();
 
-            ApproveOrderEvent approveOrderEvent = ApproveOrderEvent
+
+            ApproveOrderCommand approveOrderCommand = ApproveOrderCommand
                     .builder()
                     .orderId(orderId)
-                    .products(products)
+                    .products(orderProductStates)
+                    .buyerid(1L)
                     .shippingInformation(null)//todo create table and get it
                     .totalPrice(totalPrice)
                     .totalWeight(totalWeight)
@@ -73,15 +79,28 @@ public class OrderCreationSaga {
                     .build();
 
 
-
-            commandGateway.send(approveOrderEvent);
+            commandGateway.send(approveOrderCommand);
         });
 
     }
 
+    private OrderProductState createProductOrderState(OrderProduct product, Long soldQuantity) {
+        return OrderProductState.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .sellerId(product.getSeller().sellerId())
+                .sellersName("Testing")
+                .categoryId(product.getCategory().id())
+                .categoryName("Testing")
+                .inventoryCount(product.getInventoryCount())
+                .soldQuantity(soldQuantity)
+                .build();
+    }
 
     @SagaEventHandler(associationProperty = "orderId")
-    public void on(ApproveOrderEvent event) {
+    public void on(ApproveOrderCommand event) {
         SagaLifecycle.end();
     }
 
