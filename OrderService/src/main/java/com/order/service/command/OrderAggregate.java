@@ -1,6 +1,6 @@
 package com.order.service.command;
 
-import com.order.service.coreapi.events.order.ApproveOrderEvent;
+import com.order.service.coreapi.events.order.ApproveOrderCommand;
 import com.order.service.coreapi.events.order.OrderCreationRequestedEvent;
 import com.order.service.coreapi.commands.order.RequestOrderCreationCommand;
 import com.order.service.coreapi.events.order.*;
@@ -12,7 +12,8 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Slf4j
@@ -28,15 +29,15 @@ public class OrderAggregate {
     private double totalPrice;
     private double totalWeight;
     private OrderStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime canceledAt;
-    private LocalDateTime approvedAt;
-    private LocalDateTime shippedAt;
-    private LocalDateTime deliveredAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime canceledAt;
+    private OffsetDateTime approvedAt;
+    private OffsetDateTime shippedAt;
+    private OffsetDateTime deliveredAt;
     private Object shippingInformation;
     private String notes; //todo implement
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    private OffsetDateTime updatedAt;
+    private OffsetDateTime deletedAt;
 
     protected OrderAggregate() {}
 
@@ -59,15 +60,14 @@ public class OrderAggregate {
 
 
     private OrderProductState createOrderProductState(OrderProduct product) {
-        return OrderProductState.newBuilder()
-                .setCategoryId(product.getCategory().id())
-                .setDescription(product.getDescription())
-                .setCreatedAt(product.getCreatedAt().toLocalDate())
-                .setName(product.getName())
-                .setPrice(product.getPrice())
-                .setSellerId(product.getSeller().sellerId())
-                .setInventoryCount(product.getInventoryCount())
-                .setProductId(product.getId())
+        return OrderProductState.builder()
+                .categoryId(product.getCategory().id())
+                .description(product.getDescription())
+                .name(product.getName())
+                .price(product.getPrice())
+                .sellerId(product.getSeller().sellerId())
+                .inventoryCount(product.getInventoryCount())
+                .productId(product.getId())
                 .build();
     }
 
@@ -77,30 +77,47 @@ public class OrderAggregate {
 
         this.orderId = event.getOrderId();
         this.buyerId = event.getBuyerid();
-        this.createdAt = LocalDateTime.now(); // todo use OffsetDateTime??
+        this.createdAt = OffsetDateTime.now();
         this.products = event.getProducts().stream()
-                .map((p) -> {
-                    OrderProductState orderProductState = new OrderProductState();
-                    orderProductState.setProductId(p.productId());
-                    orderProductState.setQuantity(Math.toIntExact(p.quantity())); //todo fazer o objeto ser buildado como long e nao int
-                    return orderProductState;
-                })
+                .map((p) ->
+                    OrderProductState.builder()
+                            .productId(p.productId())
+                            .soldQuantity(p.quantity())
+                            .build()
+                )
                 .toList();
         this.status = event.getOrderStatus();
     }
 
 
 
-    @EventSourcingHandler
-    public void on(ApproveOrderEvent approveOrderEvent) {
+    @CommandHandler
+    public void on(ApproveOrderCommand approveOrderCommand) {
 
         this.status = OrderStatus.APPROVED;
-        this.products = approveOrderEvent.getProducts().stream().map(this::createOrderProductState).toList();
-        this.totalPrice = approveOrderEvent.getTotalPrice();
-        this.totalWeight = approveOrderEvent.getTotalWeight();
-        this.buyerId = approveOrderEvent.getBuyerid();
-        this.approvedAt = LocalDateTime.now();
-        this.shippingInformation = approveOrderEvent.getShippingInformation();
+        this.products = approveOrderCommand.getProducts();
+        this.totalPrice = approveOrderCommand.getTotalPrice();
+        this.totalWeight = approveOrderCommand.getTotalWeight();
+        this.buyerId = approveOrderCommand.getBuyerid();
+        this.approvedAt = OffsetDateTime.now();
+        this.shippingInformation = approveOrderCommand.getShippingInformation();
+
+        ApproveOrderEvent approveOrderEvent = ApproveOrderEvent.builder()
+                .orderId(orderId)
+                .products(approveOrderCommand.getProducts())
+                .buyerid(1L)
+                .shippingInformation(null)//todo create table and get it
+                .totalPrice(totalPrice)
+                .totalWeight(totalWeight)
+                .paymentMethod(approveOrderCommand.getPaymentMethod()) //todo create table and get it
+                .buyerid(approveOrderCommand.getBuyerid())
+                .canceledAt(null)
+                .shippedAt(null)//todo implement shipping
+                .deliveredAt(null)
+                .approvedAt(LocalDate.now())
+                .build();
+
+        AggregateLifecycle.apply(approveOrderEvent);
 
     }
 
