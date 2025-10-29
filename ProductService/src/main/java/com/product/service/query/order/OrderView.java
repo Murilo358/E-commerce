@@ -39,9 +39,6 @@ public class OrderView {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 
-    @Column(name = "seller_id", nullable = false)
-    private Long sellerId;
-
     @Column(name = "buyer_id", nullable = false)
     private Long buyerId;
 
