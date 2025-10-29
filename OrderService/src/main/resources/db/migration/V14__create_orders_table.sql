@@ -1,17 +1,17 @@
 CREATE TABLE IF NOT EXISTS transactions.orders (
     id              UUID PRIMARY KEY,
-    buyer_id        BIGINT       NOT NULL,
-    products        JSONB        NOT NULL,
-    payment_method  BIGINT       NOT NULL,
-    total_price     DECIMAL(10,2) NOT NULL,
-    weight          DECIMAL(10,2) NOT NULL,
-    status          VARCHAR(50)  NOT NULL DEFAULT 'pending'
-    CHECK (status IN ('pending', 'approved', 'canceled', 'shipped', 'delivered')),
-    shipping_info   BIGINT,
+    buyer_id        BIGINT       ,
+    products        JSONB        ,
+    payment_method  BIGINT       ,
+    total_price     DECIMAL(10,2) ,
+    weight          DECIMAL(10,2) ,
+    status          VARCHAR(50)  DEFAULT 'PENDING'
+    CHECK (status IN ('PENDING', 'APPROVED', 'CANCELED', 'SHIPPED', 'DELIVERED')),
+    shipping_info   JSONB,
     canceled_at     TIMESTAMP WITH TIME ZONE,
     shipped_at      TIMESTAMP WITH TIME ZONE,
     delivered_at    TIMESTAMP WITH TIME ZONE,
-    created_at      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at      TIMESTAMP WITH TIME ZONE  DEFAULT CURRENT_TIMESTAMP,
     approved_at     TIMESTAMP WITH TIME ZONE,
     updated_at      TIMESTAMP WITH TIME ZONE,
     CONSTRAINT orders_buyer_id_foreign
