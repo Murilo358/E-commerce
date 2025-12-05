@@ -20,10 +20,6 @@
       "type": "string"
     },
     {
-      "name": "systemDefault",
-      "type": "boolean"
-    },
-    {
       "name": "createdAt",
       "type": [
         "null",
