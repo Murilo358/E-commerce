@@ -82,7 +82,7 @@ services:
       - backend
 
   axonserver:
-    image: axoniq/axonserver:2025.1.5
+    image: axoniq/axonserver:latest
     hostname: axonserver
     volumes:
       - axonserver-data:/data
